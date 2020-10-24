@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 28 28">
+    <circle cx="14" cy="14" r="14" fill="#F7F9FF"/>
+    <path fill="#F7F9FF" stroke="#839FC0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M13.432 9.563l3.686-2.903 3.687 2.903v4.563c0 .22-.086.43-.24.587-.153.155-.362.242-.58.242h-5.734c-.217 0-.426-.087-.58-.242-.153-.156-.24-.367-.24-.587V9.563z"/>
+    <path fill="#F7F9FF" d="M15.736 14.958V11.27h2.765v3.687"/>
+    <path stroke="#839FC0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M15.736 14.958V11.27h2.765v3.687h-2.765z"/>
+    <path fill="#F7F9FF" stroke="#839FC0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M6.611 13.294l4.978-3.871 4.977 3.871v6.083c0 .294-.117.575-.324.782-.208.208-.489.324-.782.324H7.717c-.293 0-.574-.116-.782-.324-.207-.207-.324-.488-.324-.782v-6.083z"/>
+    <path fill="#F7F9FF" d="M9.93 20.48v-5.53h3.318v5.53"/>
+    <path stroke="#839FC0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M9.93 20.48v-5.53h3.318v5.53H9.93z"/>
+</svg>
