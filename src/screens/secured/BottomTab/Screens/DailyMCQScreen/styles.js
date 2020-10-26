@@ -1,14 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, _scaleText, TEXT_STYLES } from '../../../../../shared';
 import { isTablet } from 'react-native-device-info';
-
+export const { width, height } = Dimensions.get('window');
 export default StyleSheet.create({
     listView: {
         paddingBottom: _scaleText(30).fontSize + _scaleText(isTablet() ? 70 : 54).fontSize
-    },
-    container: {
-        backgroundColor: COLORS.GREY.LIGHTER,
-        paddingTop: _scaleText(8).fontSize,
     },
     buttonContainer: {
         padding: _scaleText(16).fontSize,
@@ -26,6 +22,21 @@ export default StyleSheet.create({
         flex: 1,
 
         fontSize: _scaleText(16).fontSize,
+    },
+    buttonLabel: {
+        color: 'white'
+    },
+    button: (disabled) => ({
+        backgroundColor: disabled ? COLORS.GREY._4 : COLORS.PRIMARY.PINK,
+        borderRadius: 0,
+        flex: 1,
+        height: _scaleText(48).fontSize,
+        paddingVertical: _scaleText(15).fontSize,
+        borderWidth: 0,
+    }),
+    back: {
+        transform: [{ rotateZ: "180deg" }],
+        marginRight: _scaleText(8).fontSize
     },
     iconStyle: (size = 24) => ({
         width: _scaleText(size).fontSize,
@@ -47,6 +58,18 @@ export default StyleSheet.create({
         color: COLORS.SECONDARY.BLUE,
 
         fontSize: _scaleText(16).fontSize
+    },
+    container: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
+    child: {
+        flex: 1,
+        width
+    },
+    text: {
+        fontSize: width * 0.5,
+        textAlign: 'center'
     },
     friendsContainer: outerHeight => ({
         backgroundColor: 'white',

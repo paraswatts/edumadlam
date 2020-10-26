@@ -63,4 +63,12 @@ export default StyleSheet.create({
         color: COLORS.SECONDARY.BLUE,
         ...TEXT_STYLES.H5,
     },
+    buttonStyle: {
+        paddingHorizontal: _scaleText(50).fontSize,
+        marginTop: _scaleText(5).fontSize,
+        borderRadius: _scaleText(5).fontSize,
+        backgroundColor: COLORS.PRIMARY.PINK,
+        borderWidth: 0
+    },
+    form: { marginTop: _scaleText(100).fontSize }
 });

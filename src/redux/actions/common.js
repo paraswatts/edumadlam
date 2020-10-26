@@ -5,8 +5,6 @@ export const STOP_LOADING = 'STOP_LOADING';
 export const TOGGLE_SWIPE_VIEW = 'TOGGLE_SWIPE_VIEW';
 export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
 export const UPDATE_INTERNET_STATUS = 'UPDATE_INTERNET_STATUS';
-
-
 export const startLoading = () => {
     return {
         type: START_LOADING

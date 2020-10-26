@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { ROUTES, navigationRef } from '../shared';
-import { updateInternetStatus } from '../redux/actions';
+import { updateInternetStatus, streamRequest } from '../redux/actions';
 import {
     BottomTabDashboard,
     SignInScreen,
@@ -22,7 +22,9 @@ import NetInfo from "@react-native-community/netinfo";
 const Stack = createStackNavigator();
 
 function RootNavigator({
-    updateInternetStatus
+    updateInternetStatus,
+    netConnected,
+    streamRequest
 }) {
     React.useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(({ isConnected, isInternetReachable }) => {
@@ -30,6 +32,14 @@ function RootNavigator({
         });
         return unsubscribe
     })
+    React.useEffect(() => {
+        console.log("heredadas")
+        let payload = {
+            netConnected
+        }
+        streamRequest(payload)
+    }, [])
+
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
@@ -58,7 +68,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateInternetStatus: payload => dispatch(updateInternetStatus(payload))
+        updateInternetStatus: payload => dispatch(updateInternetStatus(payload)),
+        streamRequest: (payload) => dispatch(streamRequest(payload))
+
     }
 }
 

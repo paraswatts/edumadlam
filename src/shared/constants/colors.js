@@ -29,6 +29,8 @@ export const COLORS = {
     },
     PAGE_BACKGROUND: '#F3F6FD',
     WHITE: '#ffffff',
-    SHADOW: '#eef1f9'
+    BLACK: '#000000',
+    SHADOW: '#eef1f9',
+    GREEN: '#2EBD01'
 }
 

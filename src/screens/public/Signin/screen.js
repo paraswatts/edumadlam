@@ -41,29 +41,30 @@ const SigninScreen = ({
                         <View style={{ minHeight: Dimensions.get('window').height - _scaleText(230).fontSize - bottom }}>
                             <Text style={styles.signup}>{TEXT_CONST.SIGNIN}</Text>
                             <Text style={styles.fillCredentials}>{TEXT_CONST.FILL_CREDENTIALS}</Text>
-                            <Field
-                                name={TEXT_CONST.EMAIL_INPUT_NAME}
-                                props={{
-                                    placeholder: 'Email Address'
-                                }}
-                                component={CustomTextInput}
-                            />
-                            <Field
-                                name={TEXT_CONST.PASSWORD_INPUT_NAME}
-                                props={{
-                                    placeholder: 'Password'
-                                }}
-                                secureTextEntry
-                                component={CustomTextInput}
-                            />
+                            <View style={styles.form}>
+                                <Field
+                                    name={TEXT_CONST.EMAIL_INPUT_NAME}
+                                    props={{
+                                        placeholder: 'Email Address'
+                                    }}
+                                    component={CustomTextInput}
+                                />
+                                <Field
+                                    name={TEXT_CONST.PASSWORD_INPUT_NAME}
+                                    props={{
+                                        placeholder: 'Password'
+                                    }}
+                                    secureTextEntry
+                                    component={CustomTextInput}
+                                />
 
-                            <CustomButton
-                                // disabled={_checkValidEmail(email)}
-                                label={'Sign In'}
-                                labelStyle={{ color: 'white' }}
-                                onPress={handleSubmit(_onSignin)}
-                                container={{ paddingHorizonrtal: 50, borderRadius: 5, backgroundColor: COLORS.PRIMARY.PINK, borderWidth: 0 }}
-                            />
+                                <CustomButton
+                                    label={'Sign In'}
+                                    labelStyle={{ color: 'white' }}
+                                    onPress={handleSubmit(_onSignin)}
+                                    container={styles.buttonStyle}
+                                />
+                            </View>
                         </View>
                         <Text style={styles.privacyPolicy}>
                             {TEXT_CONST.PRIVACY_POLICY_TEXT}

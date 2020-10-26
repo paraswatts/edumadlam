@@ -76,15 +76,12 @@ export const API = {
     PROVIDE_FEEDBACK: PREFIX_URL + '/api/provideFeedback',
     HELP_ITEMS_FILTER: PREFIX_URL + '/api/helpItemsFilter',
     // new api's
-    GET_IMPORTANT_CATEGORIES: PREFIX_URL + 'importantCategoryJson.php?streamId=1',
-
+    GET_IMPORTANT_CATEGORIES: (params = '') => PREFIX_URL + `importantCategoryJson.php${params}`,
     GET_IMPORTANT_SUB_CATEGORIES: (params = '') => PREFIX_URL + `importantListJson.php${params}`,
     GET_IMPORTANT_DETAIL: (params = '') => PREFIX_URL + `importantFullJson.php${params}`,
-    GET_NEWS_CATEGORIES: PREFIX_URL + 'newsCategoryJson.php?streamId=1',
-
+    GET_NEWS_CATEGORIES: (params = '') => PREFIX_URL + `newsCategoryJson.php${params}`,
     GET_NEWS_SUB_CATEGORIES: (params = '') => PREFIX_URL + `newsListJson.php${params}`,
     GET_NEWS_DETAIL: (params = '') => PREFIX_URL + `newsFullJson.php${params}`,
-
     SIGNIN: (params = '') => PREFIX_URL + `loginCheckJson.php${params}`,
-
+    GET_STREAM_LIST: 'streamListJson.php'
 }

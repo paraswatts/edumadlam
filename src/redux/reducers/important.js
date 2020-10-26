@@ -1,14 +1,22 @@
 import { REHYDRATE } from 'redux-persist';
-import { RESET, IMPORTANT_CAT_SUCCESS, IMPORTANT_SUB_CAT_SUCCESS, IMPORTANT_DETAIL_SUCCESS } from '../actions';
+import { GET_STREAM_LIST_SUCCESS, RESET, IMPORTANT_CAT_SUCCESS, IMPORTANT_SUB_CAT_SUCCESS, IMPORTANT_DETAIL_SUCCESS } from '../actions';
 
 const initialState = {
     importantCategories: [],
     importantSubCategories: [],
-    importantDetail: ''
+    importantDetail: '',
+
+    streamList: []
 };
 
 const FriendsReducer = (state = { ...initialState }, action) => {
     switch (action.type) {
+
+        case GET_STREAM_LIST_SUCCESS:
+            return {
+                ...state,
+                streamList: action.payload
+            }
         case IMPORTANT_CAT_SUCCESS:
             return {
                 ...state,

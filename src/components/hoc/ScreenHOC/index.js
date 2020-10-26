@@ -1,7 +1,10 @@
-import React from 'react';
-import { Text, View, SafeAreaView, StatusBar } from 'react-native';
-import { CustomHeader, CalenderStrip } from '../../';
-import { COLORS } from '../../../shared';
+import React, { useRef } from 'react';
+import { Text, View, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity } from 'react-native';
+import { CustomHeader, CalenderStrip, CustomTouchableIcon } from '../../';
+import { COLORS, TEXT_CONST, _scaleText } from '../../../shared';
+import Menu from 'react-native-material-menu';
+const FILTERS = TEXT_CONST.CURRENT_FRIENDS_FILTERS
+
 const ScreenHOC = ({
     barStyle = 'dark-content',
     bottomSafeArea,
@@ -19,10 +22,14 @@ const ScreenHOC = ({
     statusBarRequired = true,
     titleStyle,
     showMenuIcon,
-    onSelectDate = () => { },
-    onRightPress
-}) => (
-        <View style={{ flex: 1, backgroundColor: 'white', }}>
+    onSelectDate,
+    onRightPress,
+    changeFilter,
+    showFilter
+}) => {
+
+    return (
+        <View style={{ flex: 1, backgroundColor: 'white', borderColor: 'red', borderWidth: 0 }}>
             {!!safeAreaRequired && <SafeAreaView style={{ backgroundColor: statusBarColor, }} />}
             {!!statusBarRequired && <StatusBar backgroundColor={statusBarColor} animated barStyle={barStyle} />}
 
@@ -36,15 +43,19 @@ const ScreenHOC = ({
                 titleStyle={titleStyle}
                 showMenuIcon={showMenuIcon}
                 onRightPress={onRightPress}
+                changeFilter={changeFilter}
+                showFilter={showFilter}
+                onSelectDate={onSelectDate}
             />}
             {/* <View style={{ backgroundColor: COLORS.PRIMARY.PINK }}>
                 <CalenderStrip onSelectDate={onSelectDate} />
             </View> */}
-            <View style={{ flex: 1, ...containerStyle }}>
+            <View style={{ flex: 1, ...containerStyle, borderWidth: 0 }}>
                 {children}
             </View>
             {!!bottomSafeArea && <SafeAreaView style={{ backgroundColor: 'white', }} />}
-        </View>
-    );
+        </View>)
+};
+
 
 export default ScreenHOC;

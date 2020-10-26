@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ScreenHOC } from '../../../../../components';
-import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES } from '../../../../../shared';
-
+import { ScreenHOC, EmptyDataUI } from '../../../../../components';
+import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS } from '../../../../../shared';
+import CustomDatePicker from '../../../../../components/molecules/CustomDatePicker'
+import moment from 'moment'
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const FriendsScreen = ({
     navigation,
@@ -13,16 +14,26 @@ const FriendsScreen = ({
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
     const [refreshing, toggleRefreshing] = useState(true);
-    useEffect(() => { fetchData(true) }, [])
-    const fetchData = (refresh = false) => {
+    const [showDate, updateShowDate] = useState(false)
+    const [_id, updateId] = useState('1')
+    const [date, updateDate] = useState(moment(new Date()).format("DD-MM-yyyy"))
+    const [selectedDate, updateSelectedDate] = useState(new Date())
+
+    const selectDate = (date) => {
+        let selectedDate = moment(date).format("DD-MM-yyyy")
+        updateSelectedDate(date)
+        updateDate(selectedDate)
+    }
+    useEffect(() => { fetchData(true, 1, date) }, [])
+    const fetchData = (refresh = false, _id, date) => {
         toggleLoading(!refresh);
         toggleRefreshing(refresh);
         let payload = {
             netConnected,
+            _id,
             success: (response = []) => {
                 console.log("response", response)
-                !response.length
-                updateData(refresh ? [...response] : [...data, ...response])
+                updateData(refresh ? [...response] : [...response])
                 toggleLoading(false);
                 toggleRefreshing(false);
             },
@@ -35,6 +46,9 @@ const FriendsScreen = ({
         console.log("payload", payload)
         newsCatListRequest(payload)
     }
+    const _renderListEmptyComponent = () => (<EmptyDataUI
+        title={TEXT_CONST.NO_DATA_FOUND}
+    />)
     return (
         <ScreenHOC
             bottomSafeArea
@@ -43,13 +57,24 @@ const FriendsScreen = ({
             showHeader
             showMenuIcon
             onBackPress={navigation.toggleDrawer}
+            changeFilter={(id) => updateStream(id)}
+            showFilter
+            headerRight={ICONS.CALENDAR}
+            onRightPress={() => updateShowDate(true)}
         >
-
+            {showDate &&
+                <CustomDatePicker
+                    selectedDate={selectedDate}
+                    closeDatePicker={() => updateShowDate(false)} selectDate={selectDate} doneClick={() => {
+                        fetchData(true, 1, date)
+                        updateShowDate(false)
+                    }} />
+            }
             <FlatList
                 data={data}
                 extraData={data}
                 keyExtractor={(item, index) => item._id + ''}
-                // ListEmptyComponent={!refreshing && _renderListEmptyComponent()}
+                ListEmptyComponent={!refreshing && _renderListEmptyComponent()}
                 ListFooterComponent={loading && <ActivityIndicator size={'large'} color={COLORS.GREY._2} />}
                 refreshControl={<RefreshControl
                     colors={[COLORS.GREY._2]}

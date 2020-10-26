@@ -19,8 +19,9 @@ const FriendsScreen = ({
             onBackPress={navigation.toggleDrawer}
         >
             <Text>Video Series Screen</Text>
-            <View style={{ flex: 1, borderWidth: 0 }}>
+            <View style={{ flex: 1, borderWidth: 1 }}>
                 <YouTube
+                    apiKey='AIzaSyAanj5hB1lBH5XDmuTpLXoD47LM_0OerGI'
                     videoId="KVZ-P-ZI6W4" // The YouTube video ID
                     play // control playback of video with true/false
                     fullscreen // control whether the video should play in fullscreen or inline

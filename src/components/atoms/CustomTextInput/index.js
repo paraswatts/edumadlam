@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, TextInput, View } from 'react-native';
+import { Text, StyleSheet, TextInput, View, Platform } from 'react-native';
 import { TEXT_STYLES, _scaleText, COLORS, ICONS } from '../../../shared';
 
 const CustomTextInput = ({
@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
     inputContainer: active => ({
         flexDirection: 'row',
         alignItems: 'center',
-        padding: _scaleText(9).fontSize,
+        paddingVertical: Platform.OS === 'ios' ? _scaleText(9).fontSize : 0,
+        paddingHorizontal: _scaleText(9).fontSize,
         borderColor: COLORS.GREY._4,
         borderWidth: 1,
         // paddingHorizontal: 0,

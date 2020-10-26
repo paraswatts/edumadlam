@@ -5,12 +5,12 @@ import { postRequest, getRequest } from "../../shared/services/axios"
 import { TEXT_CONST } from "../../shared"
 
 
-function* getNewsCatListSaga({ payload: { netConnected, success = () => { }, fail = () => { } } = {} }) {
+function* getNewsCatListSaga({ payload: { netConnected, _id, date, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
-                API: API.GET_NEWS_CATEGORIES
+                API: API.GET_NEWS_CATEGORIES(`?streamId=${_id}&date=${date}`)
             })
             console.log(data, "===========");
             if (status == 200) {

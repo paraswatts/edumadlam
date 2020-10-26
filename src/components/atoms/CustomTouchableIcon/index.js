@@ -15,9 +15,6 @@ const CustomTouchableIcon = ({
             onPress={onPress}
             style={style}
         >
-            {
-                console.log("children", children)
-            }
             {children}
         </TouchableOpacity>
     );

@@ -9,6 +9,7 @@ const CustomButton = ({
     label = '',
     labelSize = 14,
     labelStyle,
+    left,
     onPress = () => { },
     right,
 }) => {
@@ -21,6 +22,7 @@ const CustomButton = ({
             onPress={onPress}
             style={[styles.container, container]}
         >
+            {!!left && left}
             {children}
             <Text style={[styles.label(labelSize), labelStyle]}>{label}</Text>
             {!!right && right}
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
         borderRadius: _scaleText(100).fontSize,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
     },
     label: (labelSize) => ({
         color: COLORS.PRIMARY.PINK,
