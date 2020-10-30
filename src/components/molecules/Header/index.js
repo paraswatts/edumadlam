@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
     title: {
         paddingLeft: (_scaleText(20).fontSize),
         borderWidth: 0,
-        textAlign: 'center',
         fontSize: _scaleText(18).fontSize,
         lineHeight: _scaleText(27).fontSize,
         color: COLORS.GREY._1,

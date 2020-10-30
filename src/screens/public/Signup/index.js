@@ -1,6 +1,7 @@
 import SignupScreen from './screen';
 import { connect } from 'react-redux';
 import { signupRequest } from '../../../redux/actions';
+import { reset } from 'redux-form';
 
 const mapStateToProps = state => {
     return {
@@ -10,7 +11,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signupRequest: payload => dispatch(signupRequest(payload))
+        signupRequest: payload => dispatch(signupRequest(payload)),
+        resetForm: () => dispatch(reset('signup'))
     }
 }
 

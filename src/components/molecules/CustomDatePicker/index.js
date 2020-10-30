@@ -19,7 +19,7 @@ const CustomDatePicker = ({
     };
     return (
         Platform.OS === 'ios' ?
-            <View style={{ position: "absolute", bottom: 40, width: width, zIndex: 9999, backgroundColor: 'white' }}>
+            <View style={{ position: "absolute", bottom: 0, width: width, zIndex: 9999, backgroundColor: 'white' }}>
                 <View style={{ borderBottomWidth: 1, height: 50, borderTopWidth: 1, borderColor: '#d2d2d2', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10 }}>
                     <CustomTouchableIcon
                         onPress={closeDatePicker}

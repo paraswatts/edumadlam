@@ -30,6 +30,7 @@ const IOSPicker = ({
                 keyExtractor={(item, index) => item + '' + index}
                 onScrollBeginDrag={onScrollBeginDrag}
                 scrollEnabled={scrollEnabled}
+                showsVerticalScrollIndicator={false}
                 onScrollToIndexFailed={() => { }}
                 ref={listRef}
                 onScrollEndDrag={({ nativeEvent }) => {

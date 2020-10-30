@@ -36,7 +36,6 @@ export const API = {
     RESET_MOVE: PREFIX_URL + '/api/ResetMove',
     SEARCH_FRIENDS: (params = '') => `${PREFIX_URL}/api/searchFriend${params}`,
     SIGNIN_WITH_OTP: PREFIX_URL + '/auth/signin',
-    SIGNUP: PREFIX_URL + '/auth/signup',
     SUGGESTED: (params = '') => `${PREFIX_URL}/api/Suggestion${params}`,
     TYPE_AHEAD_ADDRESS: (params = '') => `${PREFIX_URL}/api/completeAddress${params}`,
     USER_AVAILABILITY: PREFIX_URL + '/api/userAvailability',
@@ -83,5 +82,11 @@ export const API = {
     GET_NEWS_SUB_CATEGORIES: (params = '') => PREFIX_URL + `newsListJson.php${params}`,
     GET_NEWS_DETAIL: (params = '') => PREFIX_URL + `newsFullJson.php${params}`,
     SIGNIN: (params = '') => PREFIX_URL + `loginCheckJson.php${params}`,
-    GET_STREAM_LIST: 'streamListJson.php'
+    SIGNUP: (params = '') => PREFIX_URL + `insertStudentJson.php${params}`,
+    GET_STREAM_LIST: 'streamListJson.php',
+    GET_TEST_CATEGORIES: (params = '') => PREFIX_URL + `testSeriesCategoryJson.php${params}`,
+    GET_TEST_LIST: (params = '') => PREFIX_URL + `/testSeriesListJson.php${params}`,
+    GET_PURCHASED_TEST_LIST: (params = '') => PREFIX_URL + `/testSeriesPurchasedListJson.php${params}`,
+    GET_VIDEO_LIST: (params = '') => PREFIX_URL + `/youtubeVideoListJson.php${params}`,
+    GET_USER_PROFILE: (params = '') => PREFIX_URL + `/profileDataJson.php${params}`
 }

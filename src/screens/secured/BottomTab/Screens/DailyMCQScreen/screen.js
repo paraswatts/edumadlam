@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Text, UIManager, View, StyleSheet, Dimensions, SafeAreaView, ScrollView, Alert, FlatList } from 'react-native';
-import { ScreenHOC, CustomButton } from '../../../../../components';
+import { ScreenHOC, CustomButton, CustomDatePicker, CustomMCQModal } from '../../../../../components';
 import { COLORS, ICONS, _scaleText, TEXT_CONST } from '../../../../../shared';
-import CustomDatePicker from '../../../../../components/molecules/CustomDatePicker'
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import styles from './styles';
 import { isTablet } from 'react-native-device-info';
@@ -153,16 +152,8 @@ const FriendsScreen = ({
             headerRight={ICONS.CALENDAR}
             onRightPress={() => updateShowDate(true)}
         >
-            <View style={{ borderWidth: 0, flex: 1 }}>
-                <FlatList
-                    scrollEnabled={false}
-                    horizontal
-                    pagingEnabled
-                    data={questionsObj}
-                    disableGesture
-                    ref={questionsRef}
-                    renderItem={renderQuestionitem}
-                /></View>
+
+            <CustomMCQModal questionsObj={questionsObj} />
             {
                 showDate &&
                 <CustomDatePicker closeDatePicker={() => updateShowDate(false)} selectDate={selectDate} />

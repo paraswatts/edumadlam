@@ -81,6 +81,7 @@ const FriendsScreen = ({
             }
 
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={data}
                 extraData={data}
                 keyExtractor={(item, index) => item._id + ''}

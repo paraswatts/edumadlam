@@ -15,17 +15,18 @@ const SigninScreen = ({
     requestOTP,
     netConnected,
     signinRequest,
-    handleSubmit
+    handleSubmit,
+    resetForm
 }) => {
     const _onSignin = (formProps) => {
         Keyboard.dismiss();
         console.log(" email, password ", formProps.email, formProps.password)
         signinRequest({
             netConnected,
-            payload: { email: formProps.email, password: formProps.password },
-            alreadyRegistered: () => { LayoutAnimation.easeInEaseOut(); updateEmailRegistered(true) },
-            success: () => {
-                navigation.navigate(ROUTES.HOME)
+            payload: { email: formProps.email.toLowerCase().trim(), password: formProps.password },
+            success: (id) => {
+                resetForm();
+                navigation.navigate(ROUTES.HOME, { userId: id })
                 _showCustomToast({ message: TEXT_CONST.LOGIN_SUCCESS, type: 'success' })
             },
             fail: (message) => _showCustomToast({ message, type: 'error' })
@@ -59,7 +60,7 @@ const SigninScreen = ({
                                 />
 
                                 <CustomButton
-                                    label={'Sign In'}
+                                    label={TEXT_CONST.SIGN_IN}
                                     labelStyle={{ color: 'white' }}
                                     onPress={handleSubmit(_onSignin)}
                                     container={styles.buttonStyle}
@@ -73,10 +74,10 @@ const SigninScreen = ({
                             <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: 'https://www.google.com', title: TEXT_CONST.TERMS_OF_SERVICE })} style={styles.termsHyperlink}>{TEXT_CONST.TERMS_OF_SERVICE}</Text>.
                         </Text>
 
-                        {/* <Text style={styles.alreadyMember}>
+                        <Text style={styles.alreadyMember}>
                             {TEXT_CONST.DONT_HAVE_ACCOUNT}
                             <Text onPress={() => navigation.navigate(ROUTES.SIGNUP_SCREEN, { fromSignin: true })} style={styles.termsHyperlink}>{TEXT_CONST.SIGNUP}</Text>
-                        </Text> */}
+                        </Text>
                     </ScrollView>
 
 

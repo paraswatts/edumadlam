@@ -33,6 +33,7 @@ const CommonReducer = (state = { ...initialState }, action) => {
                 loading: false,
             };
         case GET_USER_DETAILS_SUCCESS:
+            console.log("userData", action.payload)
             return {
                 ...state,
                 userData: { ...state.userData, ...action.payload }

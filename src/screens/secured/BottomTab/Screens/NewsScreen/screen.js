@@ -24,6 +24,10 @@ const FriendsScreen = ({
         updateSelectedDate(date)
         updateDate(selectedDate)
     }
+    const updateStream = (_id) => {
+        updateId(_id)
+        fetchData(true, _id, date)
+    }
     useEffect(() => { fetchData(true, 1, date) }, [])
     const fetchData = (refresh = false, _id, date) => {
         toggleLoading(!refresh);
@@ -71,6 +75,7 @@ const FriendsScreen = ({
                     }} />
             }
             <FlatList
+                showsVerticalScrollIndicator={false}
                 data={data}
                 extraData={data}
                 keyExtractor={(item, index) => item._id + ''}

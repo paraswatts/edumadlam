@@ -354,14 +354,22 @@ export const TEXT_CONST = {
     FEEDBACK: 'Feedback',
     SUBMIT: 'Submit',
     //new strings
+    NAME_INPUT_NAME: 'name',
     EMAIL_INPUT_NAME: 'email',
     PASSWORD_INPUT_NAME: 'password',
+    MOBILE_INPUT_NAME: 'mobile',
+    CONFIRM_PASSWORD_INPUT_NAME: 'confirm_password',
+    NAME_REQUIRED: 'Please enter your name',
+    PHONE_REQUIRED: 'Please enter phone number',
     EMAIL_REQUIRED: 'Please enter an email',
     EMAIL_INVALID: 'Please enter a valid email',
     PASSWORD_REQUIRED: 'Please enter a password',
+    CONFIRM_PASSWORD_REQUIRED: 'Please confirm your password',
+    PASSWORD_DONT_MATCH: 'Passwords don\'t match',
     EMAIL_REGEX: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     LOGIN_SUCCESS: 'Login successful!',
-
+    ALL_TEST_SERIES: 'All Test Series',
+    PURCHASED_TEST_SERIES: 'Purchased Test Series',
 }
 
 

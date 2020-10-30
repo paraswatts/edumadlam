@@ -47,5 +47,14 @@ export const ROUTES = {
         SUB_CATEGORY: 'News Sub Categories',
         LIST: 'News List',
         DETAIL: 'News Detail'
+    },
+    TEST: {
+        CATEGORY: 'Test Categories',
+        LIST: 'Test List',
+        PURCHASED: 'Purchased Test Series'
+    },
+    VIDEO: {
+        LIST: 'Videos List',
+        SINGLE_VIDEO: 'Youtube Video'
     }
 }

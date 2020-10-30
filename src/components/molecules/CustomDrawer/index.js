@@ -30,6 +30,7 @@ const TABS = [
 
 function CustomDrawer({ navigation,
     logoutRequest,
+    userData,
     state }) {
 
     const logout = () => {
@@ -54,7 +55,7 @@ function CustomDrawer({ navigation,
         navigation.closeDrawer()
         navigation.navigate(route)
     }
-
+    console.log("userData", userData)
     return (
         <View style={{ borderWidth: 0, flex: 1 }}>
             <SafeAreaView style={{ backgroundColor: 'white', }} />
@@ -64,7 +65,8 @@ function CustomDrawer({ navigation,
                     resizeMode={'contain'}
                     source={{ uri: 'https://www.nicepng.com/png/detail/186-1866063_dicks-out-for-harambe-sample-avatar.png' }}
                 />
-                <Text>paras.watts@gmail.com</Text>
+                <Text style={{ fontWeight: 'bold' }}>{userData._name}</Text>
+                <Text>{userData._email}</Text>
             </View>
             {TABS.map((item, index) => {
                 let { title, key, selectedIcon, defaultIcon } = item;
@@ -79,12 +81,6 @@ function CustomDrawer({ navigation,
     );
 }
 
-
-const mapDispatchToProps = dispatch => {
-    return {
-        logoutRequest: () => dispatch(logoutRequest())
-    }
-}
 
 const styles = StyleSheet.create({
     draweritem: active => ({
@@ -131,5 +127,5 @@ const styles = StyleSheet.create({
     })
 })
 
-export default connect(null, mapDispatchToProps)(CustomDrawer);
+export default CustomDrawer;
 
