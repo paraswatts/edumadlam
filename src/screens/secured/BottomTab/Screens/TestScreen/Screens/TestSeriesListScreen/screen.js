@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking } from 'react-native';
+import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
+import { ScreenHOC, EmptyDataUI, CustomTestItem } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES } from '../../../../../../../shared';
 import styles from './styles';
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -71,31 +71,7 @@ const TestSeriesList = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _name, _price, _timestamp, _startDate, _endDate, _timetable } = item;
-                    console.log("_timetable", _timetable)
-                    return (<TouchableOpacity
-                        // onPress={() => navigation.navigate(ROUTES.IMPORTANT.DETAIL, { _id: _id })}
-                        style={{
-                            shadowColor: '#b2b2b2',
-                            shadowOffset: { width: 0, height: 1 },
-                            shadowOpacity: 0.8,
-                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
-                        }}>
-                        <Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10, marginBottom: 10 }}><Text style={styles.fontBold}>Name: </Text>{_name}</Text>
-                        <Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10, marginBottom: 10 }}><Text style={styles.fontBold}>Price: </Text>{`₹${_price}`}</Text>
-                        <Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10, marginBottom: 10 }}><Text style={styles.fontBold}>Start Date: </Text>{_startDate}</Text>
-                        <Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10, marginBottom: 10 }}><Text style={styles.fontBold}>End Date: </Text>{_endDate}</Text>
-                        {!!_timetable && <TouchableOpacity onPress={() => {
-                            try {
-                                Linking.openURL(_timetable)
-                            } catch (error) {
-
-                                console.log("error", error)
-                            }
-                        }}><Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10, marginBottom: 10 }}><Text style={styles.fontBold}>Timetable: </Text><Text style={styles.fontBlue}>{"Timetable"}</Text></Text>
-                        </TouchableOpacity>}
-                        <Text style={{ textAlign: 'right', bottom: 5, right: 10, position: 'absolute', marginTop: 20, fontSize: 10 }}>{_timestamp}</Text>
-                    </TouchableOpacity>)
+                    return (<CustomTestItem {...item} navigation={navigation} />)
                 }}
             />
             <SafeAreaView style={{ backgroundColor: 'white', }} />

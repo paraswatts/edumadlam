@@ -7,6 +7,7 @@ import { CustomImage } from '../../../../../../../components/atoms';
 import FastImage from 'react-native-fast-image';
 import momemt from 'moment'
 import WebView from 'react-native-webview';
+import HTMLView from 'react-native-htmlview';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const NewsDetailScreen = ({
@@ -64,12 +65,10 @@ const NewsDetailScreen = ({
                         resizeMode={'contain'}
                         source={{ uri: data[0]._imgUrl }}
                     />
-                    <WebView
-                        // onError={() => toggleLoading(false)}
-                        // onLoadEnd={() => toggleLoading(false)}
-                        // onLoadStart={() => toggleLoading(true)}
-                        source={{ html: data[0]._news }}
-                    /></ScrollView>}
+                    <View style={{ marginHorizontal: _scaleText(10).fontSize }}>
+                        <HTMLView value={data[0]._news} />
+                    </View>
+                </ScrollView>}
             {loading && <View style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center' }}>
                 <ActivityIndicator
                     size='large'

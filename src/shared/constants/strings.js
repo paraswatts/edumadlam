@@ -370,6 +370,7 @@ export const TEXT_CONST = {
     LOGIN_SUCCESS: 'Login successful!',
     ALL_TEST_SERIES: 'All Test Series',
     PURCHASED_TEST_SERIES: 'Purchased Test Series',
+    TIME_LEFT: 'Time Left'
 }
 
 

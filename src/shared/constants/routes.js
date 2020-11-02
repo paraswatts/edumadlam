@@ -51,7 +51,9 @@ export const ROUTES = {
     TEST: {
         CATEGORY: 'Test Categories',
         LIST: 'Test List',
-        PURCHASED: 'Purchased Test Series'
+        PURCHASED_SERIES: 'Purchased Test Series',
+        PURCHASED_TESTS: 'Purchased Tests',
+        QUESTIONS: 'Questions'
     },
     VIDEO: {
         LIST: 'Videos List',

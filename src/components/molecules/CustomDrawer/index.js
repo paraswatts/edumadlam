@@ -58,15 +58,15 @@ function CustomDrawer({ navigation,
     console.log("userData", userData)
     return (
         <View style={{ borderWidth: 0, flex: 1 }}>
-            <SafeAreaView style={{ backgroundColor: 'white', }} />
-            <View style={{ borderBottomWidth: 1, borderColor: 'rgba(33, 150, 243,0.1)', height: 120, justifyContent: 'center', paddingLeft: 10 }}>
+            <SafeAreaView style={{ backgroundColor: COLORS.PRIMARY.YELLOW, }} />
+            <View style={{ backgroundColor: COLORS.PRIMARY.YELLOW, borderWidth: 0, justifyContent: 'center', padding: _scaleText(10).fontSize }}>
                 <FastImage
                     style={{ height: 80, width: 80, borderRadius: 40 }}
                     resizeMode={'contain'}
-                    source={{ uri: 'https://www.nicepng.com/png/detail/186-1866063_dicks-out-for-harambe-sample-avatar.png' }}
+                    source={{ uri: 'https://196034-584727-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2019/05/Office-Assistant-Profile-Photo.jpg' }}
                 />
-                <Text style={{ fontWeight: 'bold' }}>{userData._name}</Text>
-                <Text>{userData._email}</Text>
+                <Text style={{ fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize }}>{userData._name}</Text>
+                <Text style={{ color: COLORS.WHITE, marginTop: _scaleText(5).fontSize }}>{userData._email}</Text>
             </View>
             {TABS.map((item, index) => {
                 let { title, key, selectedIcon, defaultIcon } = item;
@@ -84,13 +84,13 @@ function CustomDrawer({ navigation,
 
 const styles = StyleSheet.create({
     draweritem: active => ({
-        borderRadius: 5,
-        margin: 5,
-        padding: 10,
-        backgroundColor: active ? 'rgba(33, 150, 243,0.3)' : null
+        borderRadius: _scaleText(5).fontSize,
+        margin: _scaleText(5).fontSize,
+        padding: _scaleText(10).fontSize,
+        backgroundColor: active ? COLORS.PRIMARY.YELLOW : null
     }),
     drawerlabel: active => ({
-        color: active ? 'rgb(33, 150, 243)' : COLORS.BLACK
+        color: active ? COLORS.WHITE : COLORS.BLACK
     }),
     backImage: {
         backgroundColor: 'transparent',

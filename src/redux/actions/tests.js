@@ -8,6 +8,13 @@ export const TEST_SERIES_LIST_SUCCESS = 'TEST_SERIES_LIST_SUCCESS';
 
 export const PURCHASED_TEST_SERIES_LIST_REQUEST = 'PURCHASED_TEST_SERIES_LIST_REQUEST';
 export const PURCHASED_TEST_SERIES_LIST_SUCCESS = 'PURCHASED_TEST_SERIES_LIST_SUCCESS';
+
+
+export const TEST_QUESTIONS_REQUEST = 'TEST_QUESTIONS_REQUEST';
+export const TEST_QUESTIONS_SUCCESS = 'TEST_QUESTIONS_SUCCESS';
+
+export const TEST_LIST_REQUEST = 'TEST_LIST_REQUEST';
+export const TEST_LIST_SUCCESS = 'TEST_LIST_SUCCESS';
 export const testCatListRequest = payload => {
     console.log("here", payload)
     return {
@@ -24,7 +31,7 @@ export const testCatListSuccess = payload => {
 }
 
 export const testSeriesListRequest = payload => {
-    console.log("here", payload)
+    console.log("testSeriesListRequest", payload)
     return {
         type: TEST_SERIES_LIST_REQUEST,
         payload
@@ -52,6 +59,39 @@ export const purchasedTestSeriesListSuccess = payload => {
         payload
     }
 }
+
+
+export const testQuestionsRequest = payload => {
+    console.log("testRequest", payload)
+    return {
+        type: TEST_QUESTIONS_REQUEST,
+        payload
+    }
+}
+
+export const testQuestionsSuccess = payload => {
+    return {
+        type: TEST_QUESTIONS_SUCCESS,
+        payload
+    }
+}
+
+
+export const testListRequest = payload => {
+    console.log("testRequest", payload)
+    return {
+        type: TEST_LIST_REQUEST,
+        payload
+    }
+}
+
+export const testListSuccess = payload => {
+    return {
+        type: TEST_LIST_SUCCESS,
+        payload
+    }
+}
+
 
 
 

@@ -19,7 +19,9 @@ import {
     TestSeriesScreen,
     TestSeriesListScreen,
     PurchasedTestSeriesListScreen,
-    YoutubePlayer
+    YoutubePlayer,
+    TestQuestions,
+    PurchasedTestList
 } from '../screens';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -61,8 +63,10 @@ function RootNavigator({
                 <Stack.Screen name={ROUTES.NEWS.DETAIL} component={NewsDetailsScreen} />
                 <Stack.Screen name={ROUTES.TEST.CATEGORY} component={TestSeriesScreen} />
                 <Stack.Screen name={ROUTES.TEST.LIST} component={TestSeriesListScreen} />
-                <Stack.Screen name={ROUTES.TEST.PURCHASED} component={PurchasedTestSeriesListScreen} />
+                <Stack.Screen name={ROUTES.TEST.PURCHASED_SERIES} component={PurchasedTestSeriesListScreen} />
                 <Stack.Screen name={ROUTES.VIDEO.SINGLE_VIDEO} component={YoutubePlayer} />
+                <Stack.Screen name={ROUTES.TEST.QUESTIONS} component={TestQuestions} />
+                <Stack.Screen name={ROUTES.TEST.PURCHASED_TESTS} component={PurchasedTestList} />
 
             </Stack.Navigator>
         </NavigationContainer>

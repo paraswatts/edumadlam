@@ -5,6 +5,7 @@ import { purchasedTestSeriesListRequest } from '../../../../../../../redux/actio
 const mapStateToProps = state => {
     return {
         netConnected: state.common.netConnected,
+        sId: state.common.authToken
     }
 }
 

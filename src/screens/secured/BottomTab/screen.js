@@ -28,7 +28,7 @@ import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DailyMCQScreen, ImportantScreen, NewsScreen, TestScreen, VideoScreen } from './Screens';
 import { CustomBottomTab } from '../../../components';
-import { ROUTES, ICONS } from '../../../shared';
+import { ROUTES, ICONS, COLORS } from '../../../shared';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
@@ -38,7 +38,9 @@ const BottomTab = ({
 }) => (
         <Tab.Navigator
             backBehavior='initialRoute'
-
+            tabBarOptions={{
+                activeTintColor: COLORS.PRIMARY.DARK
+            }}
         >
             <Tab.Screen
                 options={{

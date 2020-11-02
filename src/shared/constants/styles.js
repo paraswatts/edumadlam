@@ -55,5 +55,8 @@ export const TEXT_STYLES = {
         ..._scaleText(12),
         lineHeight: _scaleText(18).fontSize,
 
+    },
+    FLEX: {
+        flex: 1
     }
 }

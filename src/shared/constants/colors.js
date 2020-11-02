@@ -1,7 +1,8 @@
 export const COLORS = {
     PRIMARY: {
-        PINK: '#2196F3',
-        YELLOW: '#FF4081',
+        PINK: '#FF5722',
+        YELLOW: '#4CAF50',
+        DARK: '#E64A19'
     },
     SECONDARY: {
         BLUE: '#2886DC',

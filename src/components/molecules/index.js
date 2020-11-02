@@ -12,3 +12,4 @@ export { default as CalenderStrip } from './CalenderStrip/calender';
 export { default as CustomDatePicker } from './CustomDatePicker';
 export { default as CustomDrawer } from './CustomDrawer';
 export { default as CustomMCQModal } from './CustomMCQModal';
+export { default as CustomTestItem } from './CustomTestItem';

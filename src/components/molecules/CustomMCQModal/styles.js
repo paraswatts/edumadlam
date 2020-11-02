@@ -6,17 +6,6 @@ export default StyleSheet.create({
     listView: {
         paddingBottom: _scaleText(30).fontSize + _scaleText(isTablet() ? 70 : 54).fontSize
     },
-    buttonContainer: {
-        padding: _scaleText(16).fontSize,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        marginHorizontal: _scaleText(16).fontSize,
-        marginVertical: _scaleText(8).fontSize,
-        borderWidth: _scaleText(1).fontSize,
-        borderRadius: _scaleText(5).fontSize,
-        borderColor: COLORS.GREY.LIGHT
-    },
     buttonTitle: {
         paddingHorizontal: _scaleText(12).fontSize,
         flex: 1,
@@ -65,7 +54,8 @@ export default StyleSheet.create({
     },
     child: {
         flex: 1,
-        width
+        width,
+        marginBottom: _scaleText(60).fontSize
     },
     text: {
         fontSize: width * 0.5,
@@ -82,7 +72,6 @@ export default StyleSheet.create({
         paddingHorizontal: _scaleText(16).fontSize
     },
     currentFriends: {
-
         fontSize: _scaleText(16).fontSize,
         color: COLORS.GREY._1,
         flex: 1
@@ -161,5 +150,87 @@ export default StyleSheet.create({
     },
     search: {
         margin: _scaleText(16).fontSize
+    },
+    timerContainer: {
+        elevation: 5,
+        shadowColor: "#000000",
+        shadowOffset: { width: 0, height: -1 }, // change this for more shadow
+        shadowOpacity: 0.4,
+        flexDirection: 'row',
+        shadowRadius: 4,
+        position: 'absolute',
+        backgroundColor: COLORS.GREY.LIGHT,
+        height: _scaleText(60).fontSize,
+        width: width,
+        zIndex: 999999,
+        bottom: 0,
+        borderTopEndRadius: _scaleText(5).fontSize,
+        borderTopLeftRadius: _scaleText(5).fontSize
+    },
+    timer: {
+        flex: 0.2,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonContainer: {
+        flex: 0.8,
+        justifyContent: 'center'
+    },
+    submitButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        alignSelf: 'flex-end',
+        borderWidth: 0,
+        height: _scaleText(30).fontSize,
+        backgroundColor: COLORS.PRIMARY.YELLOW,
+        width: _scaleText(80).fontSize,
+        marginRight: _scaleText(20).fontSize
+    },
+    buttonText: {
+        color: COLORS.WHITE
+    },
+    optionButton: {
+        borderColor: 'black',
+        borderWidth: 0.5,
+        borderRadius: 2
+    },
+    buttonTop: {
+        marginTop: _scaleText(10).fontSize
+    },
+    optionLabel: {
+        color: 'black',
+        marginLeft: _scaleText(10).fontSize
+    },
+    questionHeader: {
+        height: _scaleText(40).fontSize,
+        backgroundColor: COLORS.GREY.LIGHT,
+        justifyContent: 'center',
+        paddingHorizontal: _scaleText(10).fontSize
+    },
+    headerText: {
+        fontSize: _scaleText(15).fontSize,
+        fontWeight: 'bold'
+    },
+    remarkText: {
+        fontSize: _scaleText(12).fontSize,
+        marginBottom: _scaleText(10).fontSize
+    },
+    htmlContainer: {
+        marginHorizontal: _scaleText(10).fontSize,
+        marginTop: _scaleText(10).fontSize
+    },
+    optionsContainer: {
+        padding: _scaleText(10).fontSize
+    },
+    optionImage: {
+        height: 150,
+        marginVertical: _scaleText(10).fontSize
+    },
+    innerContainer: {
+        margin: _scaleText(10).fontSize, borderRadius: 5,
+        borderColor: '#e2e2e2',
+        borderWidth: 0.5,
     }
 });

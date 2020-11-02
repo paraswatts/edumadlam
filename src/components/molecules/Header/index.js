@@ -120,18 +120,19 @@ const styles = StyleSheet.create({
         paddingHorizontal: _scaleText(16).fontSize,
         paddingVertical: _scaleText(16).fontSize,
         borderBottomWidth: _scaleText(1).fontSize,
-        borderColor: COLORS.GREY.LIGHT
+        borderColor: COLORS.GREY.LIGHT,
+        backgroundColor: COLORS.PRIMARY.PINK
     },
     icon: {
         marginLeft: _scaleText(8).fontSize,
-        borderWidth: 0
+        borderWidth: 0,
     },
     title: {
         paddingLeft: (_scaleText(20).fontSize),
         borderWidth: 0,
         fontSize: _scaleText(18).fontSize,
         lineHeight: _scaleText(27).fontSize,
-        color: COLORS.GREY._1,
+        color: COLORS.WHITE,
         flex: 1
     }
 });

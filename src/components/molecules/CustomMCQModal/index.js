@@ -1,75 +1,66 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Text, UIManager, View, StyleSheet, Dimensions, SafeAreaView, ScrollView, Alert, FlatList } from 'react-native';
 import { ScreenHOC, CustomButton } from '../../';
-import { COLORS, ICONS, _scaleText, TEXT_CONST } from '../../../shared';
+import { COLORS, ICONS, _scaleText, TEXT_CONST, TEXT_STYLES, pad } from '../../../shared';
 import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import WebView from 'react-native-webview';
+import FastImage from 'react-native-fast-image';
+import HTMLView from 'react-native-htmlview';
+import Countdown from "react-countdown";
 export const { width, height } = Dimensions.get('window');
-let questionsObj = [
-    {
-        "_id": "1",
-        "_quest": "First question",
-        "_opt1": "1 only",
-        "_opt2": "2 only",
-        "_opt3": "Both 1 and 2",
-        "_opt4": "Neither 1 nor 2",
-        "_answer": "opt1",
-        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
-        "_timestamp": "22-09-2019"
-    },
-    {
-        "_id": "2",
-        "_quest": "2nd Question",
-        "_opt1": "1 only",
-        "_opt2": "2 only",
-        "_opt3": "Both 1 and 2",
-        "_opt4": "Neither 1 nor 2",
-        "_answer": "opt1",
-        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
-        "_timestamp": "22-09-2019"
-    },
-    {
-        "_id": "3",
-        "_quest": "3rd Question",
-        "_opt1": "1 only",
-        "_opt2": "2 only",
-        "_opt3": "Both 1 and 2",
-        "_opt4": "Neither 1 nor 2",
-        "_answer": "opt1",
-        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
-        "_timestamp": "22-09-2019"
-    },
-    {
-        "_id": "4",
-        "_quest": "4th Question",
-        "_opt1": "1 only",
-        "_opt2": "2 only",
-        "_opt3": "Both 1 and 2",
-        "_opt4": "Neither 1 nor 2",
-        "_answer": "opt1",
-        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
-        "_timestamp": "22-09-2019"
-    }
-]
+
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const CustomMCQModal = ({
-    questionsObj
+    questionsObj,
+    testTime = 120
 }) => {
     console.log("questionsObj", questionsObj)
-    const [activeView, updateActiveView] = useState(0);
     const [option, updateOption] = useState(null);
+    const [time, setTime] = useState({ h: 0, m: 0, s: 0 })
     const questionsRef = useRef();
+    const foo = useRef();
+    const [seconds, setSeconds] = useState(testTime);
+    useEffect(() => {
+        function tick() {
+            setSeconds(prevSeconds => prevSeconds - 1)
+        }
+        foo.current = setInterval(() => tick(), 1000)
+    }, []);
+    useEffect(() => {
+        if (seconds === 0) {
+            setTime(secondsToTime(seconds))
+            clearInterval(foo.current);
 
-    const [showDate, updateShowDate] = useState(false)
-    const selectDate = (date) => {
-        console.log("hete", date)
+        }
+        else {
+            setTime(secondsToTime(seconds))
+        }
+    }, [seconds])
+
+    useEffect(() => {
+        return () => {
+            clearInterval(foo.current)
+        }
+    }, [])
+
+    const secondsToTime = (secs) => {
+        let hours = Math.floor(secs / (60 * 60));
+
+        let divisor_for_minutes = secs % (60 * 60);
+        let minutes = Math.floor(divisor_for_minutes / 60);
+
+        let divisor_for_seconds = divisor_for_minutes % 60;
+        let seconds = Math.ceil(divisor_for_seconds);
+
+        let obj = {
+            "h": hours,
+            "m": minutes,
+            "s": seconds
+        };
+        return obj;
     }
-    let _disabled = (index = '') => {
 
-        return true
-
-    };
     const onPressOption = (option, questionIndex) => {
         console.log("questionIndex", questionIndex)
         if (questionIndex < questionsObj.length - 1) {
@@ -77,84 +68,92 @@ const CustomMCQModal = ({
             setTimeout(() => {
                 updateOption(null)
                 questionsRef.current.scrollToIndex({ index: questionIndex + 1, animated: true })
-            }, 500)
+            }, 200)
         }
         else {
             updateOption(option)
         }
 
     }
+
+
+    const renderOption = (buttonOption, index, buttonStyles) => {
+        return (<CustomButton
+            left={<MaterialCommunityIcons name={option === buttonOption ? "checkbox-marked-circle" : "checkbox-blank-circle"}
+                color={option === buttonOption ? COLORS.GREEN : '#c2c2c2'} size={20} />}
+            container={buttonStyles}
+            label={buttonOption}
+            labelStyle={styles.optionLabel}
+            onPress={() => onPressOption(buttonOption, index)}
+
+        />)
+    }
+
     const renderQuestionitem = ({ item, index }) => {
-        let obj = item
+        const { _imgUrl = 'https://miro.medium.com/max/3000/1*MI686k5sDQrISBM6L8pf5A.jpeg', _quest, _opt1, _opt2, _opt3, _opt4, _remark, _id } = item
+        // console.log("_quest", _quest)
         return (
-            <ScrollView key={index} style={[styles.child, { borderWidth: 0 }]} showsVerticalScrollIndicator={false}>
-                <View style={{
-                    margin: _scaleText(10).fontSize, borderRadius: 5,
-                    borderColor: '#e2e2e2',
-                    borderWidth: 0.5,
-                }}>
-                    <View style={{ height: _scaleText(40).fontSize, backgroundColor: COLORS.GREY.LIGHT, justifyContent: 'center', paddingHorizontal: _scaleText(10).fontSize }}>
-                        <Text style={{ fontSize: _scaleText(15).fontSize, fontWeight: 'bold' }}>{'Q.' + (index + 1)}</Text>
-                    </View>
-                    <View style={{ padding: _scaleText(10).fontSize, }}>
-                        <Text style={{ fontSize: _scaleText(15).fontSize, fontWeight: 'bold' }}>{obj._quest}</Text>
-                        <Text style={{ fontSize: _scaleText(12).fontSize, }}>{obj._remark}</Text>
-
-                        <View style={{ borderWidth: 0, }}>
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt1' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt1' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt1}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt1', index)}
-
-                            />
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt2' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt2' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt2}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt2', index)}
-                            />
-
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt3' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt3' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt3}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt3', index)}
-
-                            />
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt4' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt4' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt4}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt4', index)}
-                            />
+            <View >
+                <ScrollView key={_id} style={[styles.child]} showsVerticalScrollIndicator={false}>
+                    <View style={styles.innerContainer}>
+                        <View style={styles.questionHeader}>
+                            <Text style={styles.headerText}>{'Q.' + (index + 1)}</Text>
+                        </View>
+                        {!!_imgUrl && <FastImage
+                            style={styles.optionImage}
+                            resizeMode={'contain'}
+                            source={{ uri: _imgUrl }}
+                        />}
+                        <View style={styles.htmlContainer}>
+                            <HTMLView value={_quest} />
+                        </View>
+                        <View style={styles.optionsContainer}>
+                            {_remark ? <Text style={styles.remarkText}>{_remark}</Text> : null}
+                            <View style={{ borderWidth: 0, }}>
+                                {renderOption(_opt1, index, [styles.optionButton])}
+                                {renderOption(_opt2, index, [styles.optionButton, styles.buttonTop])}
+                                {renderOption(_opt3, index, [styles.optionButton, styles.buttonTop])}
+                                {renderOption(_opt4, index, [styles.optionButton, styles.buttonTop])}
+                            </View>
                         </View>
                     </View>
-                </View>
-            </ScrollView >
+                </ScrollView >
+            </View>
         )
     }
     return (
-        <View style={{ borderWidth: 0, flex: 1 }}>
+        <View style={TEXT_STYLES.FLEX}>
+            <View style={styles.timerContainer}>
+                <View style={styles.timer}>
+                    <Text>
+                        {TEXT_CONST.TIME_LEFT}
+                    </Text>
+                    <Text>
+                        {pad(time.h)}:{pad(time.m)}:{pad(time.s)}
+                    </Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <CustomButton label={"Submit"} labelSize={_scaleText(12).fontSize} labelStyle={styles.buttonText} container={styles.submitButton}></CustomButton>
+                </View>
+            </View>
+
             <FlatList
+                keyExtractor={(item, index) => item._id + '' + index}
+                initialScrollIndex={0}
+                initialNumToRender={1}
                 showsHorizontalScrollIndicator={false}
                 scrollEnabled={false}
                 horizontal
                 pagingEnabled
                 data={questionsObj}
+                extraData={questionsObj}
                 disableGesture
                 ref={questionsRef}
-                renderItem={renderQuestionitem}
-            /></View>
+                renderItem={(item) => renderQuestionitem(item)}
+            />
+        </View >
     );
 }
 
 export default CustomMCQModal;
+

@@ -13,7 +13,7 @@ const CustomButton = ({
     onPress = () => { },
     right,
 }) => {
-    console.log("disabled", disabled)
+
     return (
         <TouchableOpacity
             activeOpacity={0.7}

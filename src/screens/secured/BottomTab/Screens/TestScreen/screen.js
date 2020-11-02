@@ -13,7 +13,13 @@ let categories = [
     {
         _id: 1,
         _title: "Purchased Test Series",
-        _route: ROUTES.TEST.PURCHASED
+        _route: ROUTES.TEST.PURCHASED_SERIES
+    },
+
+    {
+        _id: 3,
+        _title: "Purchased Tests",
+        _route: ROUTES.TEST.PURCHASED_TESTS
     }
 ]
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);

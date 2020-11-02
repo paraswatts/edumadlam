@@ -85,8 +85,12 @@ export const API = {
     SIGNUP: (params = '') => PREFIX_URL + `insertStudentJson.php${params}`,
     GET_STREAM_LIST: 'streamListJson.php',
     GET_TEST_CATEGORIES: (params = '') => PREFIX_URL + `testSeriesCategoryJson.php${params}`,
-    GET_TEST_LIST: (params = '') => PREFIX_URL + `/testSeriesListJson.php${params}`,
-    GET_PURCHASED_TEST_LIST: (params = '') => PREFIX_URL + `/testSeriesPurchasedListJson.php${params}`,
-    GET_VIDEO_LIST: (params = '') => PREFIX_URL + `/youtubeVideoListJson.php${params}`,
-    GET_USER_PROFILE: (params = '') => PREFIX_URL + `/profileDataJson.php${params}`
+    GET_TEST_SERIES: (params = '') => PREFIX_URL + `testSeriesListJson.php${params}`,
+    GET_PURCHASED_TEST_LIST: (params = '') => PREFIX_URL + `testSeriesPurchasedListJson.php${params}`,
+    GET_VIDEO_LIST: (params = '') => PREFIX_URL + `youtubeVideoListJson.php${params}`,
+    GET_USER_PROFILE: (params = '') => PREFIX_URL + `profileDataJson.php${params}`,
+    GET_TEST_QUESTIONS: (params = '') => PREFIX_URL + `questionListJson.php${params}`,
+    GET_TEST_LIST: (params = '') => PREFIX_URL + `purchasedTestListJson.php${params}`,
+
+
 }

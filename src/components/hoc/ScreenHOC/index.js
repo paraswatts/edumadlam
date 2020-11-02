@@ -30,8 +30,8 @@ const ScreenHOC = ({
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white', borderColor: 'red', borderWidth: 0 }}>
-            {!!safeAreaRequired && <SafeAreaView style={{ backgroundColor: statusBarColor, }} />}
-            {!!statusBarRequired && <StatusBar backgroundColor={statusBarColor} animated barStyle={barStyle} />}
+            {!!safeAreaRequired && <SafeAreaView style={{ backgroundColor: COLORS.PRIMARY.DARK, }} />}
+            { <StatusBar backgroundColor={COLORS.PRIMARY.DARK} animated barStyle={'light-content'} />}
 
             {!!showHeader && <CustomHeader
                 container={headerContainerStyle}

@@ -194,7 +194,7 @@ export const ICONS = {
     VIEW_MORE: (...params) => <VIEW_MORE {...iconStyle(...params)} />,
     VIEW_PROFILE: (...params) => <VIEW_PROFILE {...iconStyle(...params)} />,
     WARNING: (...params) => <WARNING {...iconStyle(...params)} />,
-    CALENDAR: <EvilIcons name="calendar" size={30} color={'#2196F3'} />
+    CALENDAR: <EvilIcons name="calendar" size={30} color={'#ffffff'} />
 };
 
 export const ILLUSTRATIONS = {

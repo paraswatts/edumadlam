@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { Text, UIManager, View, StyleSheet, Dimensions, SafeAreaView, ScrollView, Alert, FlatList } from 'react-native';
 import { ScreenHOC, CustomButton, CustomDatePicker, CustomMCQModal } from '../../../../../components';
 import { COLORS, ICONS, _scaleText, TEXT_CONST } from '../../../../../shared';
-import SwiperFlatList from 'react-native-swiper-flatlist';
 import styles from './styles';
 import { isTablet } from 'react-native-device-info';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -58,90 +57,9 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
 const FriendsScreen = ({
     navigation
 }) => {
-    const [activeView, updateActiveView] = useState(0);
-    const [option, updateOption] = useState(null);
-    const questionsRef = useRef();
-
     const [showDate, updateShowDate] = useState(false)
     const selectDate = (date) => {
         console.log("hete", date)
-    }
-    let _disabled = (index = '') => {
-
-        return true
-
-    };
-    const onPressOption = (option, questionIndex) => {
-        console.log("questionIndex", questionIndex)
-        if (questionIndex < questionsObj.length - 1) {
-            updateOption(option)
-            setTimeout(() => {
-                updateOption(null)
-                questionsRef.current.scrollToIndex({ index: questionIndex + 1, animated: true })
-            }, 500)
-        }
-        else {
-            updateOption(option)
-        }
-
-    }
-    const renderQuestionitem = ({ item, index }) => {
-        let obj = item
-        return (
-            <ScrollView key={index} style={[styles.child, { borderWidth: 0 }]} showsVerticalScrollIndicator={false}>
-                <View style={{
-                    margin: _scaleText(10).fontSize, borderRadius: 5,
-                    borderColor: '#e2e2e2',
-                    borderWidth: 0.5,
-                }}>
-                    <View style={{ height: _scaleText(40).fontSize, backgroundColor: COLORS.GREY.LIGHT, justifyContent: 'center', paddingHorizontal: _scaleText(10).fontSize }}>
-                        <Text style={{ fontSize: _scaleText(15).fontSize, fontWeight: 'bold' }}>{'Q.' + (index + 1)}</Text>
-                    </View>
-                    <View style={{ padding: _scaleText(10).fontSize, }}>
-                        <Text style={{ fontSize: _scaleText(15).fontSize, fontWeight: 'bold' }}>{obj._quest}</Text>
-                        <Text style={{ fontSize: _scaleText(12).fontSize, }}>{obj._remark}</Text>
-
-                        <View style={{ borderWidth: 0, }}>
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt1' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt1' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt1}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt1', index)}
-
-                            />
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt2' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt2' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt2}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt2', index)}
-                            />
-
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt3' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt3' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt3}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt3', index)}
-
-                            />
-                            <CustomButton
-                                left={<MaterialCommunityIcons name={option === '_opt4' ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                                    color={option === '_opt4' ? COLORS.GREEN : '#c2c2c2'} size={20} />}
-                                container={{ borderColor: 'black', borderWidth: 0.5, borderRadius: 2, marginVertical: _scaleText(10).fontSize }}
-                                label={obj._opt4}
-                                labelStyle={{ color: 'black', marginLeft: _scaleText(10).fontSize }}
-                                onPress={() => onPressOption('_opt4', index)}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </ScrollView >
-        )
     }
     return (
         <ScreenHOC
