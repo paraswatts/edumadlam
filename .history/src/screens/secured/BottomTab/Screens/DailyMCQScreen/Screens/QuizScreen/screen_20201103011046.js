@@ -1,0 +1,154 @@
+import React, { useState, useEffect } from 'react';
+import { Text, UIManager, View, StyleSheet, Dimensions, SafeAreaView, ScrollView, Alert, FlatList } from 'react-native';
+import { ScreenHOC, CustomButton, CustomDatePicker, CustomMCQModal } from '../../../../../../../components';
+import { COLORS, ICONS, _scaleText, TEXT_CONST } from '../../../../../../../shared';
+import styles from './styles';
+import { isTablet } from 'react-native-device-info';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import moment from 'moment'
+export const { width, height } = Dimensions.get('window');
+let questionsObj = [
+    {
+        "_id": "1",
+        "_quest": "First question",
+        "_opt1": "1 only",
+        "_opt2": "2 only",
+        "_opt3": "Both 1 and 2",
+        "_opt4": "Neither 1 nor 2",
+        "_answer": "opt1",
+        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
+        "_timestamp": "22-09-2019"
+    },
+    {
+        "_id": "2",
+        "_quest": "2nd Question",
+        "_opt1": "1 only",
+        "_opt2": "2 only",
+        "_opt3": "Both 1 and 2",
+        "_opt4": "Neither 1 nor 2",
+        "_answer": "opt1",
+        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
+        "_timestamp": "22-09-2019"
+    },
+    {
+        "_id": "3",
+        "_quest": "3rd Question",
+        "_opt1": "1 only",
+        "_opt2": "2 only",
+        "_opt3": "Both 1 and 2",
+        "_opt4": "Neither 1 nor 2",
+        "_answer": "opt1",
+        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
+        "_timestamp": "22-09-2019"
+    },
+    {
+        "_id": "4",
+        "_quest": "4th Question",
+        "_opt1": "1 only",
+        "_opt2": "2 only",
+        "_opt3": "Both 1 and 2",
+        "_opt4": "Neither 1 nor 2",
+        "_answer": "opt1",
+        "_remark": "The National Survey and Mapping Organization of the country under the Department of Science &amp; Technology, is the OLDEST SCIENTIFIC DEPARTMENT OF THE GOVT. OF INDIA. It was set up in 1767 and has evolved rich traditions over the years. In its assigned role as the nation’s Principal Mapping Agency, Survey of India bears a special responsibility to ensure that the country’s domain is explored and mapped suitably, provide base maps for expeditious and integrated development and ensure that all resources contribute with their full measure to the progress, prosperity and security of our country now and for generations to come. Survey of India publishes maps and the unrestricted category maps can be obtained at very reasonable prices from its several Geo-spatial data centers. Restricted category maps require due approval from government authorities. Many other rules govern the sale and use of Survey of India maps. Only an Indian citizen may purchase topographic maps and these may not be exported from India for any reason. The Survey of India acts as adviser to the Government of India on all survey matters, viz Geodesy, Photogrammetry, Mapping &amp; Map Reproduction.  Source: The Hindu",
+        "_timestamp": "22-09-2019"
+    }
+]
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+const QuizScreen = ({
+    navigation,
+    dailyQuizRequest,
+    netConnected
+}) => {
+    const [data, updateData] = useState([]);
+    const [loading, toggleLoading] = useState(false);
+
+    const [showDate, updateShowDate] = useState(false)
+    const [date, updateDate] = useState(moment(new Date()).format("DD-MM-yyyy"))
+    const [selectedDate, updateSelectedDate] = useState(new Date())
+    const [resetTimer, updateResetTimer] = useState(false)
+    const selectDate = (date) => {
+        updateSelectedDate(date)
+        let selectedDate = moment(date).format("DD-MM-yyyy")
+        updateDate(selectedDate)
+    }
+    useEffect(() => { fetchData(true) }, [])
+    const fetchData = (refresh = false) => {
+        console.log("_id_id_id", date)
+        toggleLoading(!refresh);
+        let payload = {
+            netConnected,
+            date,
+            success: (response = []) => {
+                console.log("response", response)
+                updateData([...data, ...response])
+                toggleLoading(false);
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+            }
+        }
+        dailyQuizRequest(payload)
+    }
+
+    const submitDateChange = () => {
+        Alert.alert(
+            'Exit Test',
+            'If you exit the test will be submitted',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => {
+                        fetchData(true)
+                        updateShowDate(false)
+                    }
+                },
+                {
+                    text: 'No',
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    const exitTest = () => {
+
+        Alert.alert(
+            'Exit Test',
+            'If you exit the test will be submitted',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => navigation.goBack()
+                },
+                {
+                    text: 'No',
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+    return (
+        <ScreenHOC
+            headerTitle={'Daily MCQ'}
+            showHeader
+            showBackIcon
+            onBackPress={exitTest}
+            headerRight={ICONS.CALENDAR}
+            onRightPress={() => updateShowDate(true)}
+            bottomSafeArea
+        >
+
+            { loading ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} /> : <CustomMCQModal resetTimer={resetTimer} questionsObj={data} />}
+            {showDate &&
+                <CustomDatePicker
+                    selectedDate={selectedDate}
+                    closeDatePicker={() => updateShowDate(false)} selectDate={selectDate} doneClick={submitDateChange} />
+            }
+        </ScreenHOC >
+    );
+}
+
+export default QuizScreen;
