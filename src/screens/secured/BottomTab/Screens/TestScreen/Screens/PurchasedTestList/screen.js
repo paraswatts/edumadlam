@@ -85,7 +85,7 @@ const TestSeriesList = ({
                         <Text>{_test}</Text>
                         <Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10 }}><Text style={styles.fontBold}>Attempts Left: </Text>{_attemptsLeft}</Text>
                         <Text style={{ fontWeight: '500', fontSize: 14, marginTop: 10 }}><Text style={styles.fontBold}>Test Duration: </Text>{_testDuration} minutes</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.QUESTIONS, { id: _id })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.QUESTIONS, { id: _id, _testDuration: _testDuration })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                             <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize }]}>Start Test</Text>
                             <Ionicons name="arrow-forward-circle-outline" size={18} color='blue' />
                         </TouchableOpacity>

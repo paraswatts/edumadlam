@@ -11,7 +11,7 @@ const TestQuestions = ({
     netConnected,
     testQuestionsRequest,
     testSubmitRequest,
-    route: { name, params: { id } = {} },
+    route: { name, params: { id, _testDuration } = {} },
     sId
 }) => {
     const [data, updateData] = useState([]);
@@ -21,6 +21,7 @@ const TestQuestions = ({
     const [answersList, updateAnswersList] = useState([])
     const [testSubmitSuccess, updatetTestSubmitSuccess] = useState(false)
     const [exiting, updateExiting] = useState(false)
+    const [resultObj, updateResultObj] = useState(null)
 
     useEffect(() => { fetchData(true) }, [id])
     const fetchData = (refresh = false) => {
@@ -74,14 +75,22 @@ const TestQuestions = ({
 
     const submitTest = () => {
         // navigation.goBack()
-        console.log("answersList", answersList)
+
+        let updatedAnswerList = mergeArrays(data, answersList)
+        console.log("updatedAnswerList", updatedAnswerList)
+        mergeArrays()
         toggleLoading(true);
-        let payload = {
-            netConnected,
+        let json = {
             sId: sId,
             id: id,
-            answersList: answersList,
-            success: (response = []) => {
+            answers: updatedAnswerList
+        }
+        let payload = {
+            netConnected,
+            json,
+            success: (response) => {
+                console.log("responseresponseresponse", response)
+                updateResultObj(response)
                 updatetTestSubmitSuccess(true)
                 toggleLoading(false);
             },
@@ -93,11 +102,26 @@ const TestQuestions = ({
         testSubmitRequest(payload)
     }
 
+
+    const mergeArrays = (arr1, arr2) => {
+        for (x in arr1) {
+            let obj = arr1[x]
+            var filteredElements = arr2.filter(function (item, index) { return item.qId == obj._id; });
+            if (!filteredElements.length) {
+                arr2.push({ qId: obj._id, answer: "" })
+            }
+            // console.log(arr2)
+        }
+        return arr2
+    }
+
     const updateAnswerList = (answersList) => {
         console.log("answersList", answersList)
         updateAnswersList(answersList)
     }
+    const resultTable = () => {
 
+    }
     return (
         <ScreenHOC
             bottomSafeArea
@@ -106,6 +130,9 @@ const TestQuestions = ({
             showBackIcon
             onBackPress={exitTest}
         >
+            {
+                console.log("resultObj", resultObj)
+            }
             {!!testSubmitSuccess && !exiting &&
                 <CustomModal
                     onButtonPress={() => {
@@ -114,10 +141,27 @@ const TestQuestions = ({
                     }}
                     buttonLabel={TEXT_CONST.OK}
                 >
-                    <Text>{TEXT_CONST.TEST_SUBMITTED}</Text>
+                    <Text style={{ marginBottom: 10, fontSize: 16 }}>{TEXT_CONST.TEST_SUBMITTED}</Text>
+
+                    {resultObj ?
+                        <View>
+                            <View style={{ flexDirection: 'row' }}><Text style={{ minWidth: 100 }}>{TEXT_CONST.SCORE} </Text><Text>:</Text><Text>{resultObj.score}</Text></View>
+                            <View style={{ flexDirection: 'row' }}><Text style={{ minWidth: 100 }}>{TEXT_CONST.CORRECT} </Text><Text>:</Text><Text>{resultObj.correct}</Text></View>
+                            <View style={{ flexDirection: 'row' }}><Text style={{ minWidth: 100 }}>{TEXT_CONST.WRONG} </Text><Text>:</Text><Text>{resultObj.wrong}</Text></View>
+                            <View style={{ flexDirection: 'row' }}><Text style={{ minWidth: 100 }}>{TEXT_CONST.LEFT} </Text><Text>:</Text><Text>{resultObj.left}</Text></View>
+                            {resultObj.pdf ? <View style={{ flexDirection: 'row' }}><Text style={{ minWidth: 100 }}>{TEXT_CONST.RESULT_PDF}</Text><Text>:</Text><TouchableOpacity onPress={() => {
+                                try {
+                                    Linking.openURL(resultObj.pdf)
+                                } catch (error) {
+
+                                    console.log("error", error)
+                                }
+                            }}><Text style={{ color: 'blue' }}>{TEXT_CONST.DOWNLOAD_PDF}</Text></TouchableOpacity></View> : null}
+
+                        </View> : null}
                 </CustomModal>}
             { loading && !exiting ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} /> :
-                <CustomMCQModal submitTest={submitTest} updateAnswerList={updateAnswerList} testStarted={testStarted} questionsObj={data} />}
+                <CustomMCQModal _testDuration={_testDuration} submitTest={submitTest} updateAnswerList={updateAnswerList} testStarted={testStarted} questionsObj={data} />}
         </ScreenHOC>
     );
 }

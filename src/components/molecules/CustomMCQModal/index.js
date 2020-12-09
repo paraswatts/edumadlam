@@ -13,7 +13,7 @@ export const { width, height } = Dimensions.get('window');
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const CustomMCQModal = ({
     questionsObj,
-    testTime = 10,
+    _testDuration = 120 * 60,
     resetTimer,
     testStarted,
     updateAnswerList,
@@ -23,20 +23,20 @@ const CustomMCQModal = ({
     const [time, setTime] = useState({ h: 0, m: 0, s: 0 })
     const questionsRef = useRef();
     const foo = useRef();
-    const [seconds, setSeconds] = useState(testTime);
+    const [seconds, setSeconds] = useState(_testDuration * 60);
     const [isTestStarted, updateIsTestStarted] = useState(false)
     const [answersList, updateAnswersList] = useState([])
     useEffect(() => {
         if (resetTimer) {
             updateOption(null)
-            setSeconds(testTime)
+            setSeconds(_testDuration)
             clearInterval(foo.current)
             updateIsTestStarted(false)
         }
     }, [resetTimer]);
     useEffect(() => {
         if (seconds === 0) {
-            setTime(secondsToTime(seconds))
+            setTime(secondsToTime(seconds * 60))
             clearInterval(foo.current);
             submitTest(answersList)
         }

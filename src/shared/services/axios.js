@@ -87,6 +87,34 @@ export const getRequest = ({
     });
 };
 
+
+export const postRequestWithParams = ({
+    API = "",
+    headers = {},
+    params = {},
+    data = {}
+}) => {
+    return new Promise((resolve, reject) => {
+        console.log(apiWithAuth(API), {
+            ...defaulHeader.headers,
+            ...(params && pickBy(params, val => ![""].includes(val))),
+            ...(headers && pickBy(headers, val => ![""].includes(val)))
+        })
+        instance
+            .post(apiWithAuth(API), {
+                ...defaulHeader.headers,
+                ...(params && pickBy(params, val => ![""].includes(val))),
+                ...(headers && pickBy(headers, val => ![""].includes(val)))
+            })
+            .then(result => {
+                resolve(result);
+            })
+            .catch(error => {
+                resolve(error.response);
+            });
+    });
+};
+
 export const putRequest = ({
     API = "",
     DATA = {},

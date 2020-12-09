@@ -394,7 +394,13 @@ export const TEXT_CONST = {
     PRICE: 'Price: ',
     NAME: 'Name: ',
     OK: 'Go Back',
-    TEST_SUBMITTED: 'Test Submitted Successfully'
+    TEST_SUBMITTED: 'Test Submitted Successfully',
+    SCORE: 'Score',
+    CORRECT: 'Correct',
+    WRONG: 'wrong',
+    LEFT: 'Left',
+    RESULT_PDF: 'Result',
+    DOWNLOAD_PDF: 'Download PDF'
 }
 
 

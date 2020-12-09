@@ -14,7 +14,7 @@ const CustomModal = ({
     showExit,
     children
 }) => {
-
+    console.log("children", children)
     return (
         <Modal
             animated

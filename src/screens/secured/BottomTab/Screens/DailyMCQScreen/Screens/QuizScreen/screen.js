@@ -162,10 +162,15 @@ const QuizScreen = ({
 
     const submitTest = () => {
         toggleLoading(true);
+        let json = {
+            sId: sId,
+            id: 10,
+            answers: answersList
+        }
+        console.log("json")
         let payload = {
             netConnected,
-            sId: sId,
-            id: id,
+            json,
             answersList: answersList,
             success: (response = []) => {
                 updatetTestSubmitSuccess(true)

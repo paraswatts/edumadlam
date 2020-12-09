@@ -1,7 +1,7 @@
 import { takeLatest, all, put, takeLeading, takeEvery } from 'redux-saga/effects';
 import { startLoading, stopLoading, TEST_CAT_REQUEST, TEST_SERIES_LIST_REQUEST, testSeriesListSuccess, testCatListSuccess, purchasedTestSeriesListSuccess, PURCHASED_TEST_SERIES_LIST_REQUEST, TEST_QUESTIONS_REQUEST, TEST_LIST_REQUEST, DAILY_QUIZ_REQUEST, TEST_RESULT_SUBMIT_REQUEST } from "../actions"
 import { API } from "../../shared/constants/api"
-import { postRequest, getRequest } from "../../shared/services/axios"
+import { postRequest, getRequest, postRequestWithParams } from "../../shared/services/axios"
 import { TEXT_CONST } from "../../shared"
 
 
@@ -175,20 +175,20 @@ function* getTestListSaga({ payload: { netConnected, sId, success = () => { }, f
     }
 }
 
-function* postTestResultSaga({ payload: { netConnected, sId, id, answersList, success = () => { }, fail = () => { } } = {} }) {
+function* postTestResultSaga({ payload: { netConnected, json, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("answersList", answersList)
+        console.log("answersList", json)
+        let jsonPayload = JSON.stringify(json)
         if (netConnected) {
-            console.log(API.SUBMIT_TEST(`?sId=${sId}&id=${id}`))
+            console.log(API.SUBMIT_TEST(`?json=${jsonPayload}`))
             yield put(startLoading());
-            const { data = {}, status } = yield postRequest({
-                API: API.SUBMIT_TEST(`?sId=${sId}&id=${id}`),
-                DATA: { ...answersList }
+            const { data = {}, status } = yield postRequestWithParams({
+                API: API.SUBMIT_TEST(`?json=${jsonPayload}`)
             })
 
             console.log(data, "===========");
             if (status == 200) {
-                success(data.data);
+                success(data);
             } else {
                 fail(data.msg);
             }
