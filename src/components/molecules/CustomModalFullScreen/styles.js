@@ -74,5 +74,29 @@ export default StyleSheet.create({
         // paddingVertical: _scaleText(8).fontSize,
 
         fontSize: _scaleText(14).fontSize
-    }
+    },
+    a: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    p: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    h1: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    h2: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    h3: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    h4: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    h5: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
+    h6: {
+        color: COLORS.BLUE_FONT, // make links coloured pink
+    },
 });

@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.edumandalam"
+        applicationId "com.edumandala"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
