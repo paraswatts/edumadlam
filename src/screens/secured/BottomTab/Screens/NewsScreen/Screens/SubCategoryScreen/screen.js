@@ -55,6 +55,13 @@ const NewsSubCategory = ({
         newsSubCatListRequest(payload)
     }
 
+    useEffect(() => {
+        return () => {
+            toggleRefreshing(false);
+            toggleLoading(false);
+        }
+    })
+
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}

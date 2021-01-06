@@ -57,6 +57,13 @@ const TestSeriesListScreen = ({
         testCatListRequest(payload)
     }
 
+    useEffect(() => {
+        return () => {
+            toggleRefreshing(false);
+            toggleLoading(false);
+        }
+    })
+
     const fetchPaymentPage = (paymentObj) => {
         toggleLoading(true);
         let payload = {

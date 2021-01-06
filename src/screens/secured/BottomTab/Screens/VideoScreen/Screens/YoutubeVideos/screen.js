@@ -57,6 +57,13 @@ const VideosScreen = ({
     }
 
     useEffect(() => {
+        return () => {
+            toggleRefreshing(false);
+            toggleLoading(false);
+        }
+    })
+
+    useEffect(() => {
         if (data && data.length) {
             updateLink(data[0]._link)
         }

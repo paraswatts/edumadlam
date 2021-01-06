@@ -55,7 +55,12 @@ const ImportantSubCategory = ({
         importantSubCatListRequest(payload)
     }
 
-
+    useEffect(() => {
+        return () => {
+            toggleRefreshing(false);
+            toggleLoading(false);
+        }
+    })
 
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}

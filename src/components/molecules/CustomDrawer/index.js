@@ -9,7 +9,7 @@ import { COLORS, _scaleText, TEXT_STYLES, ROUTES, ICONS, TEXT_CONST } from '../.
 import { isTablet } from 'react-native-device-info';
 
 import { Alert, View, SafeAreaView, Text, StyleSheet, Platform, Linking } from 'react-native';
-import { logoutRequest } from '../../../redux/actions'
+import { logoutRequest, updateShowPopup } from '../../../redux/actions'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import Share from 'react-native-share';
@@ -91,7 +91,10 @@ function CustomDrawer({ navigation,
             [
                 {
                     text: TEXT_CONST.YES,
-                    onPress: () => logoutRequest(),
+                    onPress: () => {
+                        updateShowPopup(false)
+                        logoutRequest()
+                    },
                 },
                 {
                     text: TEXT_CONST.NO,

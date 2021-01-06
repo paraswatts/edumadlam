@@ -51,6 +51,13 @@ const VideosScreen = ({
         console.log("payload", payload)
         youtubeVideoCategoryListRequest(payload)
     }
+
+    useEffect(() => {
+        return () => {
+            toggleRefreshing(false);
+            toggleLoading(false);
+        }
+    })
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     />)

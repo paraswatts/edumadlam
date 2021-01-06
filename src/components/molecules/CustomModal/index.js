@@ -20,11 +20,13 @@ const CustomModal = ({
     answersListObj,
     data,
     goToQuestion,
-    resultObj
+    resultObj,
+    name,
+    date
 }) => {
     const quesRef = useRef();
     const renderQuestionitem = ({ item, index }) => {
-        const { qId, _quest, answer, status, remark, _opt1, _opt2, _opt3, _opt4 } = item
+        const { qId, _quest, answer, status, remark, _opt1, _opt2, _opt3, _opt4, _yourAnswer } = item
         let icon, color
         if (status == 0) {
             icon = 'close-circle-outline'
@@ -49,7 +51,7 @@ const CustomModal = ({
             }} style={{ flexDirection: 'row', marginVertical: _scaleText(5).fontSize, marginHorizontal: _scaleText(10).fontSize, borderWidth: 0.5, padding: _scaleText(5).fontSize, borderRadius: _scaleText(5).fontSize }}>
                 <MaterialCommunityIcons name={icon}
                     color={color} size={20} />
-                <View style={{ borderWidth: 0 }}>
+                <View style={{ borderWidth: 0, marginLeft: _scaleText(5).fontSize }}>
                     <View>
                         <HTMLView addLineBreaks={true} style={{ width: '90%' }} stylesheet={styles} value={_quest.replace(/(\r\n|\n|\r)/gm, "")} />
                         <View>
@@ -58,8 +60,13 @@ const CustomModal = ({
                             <Text style={{ color: COLORS.BLUE_FONT }}>{'3. '}{_opt3}</Text>
                             <Text style={{ color: COLORS.BLUE_FONT }}>{'4. '}{_opt4}</Text>
                         </View>
-                        <View style={{ marginVertical: _scaleText(10).fontSize }}>
+                        {_yourAnswer ? <View style={{ marginVertical: _scaleText(10).fontSize }}>
                             <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT }}>{'Your Answer'}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT }}>{_yourAnswer}</Text>
+                        </View> : null}
+
+                        <View style={{ marginVertical: _scaleText(10).fontSize }}>
+                            <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT }}>{'Correct Answer'}</Text>
                             <Text style={{ color: COLORS.BLUE_FONT }}>{answer}</Text>
                         </View>
                         {remark ?
@@ -81,7 +88,7 @@ const CustomModal = ({
             title: 'Share EduMandala',
             failOnCancel: false,
             urls: [appUrl],
-            message: 'Hey! I scored ' + resultObj.score + ' while attempting MCQs Test  \n\nDownload the EduMandala App for latest Current Affairs, Articles, MCQs and Study Materials! \n\n'
+            message: 'Hey! I scored ' + resultObj.score + ' while attempting ' + (date ? date : '') + ' ' + name + '\n\nDownload the EduMandala App for latest Current Affairs, Articles, MCQs and Study Materials! \n\n'
         };
         console.log("Share App")
         Share.open(shareOptions)

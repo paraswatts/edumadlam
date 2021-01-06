@@ -40,6 +40,12 @@ const NewsDetailScreen = ({
         newsDetailRequest(payload)
     }
 
+    useEffect(() => {
+        return () => {
+            toggleLoading(false);
+        }
+    })
+
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}
@@ -57,9 +63,9 @@ const NewsDetailScreen = ({
             {/* <View style={{ flex: 1 }}> */}
             {data && data.length &&
                 <ScrollView contentContainerStyle={{ padding: 10 }}>
-                    <Text style={{ fontWeight: '500', color: COLORS.BLUE_FONT }}>{data[0]._heading}</Text>
+                    <Text style={{ fontWeight: 'bold' }}>{data[0]._heading}</Text>
 
-                    <Text style={{ fontSize: 10, marginBottom: 10, color: COLORS.BLUE_FONT }}>{data[0]._timestamp}</Text>
+                    <Text style={{ fontSize: 10, marginBottom: 10, fontWeight: 'bold' }}>{data[0]._timestamp}</Text>
 
                     <FastImage
                         style={{ height: 150 }}

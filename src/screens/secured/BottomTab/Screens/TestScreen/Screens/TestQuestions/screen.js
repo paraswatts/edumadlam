@@ -46,6 +46,12 @@ const TestQuestions = ({
         testQuestionsRequest(payload)
     }
 
+    useEffect(() => {
+        return () => {
+            toggleLoading(false);
+        }
+    })
+
     const testStarted = (value) => {
         updateIsTestStarted(value)
     }
@@ -154,6 +160,7 @@ const TestQuestions = ({
             />
             {!!testSubmitSuccess && !exiting &&
                 <CustomModal
+                    name={_test}
                     data={resultObj.results}
                     resultObj={resultObj}
                     _toggleFilterModal={() => {

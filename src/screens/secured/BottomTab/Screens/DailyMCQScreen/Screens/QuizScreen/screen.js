@@ -225,6 +225,7 @@ const QuizScreen = ({
     const goToQuestion = (index) => {
         childRef.current.goToQuestion(index)
     }
+    console.log(moment(selectedDate).format("DD MMMM yyyy"))
     return (
         <ScreenHOC
             headerTitle={'Daily MCQ'}
@@ -245,6 +246,8 @@ const QuizScreen = ({
             />
             {!!testSubmitSuccess && !exiting &&
                 <CustomModal
+                    date={moment(selectedDate).format("DD MMMM yyyy")}
+                    name={"MCQs"}
                     data={resultObj.results}
                     resultObj={resultObj}
                     _toggleFilterModal={() => {

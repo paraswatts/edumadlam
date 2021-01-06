@@ -17,7 +17,7 @@ const CustomMCQModal = forwardRef(({
     resetTimer,
     testStarted,
     updateAnswerList,
-    submitTest
+    submitTest,
 }, ref) => {
     const [option, updateOption] = useState(null);
     const [time, setTime] = useState({ h: 0, m: 0, s: 0 })
@@ -168,7 +168,7 @@ const CustomMCQModal = forwardRef(({
                             <HTMLView addLineBreaks={true} stylesheet={styles} value={_quest.replace(/(\r\n|\n|\r)/gm, "")} />
                         </View>
                         <View style={styles.optionsContainer}>
-                            {_remark ? <Text style={styles.remarkText}>{_remark}</Text> : null}
+                            {/* {_remark ? <Text style={styles.remarkText}>{_remark}</Text> : null} */}
                             <View style={{ borderWidth: 0, }}>
                                 {renderOption(_opt1, '_opt1', index, [styles.optionButton], _id, _quest)}
                                 {renderOption(_opt2, '_opt2', index, [styles.optionButton, styles.buttonTop], _id, _quest)}

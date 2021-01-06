@@ -40,6 +40,12 @@ const ImportantDetailScreen = ({
         importantDetailRequest(payload)
     }
 
+    useEffect(() => {
+        return () => {
+            toggleLoading(false);
+        }
+    })
+
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}
@@ -56,9 +62,9 @@ const ImportantDetailScreen = ({
         >
             {data && data.length &&
                 <ScrollView contentContainerStyle={{ padding: _scaleText(10).fontSize }}>
-                    <Text style={{ fontWeight: '500', color: COLORS.BLUE_FONT }}>{data[0]._heading}</Text>
+                    <Text style={{ fontWeight: 'bold' }}>{data[0]._heading}</Text>
 
-                    <Text style={{ fontSize: 10, marginBottom: 10, color: COLORS.BLUE_FONT }}>{data[0]._timestamp}</Text>
+                    <Text style={{ fontSize: 10, marginBottom: 10, fontWeight: 'bold' }}>{data[0]._timestamp}</Text>
 
                     <FastImage
                         style={{ height: 150 }}
