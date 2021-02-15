@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView } from 'react-native';
+import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS } from '../../../../../shared';
 import CustomDatePicker from '../../../../../components/molecules/CustomDatePicker'
+import FastImage from 'react-native-fast-image';
+
 import moment from 'moment'
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const FriendsScreen = ({
@@ -24,7 +26,6 @@ const FriendsScreen = ({
         updateSelectedDate(date)
         let selectedDate = moment(date).format("yyyy-MM-DD")
         updateDate(selectedDate)
-        console.log("selectedDate", selectedDate)
     }
     useEffect(() => { fetchData(true, selectedStream, date) }, [])
 
@@ -34,13 +35,13 @@ const FriendsScreen = ({
         fetchData(true, _id, date)
     }
     const fetchData = (refresh = false, _id) => {
+        console.log("selectedStream", selectedStream)
         toggleLoading(!refresh);
         toggleRefreshing(false);
         let payload = {
             netConnected,
             _id,
             success: (response = []) => {
-                console.log("response", response)
 
                 updateData(refresh ? [...response] : [...response])
                 toggleLoading(false);
@@ -101,15 +102,29 @@ const FriendsScreen = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _category } = item;
+                    let { _id, _category, _imgUrl } = item;
                     return (<TouchableOpacity onPress={() => navigation.navigate(ROUTES.IMPORTANT.SUB_CATEGORY, { _id: _id, _category: _category })}
                         style={{
+
+                            flexDirection: 'row',
                             shadowColor: '#b2b2b2',
                             shadowOffset: { width: 0, height: 1 },
                             shadowOpacity: 0.8,
-                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
+                            shadowRadius: 1, borderRadius: 10, marginHorizontal: _scaleText(10).fontSize, marginVertical: 5,
+                            elevation: 5, backgroundColor: COLORS.WHITE
                         }}>
-                        <Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500' }}>{_category}</Text>
+                        {_imgUrl ?
+                            <FastImage
+
+                                resizeMode='contain'
+                                source={{ uri: _imgUrl }}
+                                style={{
+                                    width: _scaleText(60).fontSize, height: '100%', borderTopLeftRadius: _scaleText(10).fontSize,
+                                    borderBottomLeftRadius: _scaleText(10).fontSize
+                                }}
+                            >
+                            </FastImage> : null}
+                        <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(12).fontSize, fontWeight: '500', flex: 1, padding: _scaleText(20).fontSize, }}>{_category}</Text>
                     </TouchableOpacity>)
                 }}
             />

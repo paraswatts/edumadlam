@@ -7,17 +7,12 @@ import { store } from '../store';
 
 function* signinSaga({ payload: { netConnected, payload = {}, success = (id) => { }, fail = () => { } } = {} }) {
     try {
-        console.log(API.SIGNIN(`?email=${payload.email}&password=${payload.password}`), "payload", payload)
-
         if (netConnected) {
             yield put(startLoading());
             const { data = {} } = yield postRequest({
                 API: API.SIGNIN(`?email=${payload.email}&password=${payload.password}`)
             })
-            console.log(data, "sign in success");
-
             if (data && data.length && data[0].remark == 1) {
-                console.log(data[0].id)
                 yield put(updateAuthTokenRedux(data[0].id));
                 success(data[0].id);
             } else {
@@ -28,7 +23,6 @@ function* signinSaga({ payload: { netConnected, payload = {}, success = (id) => 
         }
     }
     catch (error) {
-        console.log("error", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -43,7 +37,6 @@ function* signupSaga({ payload: { netConnected, payload = {}, success = () => { 
             const { status, data = {} } = yield postRequest({
                 API: API.SIGNUP(`?email=${payload.email}&password=${payload.password}&mobile=${payload.mobile}&name=${payload.name}&imei=${payload.imei}`)
             })
-            console.log(data, "signup data");
             if (status == 200) {
                 if (data[0].remark == 1) {
                     success();
@@ -58,7 +51,6 @@ function* signupSaga({ payload: { netConnected, payload = {}, success = () => { 
         }
     }
     catch (error) {
-        console.log("error", error)
         fail(JSON.stringify(error));
     }
     finally {

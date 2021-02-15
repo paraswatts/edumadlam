@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView } from 'react-native';
+import { View, Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, BackHandler } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS } from '../../../../../../../shared';
 import CustomDatePicker from '../../../../../../../components/molecules/CustomDatePicker'
 import moment from 'moment'
 import YouTube from 'react-native-youtube';
+import FastImage from 'react-native-fast-image';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const VideosScreen = ({
@@ -13,6 +14,7 @@ const VideosScreen = ({
     netConnected,
     videoListRequest,
     route: { name, params: { catId, _name } = {} },
+    stopLoading
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -41,7 +43,6 @@ const VideosScreen = ({
             netConnected,
             _id,
             success: (response = []) => {
-                console.log("response", response)
                 updateData(refresh ? [...response] : [...response])
                 toggleLoading(false);
                 toggleRefreshing(false);
@@ -52,7 +53,6 @@ const VideosScreen = ({
                 toggleRefreshing(false);
             }
         }
-        console.log("payload", payload)
         videoListRequest(payload)
     }
 
@@ -62,6 +62,18 @@ const VideosScreen = ({
             toggleLoading(false);
         }
     })
+
+    useEffect(() => {
+        const handler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleValidateClose
+        );
+        return () => handler.remove();
+    }, []);
+    const handleValidateClose = () => {
+        /* Here is empty */
+        stopLoading();
+    };
 
     useEffect(() => {
         if (data && data.length) {
@@ -129,7 +141,7 @@ const VideosScreen = ({
                 />}
                 // style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _name, _link, _webPage } = item;
+                    let { _id, _name, _link, _webPage, _imgUrl } = item;
                     return (
                         <TouchableOpacity onPress={() => {
                             updateCurrentIndex(index)
@@ -139,9 +151,22 @@ const VideosScreen = ({
                                 shadowColor: '#b2b2b2',
                                 shadowOffset: { width: 0, height: 1 },
                                 shadowOpacity: 0.8,
-                                shadowRadius: 1, borderRadius: _scaleText(10).fontSize, marginHorizontal: _scaleText(5).fontSize, marginVertical: _scaleText(5).fontSize, padding: _scaleText(20).fontSize, elevation: 5, backgroundColor: COLORS.WHITE
+                                flexDirection: 'row',
+                                shadowRadius: 1, borderRadius: _scaleText(10).fontSize, marginHorizontal: _scaleText(5).fontSize, marginVertical: _scaleText(5).fontSize, elevation: 5, backgroundColor: COLORS.WHITE
                             }}>
-                                <Text>{_name}</Text>
+
+                                {_imgUrl ?
+                                    <FastImage
+
+                                        resizeMode='contain'
+                                        source={{ uri: _imgUrl }}
+                                        style={{
+                                            width: _scaleText(60).fontSize, height: '100%', borderTopLeftRadius: _scaleText(10).fontSize,
+                                            borderBottomLeftRadius: _scaleText(10).fontSize
+                                        }}
+                                    >
+                                    </FastImage> : null}
+                                <Text style={{ padding: _scaleText(20).fontSize, flex: 1 }}>{_name}</Text>
                             </View>
                         </TouchableOpacity>
                     )

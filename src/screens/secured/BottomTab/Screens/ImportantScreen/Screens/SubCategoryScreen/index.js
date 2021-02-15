@@ -1,18 +1,19 @@
-import ImportantSubCategory from './screen';
+import FriendsScreen from './screen';
 import { connect } from 'react-redux';
-import { importantSubCatListRequest } from '../../../../../../../redux/actions';
+import { impSubCatListRequest } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
         netConnected: state.common.netConnected,
+        selectedStream: state.common.selectedStream
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        importantSubCatListRequest: (payload) => dispatch(importantSubCatListRequest(payload))
+        impSubCatListRequest: (payload) => dispatch(impSubCatListRequest(payload))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImportantSubCategory)
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsScreen)
 

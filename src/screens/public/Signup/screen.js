@@ -20,7 +20,6 @@ const SignUpScreen = ({
 }) => {
     const _onSignUp = (formProps) => {
         Keyboard.dismiss();
-        console.log(" email, password ", formProps)
         signupRequest({
             netConnected,
             payload: { name: formProps.name, email: formProps.email.toLowerCase().trim(), password: formProps.password, mobile: formProps.mobile, imei: DeviceInfo.getDeviceId() },

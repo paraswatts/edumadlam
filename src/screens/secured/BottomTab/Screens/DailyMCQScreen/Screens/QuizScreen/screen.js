@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, UIManager, View, StyleSheet, ActivityIndicator, Dimensions, SafeAreaView, ScrollView, Alert, FlatList } from 'react-native';
+import { Text, UIManager, View, StyleSheet, ActivityIndicator, Dimensions, SafeAreaView, ScrollView, Alert, FlatList, BackHandler } from 'react-native';
 import { ScreenHOC, CustomButton, CustomDatePicker, CustomMCQModal, CustomModal, CustomFloatButton, CustomModalFullScreen } from '../../../../../../../components';
 import { COLORS, ICONS, _scaleText, TEXT_CONST } from '../../../../../../../shared';
 import styles from './styles';
@@ -7,6 +7,9 @@ import { isTablet } from 'react-native-device-info';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 export const { width, height } = Dimensions.get('window');
+let isTestStartedLocal = false
+let answersKeysLocal = []
+let dataLocal = []
 let questionsObj = [
     {
         "_id": "1",
@@ -59,7 +62,8 @@ const QuizScreen = ({
     dailyQuizRequest,
     netConnected,
     testSubmitRequest,
-    sId
+    sId,
+    stopLoading
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -85,6 +89,7 @@ const QuizScreen = ({
         updateDate(selectedDate)
     }
     const testStarted = (value) => {
+        isTestStartedLocal = value
         updateIsTestStarted(value)
     }
     useEffect(() => { fetchData(true) }, [])
@@ -97,7 +102,7 @@ const QuizScreen = ({
             date,
             success: (response = []) => {
                 updateResetTimer(true)
-                console.log("response", response)
+                dataLocal = response.map(obj => ({ ...obj }));
                 updateData([...response])
                 toggleLoading(false);
             },
@@ -109,6 +114,24 @@ const QuizScreen = ({
         dailyQuizRequest(payload)
     }
 
+    useEffect(() => {
+        return () => {
+            toggleLoading(false);
+        }
+    })
+    useEffect(() => {
+        const handler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleValidateClose
+        );
+        return () => handler.remove();
+    }, []);
+    const handleValidateClose = () => {
+        /* Here is empty */
+        exitTestBack()
+        stopLoading();
+        return true
+    };
     const submitDateChange = () => {
         if (isTestStarted) {
             Alert.alert(
@@ -164,12 +187,36 @@ const QuizScreen = ({
         }
     }
 
+    const exitTestBack = () => {
+        if (isTestStartedLocal) {
+            Alert.alert(
+                'Exit Test',
+                'If you exit the test will be submitted',
+                [
+                    {
+                        text: 'Yes',
+                        onPress: () => {
+                            updateExiting(true)
+                            submitTest()
+                            navigation.goBack()
+                        }
+                    },
+                    {
+                        text: 'No',
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+            );
+        } else {
+            // navigation.goBack()
+        }
+    }
+
     const submitTest = (showModal) => {
         // navigation.goBack()
-
-        let updatedAnswerList = mergeArrays(data, answersList)
-        console.log("updatedAnswerList", updatedAnswerList)
-        mergeArrays()
+        let answers = answersList && answersList.length ? answersList : answersKeysLocal
+        let updatedAnswerList = mergeArrays(data && data.length ? data : dataLocal, answersrs)
         toggleLoading(true);
         let json = {
             sId: sId,
@@ -180,7 +227,6 @@ const QuizScreen = ({
             netConnected,
             json,
             success: (response) => {
-                console.log(showModal, "showModal", "responseresponseresponse", response)
                 updateResultObj(response)
                 if (!showModal) {
                     updatetTestSubmitSuccess(true)
@@ -211,7 +257,7 @@ const QuizScreen = ({
 
 
     const updateAnswerList = (answersList, answersKeys) => {
-        console.log(answersKeys, "answersKeysanswersKeys")
+        answersKeysLocal = answersList.map(obj => ({ ...obj }));
         updateAnswersListObj(answersKeys)
         updateAnswersList(answersList)
     }
@@ -219,13 +265,11 @@ const QuizScreen = ({
 
     }
     const _toggleFilterModal = () => {
-        console.log("_toggleFilterModal")
         updateShowFilterModal(showFilterModal => !showFilterModal)
     }
     const goToQuestion = (index) => {
         childRef.current.goToQuestion(index)
     }
-    console.log(moment(selectedDate).format("DD MMMM yyyy"))
     return (
         <ScreenHOC
             headerTitle={'Daily MCQ'}
@@ -262,7 +306,8 @@ const QuizScreen = ({
                 :
                 data && data.length ?
                     <CustomMCQModal ref={childRef} submitTest={submitTest} updateAnswerList={updateAnswerList} testStarted={testStarted} resetTimer={resetTimer} questionsObj={data} />
-                    : <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text>No quiz found for the selected date.</Text><Text> Please select another date</Text></View>
+                    : <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text style={{ fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize }}>No quiz found for the selected date.</Text>
+                        <Text style={{ fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize }}> Please select another date</Text></View>
             }
 
             {isTestStarted ?

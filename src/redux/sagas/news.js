@@ -12,7 +12,7 @@ function* getNewsCatListSaga({ payload: { netConnected, _id, success = () => { }
             const { data = {}, status } = yield getRequest({
                 API: API.GET_NEWS_CATEGORIES(`?streamId=${_id}`)
             })
-            console.log(data, "===========", API.GET_NEWS_CATEGORIES(`?streamId=${_id}`));
+            yield put(stopLoading());
             if (status == 200) {
                 yield put(newsCatListSuccess(data))
                 success(data);
@@ -24,7 +24,6 @@ function* getNewsCatListSaga({ payload: { netConnected, _id, success = () => { }
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -34,14 +33,12 @@ function* getNewsCatListSaga({ payload: { netConnected, _id, success = () => { }
 
 function* getNewsSubCatListSaga({ payload: { netConnected, catId, date, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_NEWS_SUB_CATEGORIES(`?catId=${catId}&date=${date}`)
             })
-            console.log(API.GET_NEWS_SUB_CATEGORIES(`?catId=${catId}&date=${date}`))
-            console.log(data, "===========");
+            yield put(stopLoading());
             if (status == 200) {
                 yield put(newsSubCatListSuccess(data))
                 success(data);
@@ -53,7 +50,6 @@ function* getNewsSubCatListSaga({ payload: { netConnected, catId, date, success 
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -63,14 +59,12 @@ function* getNewsSubCatListSaga({ payload: { netConnected, catId, date, success 
 
 function* getNewsDetailSaga({ payload: { netConnected, id, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_NEWS_DETAIL(`?id=${id}`)
             })
-            console.log(API.GET_NEWS_DETAIL(`?id=${id}`))
-            console.log(data, "===========");
+            yield put(stopLoading());
             if (status == 200) {
                 yield put(newsSubCatListSuccess(data))
                 success(data);
@@ -82,7 +76,6 @@ function* getNewsDetailSaga({ payload: { netConnected, id, success = () => { }, 
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {

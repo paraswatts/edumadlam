@@ -9,33 +9,33 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const TABS = [
     {
-        defaultIcon: ICONS.MCQ_DEFAULT(20),
+        defaultIcon: ICONS.MCQ_DEFAULT(_scaleText(20).fontSize),
         key: 0,
-        selectedIcon: ICONS.MCQ_SELECTED(20),
+        selectedIcon: ICONS.MCQ_SELECTED(_scaleText(20).fontSize),
         title: ROUTES.BOTTOM_TAB.DAILY_MCQ,
     },
     {
-        defaultIcon: ICONS.IMPORTANT_DEFAULT(20),
+        defaultIcon: ICONS.IMPORTANT_DEFAULT(_scaleText(20).fontSize),
         key: 1,
-        selectedIcon: ICONS.IMPORTANT_SELECTED(20),
+        selectedIcon: ICONS.IMPORTANT_SELECTED(_scaleText(20).fontSize),
         title: ROUTES.BOTTOM_TAB.IMPORTANT,
     },
     {
-        defaultIcon: ICONS.NEWS_DEFAULT(20),
+        defaultIcon: ICONS.NEWS_DEFAULT(_scaleText(20).fontSize),
         key: 2,
-        selectedIcon: ICONS.NEWS_SELECTED(20),
+        selectedIcon: ICONS.NEWS_SELECTED(_scaleText(20).fontSize),
         title: ROUTES.BOTTOM_TAB.NEWS,
     },
     {
-        defaultIcon: ICONS.TEST_DEFAULT(20),
+        defaultIcon: ICONS.TEST_DEFAULT(_scaleText(20).fontSize),
         key: 3,
-        selectedIcon: ICONS.TEST_SELECTED(20),
+        selectedIcon: ICONS.TEST_SELECTED(_scaleText(20).fontSize),
         title: ROUTES.BOTTOM_TAB.TEST_SERIES,
     },
     {
-        defaultIcon: ICONS.VIDEO_DEFAULT(20),
+        defaultIcon: ICONS.VIDEO_DEFAULT(_scaleText(20).fontSize),
         key: 4,
-        selectedIcon: ICONS.VIDEO_SELECTED(20),
+        selectedIcon: ICONS.VIDEO_SELECTED(_scaleText(20).fontSize),
         title: ROUTES.BOTTOM_TAB.VIDEO_SERIES,
     }
 ]
@@ -116,5 +116,6 @@ const styles = StyleSheet.create({
         ...TEXT_STYLES.BODY4,
         color: active ? COLORS.PRIMARY.PINK : COLORS.GREY.MEDIUM,
         marginTop: _scaleText(2).fontSize,
+        fontSize: _scaleText(14).fontSize
     })
 });

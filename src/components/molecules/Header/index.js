@@ -5,6 +5,7 @@ import { CustomTouchableIcon } from '../../';
 import Menu from 'react-native-material-menu';
 import { connect } from 'react-redux'
 import { updateStream } from '../../../redux/actions';
+import { isTablet } from 'react-native-device-info';
 
 const FILTERS = TEXT_CONST.CURRENT_FRIENDS_FILTERS
 
@@ -31,8 +32,6 @@ const CustomHeader = ({
     const [selectedFilter, updateFilter] = useState(selectedStream);
     const [currentStream, updateStreamName] = useState("UPSC");
     useEffect(() => {
-        console.log("filterValue", filterValue)
-
         updateFilter(filterValue)
     }, [
         filterValue
@@ -40,17 +39,13 @@ const CustomHeader = ({
     let menuRef = useRef(null);
     const onPressMenuItem = (id) => {
         let currentStreamName = streamList.filter((obj) => obj._id === id)
-        console.log("id", id)
         // updateStreamName(currentStreamName[0]._name)
         updateStream(id)
         changeFilter(id)
         updateFilter(id);
         menuRef.current.hide();
     }
-    useEffect(() => {
 
-        console.log("currentStream", currentStream)
-    }, [currentStream])
 
     useEffect(() => {
         let current = streamList.filter((obj) => obj._id === selectedStream)
@@ -58,14 +53,12 @@ const CustomHeader = ({
             updateStreamName(current[0]._name)
         }
     }, [streamList, selectedStream])
-    console.log("selectedStreamselectedStream", selectedStream)
     const _renderFilterMenu = () => (
         <Menu
             ref={menuRef}
             button={<CustomTouchableIcon
                 style={{ flexDirection: 'row', alignItems: 'center' }}
                 onPress={() => {
-                    console.log("here", menuRef)
                     menuRef.current.show()
                 }} >
                 <Text style={[styles.rightTitle, { textAlign: 'right', marginRight: _scaleText(10).fontSize }]}>{currentStream.split("(")[0]}</Text>
@@ -75,9 +68,7 @@ const CustomHeader = ({
         >
             <View style={{ paddingHorizontal: 10, }}>
                 {streamList.map((item, index) => {
-                    // console.log("item", item)
                     let { _id, _name = '' } = item;
-                    // console.log(_id, "selectedFilter", selectedFilter)
                     let selected = selectedStream == _id;
                     return (<TouchableOpacity
                         key={index}
@@ -163,6 +154,7 @@ const styles = StyleSheet.create({
     icon: {
         marginLeft: _scaleText(8).fontSize,
         borderWidth: 0,
+
     },
     title: {
         paddingLeft: (_scaleText(20).fontSize),
@@ -174,7 +166,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     rightTitle: {
-        fontSize: _scaleText(12).fontSize,
+        fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize,
         color: COLORS.WHITE
     }
 });

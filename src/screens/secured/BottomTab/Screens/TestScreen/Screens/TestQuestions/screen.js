@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking, View, Alert } from 'react-native';
+import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking, View, Alert, BackHandler } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI, CustomMCQModal, CustomModal, CustomFloatButton, CustomModalFullScreen } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ICONS } from '../../../../../../../shared';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+let isTestStartedLocal = false
+let answersKeysLocal = []
+let dataLocal = []
 const TestQuestions = ({
     navigation,
     netConnected,
     testQuestionsRequest,
     testSubmitRequest,
     route: { name, params: { id, _testDuration, _test } = {} },
-    sId
+    sId,
+    stopLoading
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -27,13 +31,12 @@ const TestQuestions = ({
     const childRef = useRef();
     useEffect(() => { fetchData(true) }, [id])
     const fetchData = (refresh = false) => {
-        console.log("_id_id_id", id)
         toggleLoading(!refresh);
         let payload = {
             netConnected,
             id: id,
             success: (response = []) => {
-                console.log("response", response)
+                dataLocal = response.map(obj => ({ ...obj }));
                 updateData([...data, ...response])
                 toggleLoading(false);
             },
@@ -42,7 +45,6 @@ const TestQuestions = ({
                 toggleLoading(false);
             }
         }
-        console.log("payload sub cat", payload)
         testQuestionsRequest(payload)
     }
 
@@ -51,12 +53,50 @@ const TestQuestions = ({
             toggleLoading(false);
         }
     })
-
+    useEffect(() => {
+        const handler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleValidateClose
+        );
+        return () => handler.remove();
+    }, []);
+    const handleValidateClose = () => {
+        /* Here is empty */
+        exitTestBack()
+        stopLoading();
+        return true
+    };
     const testStarted = (value) => {
+        isTestStartedLocal = value
         updateIsTestStarted(value)
     }
     const exitTest = () => {
         if (isTestStarted) {
+            Alert.alert(
+                'Exit Test',
+                'If you exit the test will be submitted',
+                [
+                    {
+                        text: 'Yes',
+                        onPress: () => {
+                            updateExiting(true)
+                            submitTest()
+                            // navigation.goBack()
+                        }
+                    },
+                    {
+                        text: 'No',
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+            );
+        } else {
+            navigation.goBack()
+        }
+    }
+    const exitTestBack = () => {
+        if (isTestStartedLocal) {
             Alert.alert(
                 'Exit Test',
                 'If you exit the test will be submitted',
@@ -77,16 +117,15 @@ const TestQuestions = ({
                 { cancelable: false },
             );
         } else {
-            navigation.goBack()
+            // navigation.goBack()
         }
     }
 
     const submitTest = () => {
         // navigation.goBack()
 
-        let updatedAnswerList = mergeArrays(data, answersList)
-        console.log("updatedAnswerList", updatedAnswerList)
-        mergeArrays()
+        let answers = answersList && answersList.length ? answersList : answersKeysLocal
+        let updatedAnswerList = mergeArrays(data && data.length ? data : dataLocal, answers)
         toggleLoading(true);
         let json = {
             sId: sId,
@@ -97,7 +136,6 @@ const TestQuestions = ({
             netConnected,
             json,
             success: (response) => {
-                console.log("responseresponseresponse", response)
                 updateResultObj(response)
                 updatetTestSubmitSuccess(true)
                 toggleLoading(false);
@@ -125,16 +163,15 @@ const TestQuestions = ({
 
 
 
-    const updateAnswerList = (answersList, answersKeys) => {
-        console.log(answersKeys, "answersKeysanswersKeys")
+    const updateAnswerList = (answerList, answersKeys) => {
+        answersKeysLocal = answerList.map(obj => ({ ...obj }));
         updateAnswersListObj(answersKeys)
-        updateAnswersList(answersList)
+        updateAnswersList(answerList)
     }
     const resultTable = () => {
 
     }
     const _toggleFilterModal = () => {
-        console.log("_toggleFilterModal")
         updateShowFilterModal(showFilterModal => !showFilterModal)
     }
     const goToQuestion = (index) => {
@@ -148,9 +185,6 @@ const TestQuestions = ({
             showBackIcon
             onBackPress={exitTest}
         >
-            {
-                console.log("resultObj", resultObj)
-            }
             <CustomModalFullScreen
                 goToQuestion={goToQuestion}
                 data={data}

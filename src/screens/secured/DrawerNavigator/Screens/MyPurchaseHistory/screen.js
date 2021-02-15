@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, UIManager, ActivityIndicator, FlatList, View, RefreshControl } from 'react-native';
+import { Text, UIManager, ActivityIndicator, FlatList, View, RefreshControl, BackHandler } from 'react-native';
 import { ScreenHOC, EmptyDataUI } from '../../../../../components';
 import { COLORS, _showCustomToast, TEXT_CONST, } from '../../../../../shared';
 
@@ -8,24 +8,22 @@ const FriendsScreen = ({
     navigation,
     getUserPurchaseHistoryRequest,
     sId,
-    netConnected
+    netConnected,
+    stopLoading
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
     const [refreshing, toggleRefreshing] = useState(true);
     useEffect(() => {
-        console.log("hererer")
         fetchData(true)
     }, [])
     const fetchData = (refresh = false) => {
-        console.log("sIdsId", sId)
         toggleLoading(!refresh);
         toggleRefreshing(false);
         let payload = {
             netConnected,
             sId: sId,
             success: (response = []) => {
-                console.log("response", response)
                 !response.length
                 updateData(refresh ? [...response] : [...data, ...response])
                 toggleLoading(false);
@@ -37,10 +35,25 @@ const FriendsScreen = ({
                 toggleRefreshing(false);
             }
         }
-        console.log("getUserPurchaseHistoryRequest", payload)
         getUserPurchaseHistoryRequest(payload)
     }
-
+    useEffect(() => {
+        return () => {
+            toggleLoading(false);
+            toggleRefreshing(false);
+        }
+    })
+    useEffect(() => {
+        const handler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleValidateClose
+        );
+        return () => handler.remove();
+    }, []);
+    const handleValidateClose = () => {
+        /* Here is empty */
+        stopLoading();
+    };
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     />)

@@ -1,6 +1,6 @@
 import PurchasedTestSeriesList from './screen';
 import { connect } from 'react-redux';
-import { purchasedTestSeriesListRequest } from '../../../../../../../redux/actions';
+import { purchasedTestSeriesListRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -11,7 +11,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        purchasedTestSeriesListRequest: (payload) => dispatch(purchasedTestSeriesListRequest(payload))
+        purchasedTestSeriesListRequest: (payload) => dispatch(purchasedTestSeriesListRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

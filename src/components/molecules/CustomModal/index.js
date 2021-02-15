@@ -6,6 +6,7 @@ import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import HTMLView from 'react-native-htmlview';
 import Share from 'react-native-share';
+import { isTablet } from 'react-native-device-info';
 
 const CustomModal = ({
     buttonLabel,
@@ -41,56 +42,47 @@ const CustomModal = ({
             color = '#c2c2c2'
         }
         return (
-            <View onPress={() => {
-                // _toggleFilterModal()
-                // try {
-                //     goToQuestion(index)
-                // } catch (e) {
-                //     console.log("eeeee", e)
-                // }
-            }} style={{ flexDirection: 'row', marginVertical: _scaleText(5).fontSize, marginHorizontal: _scaleText(10).fontSize, borderWidth: 0.5, padding: _scaleText(5).fontSize, borderRadius: _scaleText(5).fontSize }}>
+            <View style={{ flexDirection: 'row', marginVertical: _scaleText(5).fontSize, marginHorizontal: _scaleText(10).fontSize, borderWidth: 0.5, padding: _scaleText(5).fontSize, borderRadius: _scaleText(5).fontSize }}>
                 <MaterialCommunityIcons name={icon}
-                    color={color} size={20} />
+                    color={color} size={_scaleText(isTablet() ? 16 : 15).fontSize} />
                 <View style={{ borderWidth: 0, marginLeft: _scaleText(5).fontSize }}>
                     <View>
                         <HTMLView addLineBreaks={true} style={{ width: '90%' }} stylesheet={styles} value={_quest.replace(/(\r\n|\n|\r)/gm, "")} />
                         <View>
-                            <Text style={{ color: COLORS.BLUE_FONT }}>{'1. '}{_opt1}</Text>
-                            <Text style={{ color: COLORS.BLUE_FONT }}>{'2. '}{_opt2}</Text>
-                            <Text style={{ color: COLORS.BLUE_FONT }}>{'3. '}{_opt3}</Text>
-                            <Text style={{ color: COLORS.BLUE_FONT }}>{'4. '}{_opt4}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'1. '}{_opt1}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'2. '}{_opt2}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'3. '}{_opt3}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'4. '}{_opt4}</Text>
                         </View>
                         {_yourAnswer ? <View style={{ marginVertical: _scaleText(10).fontSize }}>
-                            <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT }}>{'Your Answer'}</Text>
-                            <Text style={{ color: COLORS.BLUE_FONT }}>{_yourAnswer}</Text>
+                            <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'Your Answer'}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{_yourAnswer}</Text>
                         </View> : null}
 
                         <View style={{ marginVertical: _scaleText(10).fontSize }}>
-                            <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT }}>{'Correct Answer'}</Text>
-                            <Text style={{ color: COLORS.BLUE_FONT }}>{answer}</Text>
+                            <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'Correct Answer'}</Text>
+                            <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{answer}</Text>
                         </View>
                         {remark ?
                             <View>
-                                <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT }}>Remark</Text>
+                                <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>Remark</Text>
 
                                 <View style={{ width: '95%' }}>
-                                    <Text style={{ flex: 1, borderWidth: 0, flexWrap: 'wrap', color: COLORS.BLUE_FONT }}>{remark}</Text>
+                                    <Text style={{ fontSize: _scaleText(13).fontSize, flex: 1, borderWidth: 0, flexWrap: 'wrap', color: COLORS.BLUE_FONT }}>{remark}</Text>
                                 </View></View> : null}
                     </View>
                 </View>
             </View>
         )
     }
-    console.log('resultObj', resultObj)
     const showShareModal = () => {
-        let appUrl = Platform.OS === 'ios' ? 'https://apps.apple.com/us/app/edumandala-app' : 'https://play.google.com/store/apps/details?id=com.edumandala'
+        let appUrl = Platform.OS === 'ios' ? 'https://apps.apple.com/us/app/edumandala' : 'https://play.google.com/store/apps/details?id=com.edumandala'
         const shareOptions = {
             title: 'Share EduMandala',
             failOnCancel: false,
             urls: [appUrl],
             message: 'Hey! I scored ' + resultObj.score + ' while attempting ' + (date ? date : '') + ' ' + name + '\n\nDownload the EduMandala App for latest Current Affairs, Articles, MCQs and Study Materials! \n\n'
         };
-        console.log("Share App")
         Share.open(shareOptions)
             .then((res) => {
                 console.log(res);
@@ -119,7 +111,7 @@ const CustomModal = ({
                 onBackPress={_toggleFilterModal}
                 onRightPress={showShareModal}
                 headerRight={<MaterialCommunityIcons name={'share-variant'}
-                    color={'white'} size={20} />}
+                    color={'white'} size={_scaleText(isTablet() ? 16 : 15).fontSize} />}
             >
 
 
@@ -131,26 +123,25 @@ const CustomModal = ({
                         {resultObj.grade ? <Text style={{ marginVertical: _scaleText(10).fontSize, color: COLORS.BLUE_FONT }}>{'Your grade is ' + resultObj.grade}</Text> : <Text style={{ marginVertical: _scaleText(10).fontSize, color: COLORS.BLUE_FONT }}>{''}</Text>}
                         <View style={{ flexDirection: 'row', borderTopWidth: 0.5, width: '100%', padding: _scaleText(10).fontSize }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}><MaterialCommunityIcons name={'circle-double'}
-                                color={'red'} size={20} /><View style={{ marginLeft: _scaleText(20).fontSize, color: COLORS.BLUE_FONT }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT }}>{TEXT_CONST.SCORE} </Text><Text style={{ color: COLORS.BLUE_FONT }}>{resultObj.score}</Text></View></View>
+                                color={'red'} size={_scaleText(isTablet() ? 16 : 15).fontSize} /><View style={{ marginLeft: _scaleText(20).fontSize, color: COLORS.BLUE_FONT }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.SCORE} </Text><Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{resultObj.score}</Text></View></View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}><MaterialCommunityIcons name={'checkbox-marked-circle'}
-                                color={COLORS.GREEN} size={20} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT }}>{TEXT_CONST.CORRECT} </Text><Text style={{ color: COLORS.BLUE_FONT }}>{resultObj.correct}</Text></View></View>
+                                color={COLORS.GREEN} size={_scaleText(isTablet() ? 16 : 15).fontSize} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.CORRECT} </Text><Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{resultObj.correct}</Text></View></View>
                         </View>
                         <View style={{ flexDirection: 'row', borderTopWidth: 0.5, width: '100%', padding: _scaleText(10).fontSize }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}><MaterialCommunityIcons name={'close-circle-outline'}
-                                color={'red'} size={20} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT }}>{TEXT_CONST.WRONG} </Text><Text style={{ color: COLORS.BLUE_FONT }}>{resultObj.wrong}</Text></View></View>
+                                color={'red'} size={_scaleText(isTablet() ? 16 : 15).fontSize} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.WRONG} </Text><Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{resultObj.wrong}</Text></View></View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}><MaterialCommunityIcons name={'checkbox-blank-circle'}
-                                color={'#c2c2c2'} size={20} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT }}>{TEXT_CONST.LEFT} </Text><Text style={{ color: COLORS.BLUE_FONT }}>{resultObj.left}</Text></View></View>
+                                color={'#c2c2c2'} size={_scaleText(isTablet() ? 16 : 15).fontSize} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.LEFT} </Text><Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{resultObj.left}</Text></View></View>
                         </View>
                         <View style={{ flexDirection: 'row', borderTopWidth: 0.5, width: '100%', padding: _scaleText(10).fontSize }}>
                             {resultObj.pdf ? <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}><MaterialCommunityIcons name={'file-pdf'}
-                                color={'red'} size={20} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT }}>{TEXT_CONST.RESULT_PDF} </Text><TouchableOpacity onPress={() => {
+                                color={'red'} size={_scaleText(isTablet() ? 16 : 15).fontSize} /><View style={{ marginLeft: _scaleText(20).fontSize }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.RESULT_PDF} </Text><TouchableOpacity onPress={() => {
                                     try {
                                         Linking.openURL(resultObj.pdf)
                                     } catch (error) {
-
                                         console.log("error", error)
                                     }
-                                }}><Text style={{ color: 'blue' }}>{TEXT_CONST.DOWNLOAD_PDF}</Text></TouchableOpacity></View></View> : null}
+                                }}><Text style={{ color: 'blue', fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.DOWNLOAD_PDF}</Text></TouchableOpacity></View></View> : null}
 
                         </View>
 

@@ -1,6 +1,6 @@
 import VideosScreen from './screen';
 import { connect } from 'react-redux';
-import { youtubeVideoCategoryListRequest } from '../../../../../../../redux/actions';
+import { youtubeVideoCategoryListRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        youtubeVideoCategoryListRequest: (payload) => dispatch(youtubeVideoCategoryListRequest(payload))
+        youtubeVideoCategoryListRequest: (payload) => dispatch(youtubeVideoCategoryListRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

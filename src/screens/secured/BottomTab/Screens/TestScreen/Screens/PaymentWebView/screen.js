@@ -20,7 +20,6 @@ const PaymentScreen = ({
                 source={{ uri: _webPage }}
                 startInLoadingState
                 onNavigationStateChange={(webViewState) => {
-                    // console.log(webViewState.url)
                     if (webViewState.url.includes("sdemo.in")) {
                         // navigation.pop()
                     }

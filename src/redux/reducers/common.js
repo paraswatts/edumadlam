@@ -26,7 +26,6 @@ const CommonReducer = (state = { ...initialState }, action) => {
                 isPopupShown: action.payload
             }
         case UPDATE_STREAM:
-            console.log("action", action)
             return {
                 ...state,
                 selectedStream: action.payload
@@ -47,7 +46,6 @@ const CommonReducer = (state = { ...initialState }, action) => {
                 loading: false,
             };
         case GET_USER_DETAILS_SUCCESS:
-            console.log("userData", action.payload)
             return {
                 ...state,
                 userData: { ...state.userData, ...action.payload }

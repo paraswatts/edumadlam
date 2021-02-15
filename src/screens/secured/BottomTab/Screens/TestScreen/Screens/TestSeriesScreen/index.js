@@ -1,6 +1,6 @@
 import TestSeriesList from './screen';
 import { connect } from 'react-redux';
-import { testCatListRequest, generatePaymentLinkRequest } from '../../../../../../../redux/actions';
+import { testCatListRequest, generatePaymentLinkRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -13,7 +13,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         testCatListRequest: (payload) => dispatch(testCatListRequest(payload)),
-        generatePaymentLinkRequest: (payload) => dispatch(generatePaymentLinkRequest(payload))
+        generatePaymentLinkRequest: (payload) => dispatch(generatePaymentLinkRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

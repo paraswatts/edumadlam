@@ -247,27 +247,35 @@ export default StyleSheet.create({
         borderWidth: 0.5,
     },
     a: {
-        color: COLORS.BLUE_FONT, // make links coloured pink
+        color: COLORS.BLUE_FONT, // make links coloured pink,
+        fontSize: _scaleText(12).fontSize
     },
     p: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h1: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h2: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h3: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h4: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h5: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h6: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
 });

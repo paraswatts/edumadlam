@@ -1,6 +1,7 @@
 import { scaleText } from 'react-native-text';
+import { useEffect } from 'react'
 // import ImagePicker from 'react-native-image-crop-picker';
-import { Platform, PixelRatio, PermissionsAndroid, Dimensions, Alert, Linking } from 'react-native';
+import { Platform, PixelRatio, PermissionsAndroid, Dimensions, Alert, Linking, BackHandler } from 'react-native';
 import { showMessage } from "react-native-flash-message";
 import { isTablet } from 'react-native-device-info';
 import { TEXT_CONST } from '../constants';
@@ -30,6 +31,18 @@ export const _checkValidEmail = (email = "") => {
 export const _checkValidName = (name = '') => {
     var regx = /^([^0-9]*)$/;
     return regx.test(String(name)) && name.length
+}
+
+
+/* useBackButton */
+export function useBackButton(handler) {
+    // Frustration isolated! Yay! 🎉
+    useEffect(() => {
+        const handler = BackHandler.addEventListener("hardwareBackPress", handler);
+        return () => {
+            handler.remove()
+        };
+    }, [handler]);
 }
 
 // export const _openImagePicker = ({ mediaType = 'photo' }) => {

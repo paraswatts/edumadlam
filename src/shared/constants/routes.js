@@ -41,7 +41,8 @@ export const ROUTES = {
     IMPORTANT: {
         SUB_CATEGORY: 'Important Sub Categories',
         LIST: 'Important List',
-        DETAIL: 'Important Detail'
+        DETAIL: 'Important Detail',
+        POST_LIST: 'Important Post List'
     },
     NEWS: {
         SUB_CATEGORY: 'News Sub Categories',
@@ -66,4 +67,5 @@ export const ROUTES = {
         QUIZ_SCREEN: 'Quiz Screen'
     },
     MY_PURCHASE_HISTORY: 'My Purchase History',
+    MONTHLY_MAGAZINE: 'Monthly Magazine'
 }

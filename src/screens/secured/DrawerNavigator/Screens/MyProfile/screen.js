@@ -10,7 +10,6 @@ const FriendsScreen = ({
     navigation,
     userData
 }) => {
-    console.log("userDatauserData", userData)
     const { _name, _email } = userData
     return (
         <ScreenHOC
@@ -25,7 +24,7 @@ const FriendsScreen = ({
 
                 <View style={styles.child}>
                     <FastImage
-                        style={{ height: 80, width: 80, borderRadius: 40 }}
+                        style={{ height: _scaleText(80).fontSize, width: _scaleText(80).fontSize, borderRadius: _scaleText(40).fontSize }}
                         resizeMode={'contain'}
                         source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ_pgXmULPlkKJ2_x26ijFGrw8GtinmhzSU8g&usqp=CAU' }}
                     />
@@ -34,12 +33,12 @@ const FriendsScreen = ({
                         style={{ width: '100%', borderWidth: 0, flexDirection: 'row', justifyContent: 'space-around', marginTop: _scaleText(20).fontSize }}
                     >
                         <View style={{ padding: _scaleText(10).fontSize }}>
-                            <Text style={{ fontWeight: 'bold', color: 'white', }}>Name</Text>
-                            <Text style={{ color: 'white', textTransform: 'capitalize' }}>{_name}</Text>
+                            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: _scaleText(14).fontSize }}>Name</Text>
+                            <Text style={{ color: 'white', textTransform: 'capitalize', fontSize: _scaleText(12).fontSize }}>{_name}</Text>
                         </View>
                         <View style={{ padding: _scaleText(10).fontSize }}>
-                            <Text style={{ fontWeight: 'bold', color: 'white' }}>Email</Text>
-                            <Text style={{ color: 'white' }}>{_email}</Text>
+                            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: _scaleText(14).fontSize }}>Email</Text>
+                            <Text style={{ color: 'white', fontSize: _scaleText(12).fontSize }}>{_email}</Text>
                         </View>
                     </View>
                 </View>

@@ -5,6 +5,8 @@ import { ScreenHOC, EmptyDataUI } from '../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS } from '../../../../../shared';
 import CustomDatePicker from '../../../../../components/molecules/CustomDatePicker'
 import moment from 'moment'
+import FastImage from 'react-native-fast-image';
+
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const FriendsScreen = ({
     navigation,
@@ -38,7 +40,6 @@ const FriendsScreen = ({
             netConnected,
             _id,
             success: (response = []) => {
-                console.log("response", response)
                 updateData(refresh ? [...response] : [...response])
                 toggleLoading(false);
                 toggleRefreshing(false);
@@ -49,7 +50,6 @@ const FriendsScreen = ({
                 toggleRefreshing(false);
             }
         }
-        console.log("payload", payload)
         newsCatListRequest(payload)
     }
 
@@ -101,15 +101,27 @@ const FriendsScreen = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _category } = item;
+                    let { _id, _category, _imgUrl } = item;
                     return (<TouchableOpacity onPress={() => navigation.navigate(ROUTES.NEWS.SUB_CATEGORY, { _id: _id, _category: _category })}
                         style={{
+                            flexDirection: 'row',
                             shadowColor: '#b2b2b2',
                             shadowOffset: { width: 0, height: 1 },
                             shadowOpacity: 0.8,
-                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
+                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, elevation: 5, backgroundColor: COLORS.WHITE
                         }}>
-                        <Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500' }}>{_category}</Text>
+                        {_imgUrl ?
+                            <FastImage
+
+                                resizeMode='contain'
+                                source={{ uri: _imgUrl }}
+                                style={{
+                                    width: _scaleText(60).fontSize, height: '100%', borderTopLeftRadius: _scaleText(10).fontSize,
+                                    borderBottomLeftRadius: _scaleText(10).fontSize
+                                }}
+                            >
+                            </FastImage> : null}
+                        <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(12).fontSize, fontWeight: '500', flex: 1, padding: _scaleText(20).fontSize, }}>{_category}</Text>
                     </TouchableOpacity>)
                 }}
             />

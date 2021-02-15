@@ -1,6 +1,6 @@
 import DetailsScreen from './screen';
 import { connect } from 'react-redux';
-import { newsDetailRequest } from '../../../../../../../redux/actions';
+import { newsDetailRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        newsDetailRequest: (payload) => dispatch(newsDetailRequest(payload))
+        newsDetailRequest: (payload) => dispatch(newsDetailRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

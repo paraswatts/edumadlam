@@ -8,9 +8,12 @@ import FlashMessage from "react-native-flash-message";
 import RootNavigator from './src/navigator';
 import Orientation from 'react-native-orientation-locker';
 import { isTablet } from 'react-native-device-info';
+import SplashScreen from 'react-native-splash-screen'
+
 
 const App = () => {
   useEffect(() => {
+    SplashScreen.hide()
     !isTablet() && Orientation.lockToPortrait()
   }, [])
   return (

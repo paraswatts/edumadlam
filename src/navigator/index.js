@@ -26,7 +26,8 @@ import {
     YoutubeVideos,
     TestDetailScreen,
     PaymentWebView,
-    YoutubeVideoCategories
+    YoutubeVideoCategories,
+    ImportantPostList
 } from '../screens';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -44,7 +45,6 @@ function RootNavigator({
         return unsubscribe
     })
     React.useEffect(() => {
-        console.log("heredadas")
         let payload = {
             netConnected
         }
@@ -64,6 +64,7 @@ function RootNavigator({
                 <Stack.Screen name={ROUTES.WEB_VIEW_SCREEN} component={WebViewScreen} />
                 <Stack.Screen name={ROUTES.IMPORTANT.SUB_CATEGORY} component={ImportantSubCategory} />
                 <Stack.Screen name={ROUTES.IMPORTANT.DETAIL} component={DetailsScreen} />
+                <Stack.Screen name={ROUTES.IMPORTANT.POST_LIST} component={ImportantPostList} />
                 <Stack.Screen name={ROUTES.NEWS.SUB_CATEGORY} component={NewsSubCategory} />
                 <Stack.Screen name={ROUTES.NEWS.DETAIL} component={NewsDetailsScreen} />
                 <Stack.Screen name={ROUTES.TEST.CATEGORY} component={TestSeriesScreen} />

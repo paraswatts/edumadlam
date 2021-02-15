@@ -17,7 +17,6 @@ const FriendsScreen = ({
     updateShowPopup
 }) => {
     const [showModal, updateShowModal] = useState(!isPopupShown)
-    console.log("isPopupShown", isPopupShown)
 
     const onModalClose = () => {
         updateShowModal(showModal => !showModal)
@@ -40,7 +39,7 @@ const FriendsScreen = ({
                     source={require('../../../../../assets/images/quiz.jpg')}
                 />
 
-                <CustomButton onPress={() => navigation.navigate(ROUTES.DAILY_MCQ.QUIZ_SCREEN)} label={TEXT_CONST.START_DAILY_QUIZ} labelSize={_scaleText(14).fontSize} labelStyle={styles.mcqLabel} container={styles.mcqButton}></CustomButton>
+                <CustomButton onPress={() => navigation.navigate(ROUTES.DAILY_MCQ.QUIZ_SCREEN)} label={TEXT_CONST.START_DAILY_QUIZ} labelSize={isTablet() ? _scaleText(10).fontSize : _scaleText(14).fontSize} labelStyle={styles.mcqLabel} container={styles.mcqButton}></CustomButton>
 
             </View>
         </ScreenHOC >

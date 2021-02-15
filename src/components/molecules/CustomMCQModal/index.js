@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FastImage from 'react-native-fast-image';
 import HTMLView from 'react-native-htmlview';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
+import { isTablet } from 'react-native-device-info';
 
 export const { width, height } = Dimensions.get('window');
 
@@ -30,7 +31,6 @@ const CustomMCQModal = forwardRef(({
     useEffect(() => {
         let array = []
         questionsObj.map((obj) => array.push({ qId: obj._id, answer: false, _quest: obj._quest }))
-        console.log("array", array)
         updateAnswerList(answersList, array)
         updateAnswersListObj(array)
 
@@ -46,7 +46,6 @@ const CustomMCQModal = forwardRef(({
     useImperativeHandle(ref, () => ({
 
         goToQuestion(index) {
-            console.log({ index: index, animated: true }, questionsRef.current.scrollToIndex, "goToQuestion index", index)
             questionsRef.current.scrollToIndex({ index: index, animated: true })
         }
 
@@ -91,7 +90,6 @@ const CustomMCQModal = forwardRef(({
     const onPressOption = (option, questionIndex, _id, _quest) => {
         // else {
         let optionIndex = answersList.findIndex((answerObj) => answerObj.qId === _id)
-        console.log(answersList, "optionIndex", optionIndex)
         updateAnswersListObj(answersListObj.map(x => {
             if (x.qId !== _id) return x
             return { ...x, answer: option }
@@ -137,7 +135,7 @@ const CustomMCQModal = forwardRef(({
         //option === buttonOption 
         return (<CustomButton
             left={<MaterialCommunityIcons name={selectedIndex >= 0 && answer === buttonOption ? "checkbox-marked-circle" : "checkbox-blank-circle"}
-                color={selectedIndex >= 0 && answer === buttonOption ? COLORS.GREEN : '#c2c2c2'} size={20} />}
+                color={selectedIndex >= 0 && answer === buttonOption ? COLORS.GREEN : '#c2c2c2'} size={_scaleText(isTablet() ? 16 : 15).fontSize} />}
             container={buttonStyles}
             label={buttonLabel}
             labelStyle={styles.optionLabel}
@@ -196,15 +194,15 @@ const CustomMCQModal = forwardRef(({
             {isTestStarted &&
                 <View style={styles.timerContainer}>
                     <View style={styles.timer}>
-                        <Text>
+                        <Text style={{ fontSize: _scaleText(13).fontSize }}>
                             {TEXT_CONST.TIME_LEFT}
                         </Text>
-                        <Text>
+                        <Text style={{ fontSize: _scaleText(13).fontSize }}>
                             {pad(time.h)}:{pad(time.m)}:{pad(time.s)}
                         </Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <CustomButton onPress={onSubmitTest} label={TEXT_CONST.SUBMIT} labelSize={_scaleText(12).fontSize} labelStyle={styles.buttonText} container={styles.submitButton}></CustomButton>
+                        <CustomButton onPress={onSubmitTest} label={TEXT_CONST.SUBMIT} labelSize={_scaleText(isTablet() ? 10 : 12).fontSize} labelStyle={styles.buttonText} container={styles.submitButton}></CustomButton>
                     </View>
                 </View>}
 
@@ -239,7 +237,7 @@ const CustomMCQModal = forwardRef(({
                         blurAmount={10}
                         reducedTransparencyFallbackColor="white"
                     />
-                    <CustomButton onPress={startTest} label={TEXT_CONST.START_TEST} labelSize={_scaleText(14).fontSize} labelStyle={styles.buttonText} container={styles.startButton}></CustomButton>
+                    <CustomButton onPress={startTest} label={TEXT_CONST.START_TEST} labelSize={isTablet() ? _scaleText(12).fontSize : _scaleText(14).fontSize} labelStyle={styles.buttonText} container={styles.startButton}></CustomButton>
                 </View>}
 
         </View >

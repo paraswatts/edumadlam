@@ -410,6 +410,6 @@ export const TEXT_CONST = {
 
 export const LINKS = {
     EULA: 'https://www.termsfeed.com/live/f541004e-0b2d-41e6-93e9-e1d558296145',
-    PRIVACY_POLICY: 'https://www.termsfeed.com/live/12a3431d-93ab-4b1f-9dff-68cb987066dd',
-    TERMS_OF_SERVICE: 'https://www.termsfeed.com/live/6ee29195-8103-4de5-a3ed-3d2858031e68',
+    PRIVACY_POLICY: 'https://www.edumandala.com/privacy-policy',
+    TERMS_OF_SERVICE: 'https://www.edumandala.com/termsAndCondition',
 }

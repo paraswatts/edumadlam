@@ -32,7 +32,6 @@ export const QUIZ_RESULT_SUBMIT_SUCCESS = 'QUIZ_RESULT_SUBMIT_SUCCESS';
 
 
 export const testCatListRequest = payload => {
-    console.log("here", payload)
     return {
         type: TEST_CAT_REQUEST,
         payload
@@ -47,7 +46,6 @@ export const testCatListSuccess = payload => {
 }
 
 export const testSeriesListRequest = payload => {
-    console.log("testSeriesListRequest", payload)
     return {
         type: TEST_SERIES_LIST_REQUEST,
         payload
@@ -62,7 +60,6 @@ export const testSeriesListSuccess = payload => {
 }
 
 export const purchasedTestSeriesListRequest = payload => {
-    console.log("here", payload)
     return {
         type: PURCHASED_TEST_SERIES_LIST_REQUEST,
         payload
@@ -78,7 +75,6 @@ export const purchasedTestSeriesListSuccess = payload => {
 
 
 export const testQuestionsRequest = payload => {
-    console.log("testRequest", payload)
     return {
         type: TEST_QUESTIONS_REQUEST,
         payload
@@ -94,7 +90,6 @@ export const testQuestionsSuccess = payload => {
 
 
 export const testListRequest = payload => {
-    console.log("testRequest", payload)
     return {
         type: TEST_LIST_REQUEST,
         payload
@@ -110,7 +105,6 @@ export const testListSuccess = payload => {
 
 
 export const dailyQuizRequest = payload => {
-    console.log("dailyQuizRequest", payload)
     return {
         type: DAILY_QUIZ_REQUEST,
         payload

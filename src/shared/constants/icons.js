@@ -1,6 +1,7 @@
 import React from 'react';
 import { _scaleText, COLORS } from '../';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import { isTablet } from 'react-native-device-info';
 
 import AVAILABLE from '../../assets/icons/available.svg';
 import BACK from '../../assets/icons/Back.svg';
@@ -197,7 +198,7 @@ export const ICONS = {
     VIEW_MORE: (...params) => <VIEW_MORE {...iconStyle(...params)} />,
     VIEW_PROFILE: (...params) => <VIEW_PROFILE {...iconStyle(...params)} />,
     WARNING: (...params) => <WARNING {...iconStyle(...params)} />,
-    CALENDAR: <EvilIcons name="calendar" size={30} color={'#ffffff'} />,
+    CALENDAR: <EvilIcons name="calendar" size={isTablet() ? 40 : 30} color={'#ffffff'} />,
     LIST: (...params) => <LIST {...iconStyle(...params)} />,
     UP_ARROW: (...params) => <UP_ARROW {...iconStyle(...params)} />,
     MEDAL: (...params) => <MEDAL {...iconStyle(...params)} />

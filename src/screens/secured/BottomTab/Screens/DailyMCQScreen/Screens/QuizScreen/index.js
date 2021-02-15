@@ -1,7 +1,7 @@
 import QuizScreen from './screen';
 import { connect } from 'react-redux';
 
-import { dailyQuizRequest, dailyQuizSubmitRequest } from '../../../../../../../redux/actions';
+import { dailyQuizRequest, dailyQuizSubmitRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -13,7 +13,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         dailyQuizRequest: (payload) => dispatch(dailyQuizRequest(payload)),
-        testSubmitRequest: (payload) => dispatch(dailyQuizSubmitRequest(payload))
+        testSubmitRequest: (payload) => dispatch(dailyQuizSubmitRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

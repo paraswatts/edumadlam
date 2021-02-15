@@ -34,7 +34,6 @@ const CustomTextInput = ({
     meta: { touched, error, visited },
     ...props
 }) => {
-    console.log("touched", touched)
     const validationMessage =
         touched && error ? error : '';
     return (

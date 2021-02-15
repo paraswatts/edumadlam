@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { COLORS, _scaleText, TEXT_STYLES } from '../../../../../shared';
+import { COLORS, _scaleText, TEXT_STYLES } from '../../../../../../../shared';
 import { isTablet } from 'react-native-device-info';
 
 export default StyleSheet.create({

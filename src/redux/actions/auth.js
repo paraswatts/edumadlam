@@ -4,7 +4,6 @@ export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const USER_PROFILE = 'USER_PROFILE';
 
 export const signinRequest = payload => {
-    console.log("payload", payload)
     return {
         type: SIGNIN_REQUEST,
         payload

@@ -1,6 +1,6 @@
 import NewsSubCategory from './screen';
 import { connect } from 'react-redux';
-import { newsSubCatListRequest } from '../../../../../../../redux/actions';
+import { newsSubCatListRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        newsSubCatListRequest: (payload) => dispatch(newsSubCatListRequest(payload))
+        newsSubCatListRequest: (payload) => dispatch(newsSubCatListRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

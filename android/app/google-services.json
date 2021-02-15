@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "190811317648",
+    "project_id": "edu-mandala",
+    "storage_bucket": "edu-mandala.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190811317648:android:cc2a16c3d3f0c621e4bf15",
+        "android_client_info": {
+          "package_name": "com.edumandala"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190811317648-aket4nu2vlu3thr2j4bc13emfvjd0n47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHHPluFipW9FgVaPWhCNrDNd-XK3z9UQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190811317648-aket4nu2vlu3thr2j4bc13emfvjd0n47.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "190811317648-177g8hq005q1l63cf9ic67jn64b5u43b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.edumandala"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

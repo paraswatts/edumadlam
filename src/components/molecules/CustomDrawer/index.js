@@ -36,14 +36,18 @@ function CustomDrawer({ navigation,
             key: 2,
             title: ROUTES.MY_PURCHASE_HISTORY,
             isRoute: true
+        }, {
+            key: 3,
+            title: ROUTES.MONTHLY_MAGAZINE,
+            isRoute: true
         },
         {
-            key: 3,
+            key: 4,
             title: TEXT_CONST.RATE_US,
             isRoute: false,
             onPress: () => {
                 navigation.toggleDrawer()
-                let appUrl = Platform.OS === 'ios' ? 'itms-apps://itunes.apple.com/us/app/id${edumandala-app}?mt=8' : 'https://play.google.com/store/apps/details?id=com.edumandala'
+                let appUrl = Platform.OS === 'ios' ? 'itms-apps://itunes.apple.com/us/app/edumandala/id1553296777?mt=8' : 'https://play.google.com/store/apps/details?id=com.edumandala'
                 Linking.canOpenURL(appUrl).then(supported => {
                     supported && Linking.openURL(appUrl);
                 }, (err) => console.log(err));
@@ -51,11 +55,11 @@ function CustomDrawer({ navigation,
             }
         },
         {
-            key: 4,
+            key: 5,
             title: TEXT_CONST.SHARE_APP,
             isRoute: false,
             onPress: () => {
-                let appUrl = Platform.OS === 'ios' ? 'https://apps.apple.com/us/app/edumandala-app' : 'https://play.google.com/store/apps/details?id=com.edumandala'
+                let appUrl = Platform.OS === 'ios' ? 'https://apps.apple.com/us/app/edumandala/id1553296777' : 'https://play.google.com/store/apps/details?id=com.edumandala'
                 const shareOptions = {
                     title: 'Share EduMandala',
                     failOnCancel: false,
@@ -63,7 +67,6 @@ function CustomDrawer({ navigation,
                 };
 
                 navigation.toggleDrawer()
-                console.log("Share App")
                 Share.open(shareOptions)
                     .then((res) => {
                         console.log(res);
@@ -74,7 +77,7 @@ function CustomDrawer({ navigation,
             }
         },
         {
-            key: 5,
+            key: 6,
             title: TEXT_CONST.LOGOUT,
             isRoute: false,
             onPress: () => {
@@ -113,12 +116,12 @@ function CustomDrawer({ navigation,
             <SafeAreaView style={{ backgroundColor: COLORS.PRIMARY.YELLOW, }} />
             <View style={{ backgroundColor: COLORS.PRIMARY.YELLOW, borderWidth: 0, justifyContent: 'center', padding: _scaleText(10).fontSize }}>
                 <FastImage
-                    style={{ height: 80, width: 80, borderRadius: 40 }}
+                    style={{ height: _scaleText(80).fontSize, width: _scaleText(48).fontSize, borderRadius: _scaleText(40).fontSize }}
                     resizeMode={'contain'}
                     source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ_pgXmULPlkKJ2_x26ijFGrw8GtinmhzSU8g&usqp=CAU' }}
                 />
-                <Text style={{ fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize, textTransform: 'capitalize' }}>{userData._name}</Text>
-                <Text style={{ color: COLORS.WHITE, marginTop: _scaleText(5).fontSize }}>{userData._email}</Text>
+                <Text style={{ fontSize: _scaleText(14).fontSize, fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize, textTransform: 'capitalize' }}>{userData._name}</Text>
+                <Text style={{ color: COLORS.WHITE, marginTop: _scaleText(5).fontSize, fontSize: _scaleText(14).fontSize }}>{userData._email}</Text>
             </View>
             {TABS.map((item, index) => {
                 let { title, key, isRoute, } = item;
@@ -140,7 +143,8 @@ const styles = StyleSheet.create({
         backgroundColor: active ? COLORS.PRIMARY.YELLOW : null
     }),
     drawerlabel: active => ({
-        color: active ? COLORS.WHITE : COLORS.BLUE_FONT
+        color: active ? COLORS.WHITE : COLORS.BLUE_FONT,
+        fontSize: _scaleText(14).fontSize
     }),
     backImage: {
         backgroundColor: 'transparent',

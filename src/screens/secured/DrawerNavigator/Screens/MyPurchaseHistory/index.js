@@ -1,6 +1,6 @@
 import FriendsScreen from './screen';
 import { connect } from 'react-redux';
-import { getUserPurchaseHistoryRequest } from '../../../../../redux/actions'
+import { getUserPurchaseHistoryRequest, stopLoading } from '../../../../../redux/actions'
 const mapStateToProps = state => {
     return {
         netConnected: state.common.netConnected,
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getUserPurchaseHistoryRequest: (payload) => dispatch(getUserPurchaseHistoryRequest(payload))
+        getUserPurchaseHistoryRequest: (payload) => dispatch(getUserPurchaseHistoryRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

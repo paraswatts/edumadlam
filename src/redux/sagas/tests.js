@@ -12,7 +12,6 @@ function* getTestCatListSaga({ payload: { netConnected, _id, date, success = () 
             const { data = {}, status } = yield getRequest({
                 API: API.GET_TEST_CATEGORIES(`?streamId=${_id}&date=${date}`)
             })
-            console.log(data, "===========");
             if (status == 200) {
                 yield put(testCatListSuccess(data))
                 success(data);
@@ -24,7 +23,6 @@ function* getTestCatListSaga({ payload: { netConnected, _id, date, success = () 
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -34,14 +32,11 @@ function* getTestCatListSaga({ payload: { netConnected, _id, date, success = () 
 
 function* getTestSeriesListSaga({ payload: { netConnected, catId, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_TEST_SERIES(`?catId=${catId}`)
             })
-            console.log(API.GET_TEST_SERIES(`?catId=${catId}`))
-            console.log(data, "===========");
             if (status == 200) {
                 yield put(testSeriesListSuccess(data))
                 success(data);
@@ -53,7 +48,6 @@ function* getTestSeriesListSaga({ payload: { netConnected, catId, success = () =
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -63,14 +57,11 @@ function* getTestSeriesListSaga({ payload: { netConnected, catId, success = () =
 
 function* getPurchasedTestSeriesListSaga({ payload: { netConnected, sId, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_PURCHASED_TEST_LIST(`?sId=${sId}`)
             })
-            console.log(API.GET_PURCHASED_TEST_LIST(`?sId=${sId}`))
-            console.log(data, "===========");
             if (status == 200) {
                 yield put(purchasedTestSeriesListSuccess(data))
                 success(data);
@@ -82,7 +73,6 @@ function* getPurchasedTestSeriesListSaga({ payload: { netConnected, sId, success
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -92,14 +82,11 @@ function* getPurchasedTestSeriesListSaga({ payload: { netConnected, sId, success
 
 function* getTestQuestionsSaga({ payload: { netConnected, id, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_TEST_QUESTIONS(`?id=${id}`)
             })
-            console.log(API.GET_TEST_QUESTIONS(`?id=${id}`))
-            console.log(data, "===========");
             if (status == 200) {
                 success(data);
             } else {
@@ -110,7 +97,6 @@ function* getTestQuestionsSaga({ payload: { netConnected, id, success = () => { 
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -120,14 +106,11 @@ function* getTestQuestionsSaga({ payload: { netConnected, id, success = () => { 
 
 function* getDailyQuizSaga({ payload: { netConnected, date, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_DAILY_QUIZ(`?date=${date}`)
             })
-            console.log(API.GET_DAILY_QUIZ(`?date=${date}`))
-            console.log(data, "===========");
             if (status == 200) {
                 success(data);
             } else {
@@ -138,7 +121,6 @@ function* getDailyQuizSaga({ payload: { netConnected, date, success = () => { },
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -149,18 +131,16 @@ function* getDailyQuizSaga({ payload: { netConnected, date, success = () => { },
 
 function* getTestListSaga({ payload: { netConnected, sId, catId, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             let apiUrl = API.GET_TEST_LIST(`?sId=${sId}`)
             if (catId) {
                 apiUrl = API.GET_TEST_LIST(`?sId=${sId}&testSeriesId=${catId}`)
             }
+            console.log("apiUrl", apiUrl)
             const { data = {}, status } = yield getRequest({
                 API: apiUrl
             })
-            console.log(apiUrl)
-            console.log(data, "===========");
             if (status == 200) {
                 success(data.data);
             } else {
@@ -171,7 +151,6 @@ function* getTestListSaga({ payload: { netConnected, sId, catId, success = () =>
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -181,16 +160,13 @@ function* getTestListSaga({ payload: { netConnected, sId, catId, success = () =>
 
 function* postTestResultSaga({ payload: { netConnected, json, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("answersList", json)
         let jsonPayload = JSON.stringify(json)
         if (netConnected) {
-            console.log(API.SUBMIT_TEST(`?json=${jsonPayload}`))
             yield put(startLoading());
             const { data = {}, status } = yield postRequestWithParams({
                 API: API.SUBMIT_TEST(`?json=${jsonPayload}`)
             })
 
-            console.log(data, "===========");
             if (status == 200) {
                 success(data);
             } else {
@@ -201,7 +177,6 @@ function* postTestResultSaga({ payload: { netConnected, json, success = () => { 
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -212,16 +187,12 @@ function* postTestResultSaga({ payload: { netConnected, json, success = () => { 
 
 function* postDailyQuizSaga({ payload: { netConnected, json, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("answersList", json)
         let jsonPayload = JSON.stringify(json)
         if (netConnected) {
-            console.log(API.SUBMIT_DAILY_QUIZ(`?json=${jsonPayload}`))
             yield put(startLoading());
             const { data = {}, status } = yield postRequestWithParams({
                 API: API.SUBMIT_DAILY_QUIZ(`?json=${jsonPayload}`)
             })
-
-            console.log(data, "===========");
             if (status == 200) {
                 success(data);
             } else {
@@ -232,7 +203,6 @@ function* postDailyQuizSaga({ payload: { netConnected, json, success = () => { }
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -244,15 +214,12 @@ function* postDailyQuizSaga({ payload: { netConnected, json, success = () => { }
 
 function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, type, productId, success = () => { }, fail = () => { } } = {} }) {
     try {
-        console.log("amount, purpose, sId, type, productId", amount, purpose, sId, type, productId)
         if (netConnected) {
-            console.log(API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`))
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`)
             })
 
-            console.log(data, "===========");
             if (status == 200) {
                 success(data);
             } else {
@@ -263,7 +230,6 @@ function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, t
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {

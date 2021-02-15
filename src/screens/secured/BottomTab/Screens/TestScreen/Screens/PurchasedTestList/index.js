@@ -1,6 +1,6 @@
 import TestList from './screen';
 import { connect } from 'react-redux';
-import { testListRequest } from '../../../../../../../redux/actions';
+import { testListRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -11,7 +11,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        testListRequest: (payload) => dispatch(testListRequest(payload))
+        testListRequest: (payload) => dispatch(testListRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

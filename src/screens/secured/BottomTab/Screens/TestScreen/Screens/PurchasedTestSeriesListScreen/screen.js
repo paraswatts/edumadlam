@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking } from 'react-native';
+import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking, BackHandler } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI, CustomTestItem } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES } from '../../../../../../../shared';
@@ -10,21 +10,20 @@ const PurchasedTestSeriesList = ({
     netConnected,
     purchasedTestSeriesListRequest,
     route: { name, params: { _id } = {} },
-    sId
+    sId,
+    stopLoading
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
     const [refreshing, toggleRefreshing] = useState(true);
     useEffect(() => { fetchData(true) }, [])
     const fetchData = (refresh = false) => {
-        console.log("_id_id_id", _id)
         toggleLoading(!refresh);
         toggleRefreshing(false);
         let payload = {
             netConnected,
             sId: sId,
             success: (response = []) => {
-                console.log("response", response)
                 !response.length
                 updateData(refresh ? [...response] : [...data, ...response])
                 toggleLoading(false);
@@ -36,7 +35,6 @@ const PurchasedTestSeriesList = ({
                 toggleRefreshing(false);
             }
         }
-        console.log("payload sub cat", payload)
         purchasedTestSeriesListRequest(payload)
     }
 
@@ -46,7 +44,17 @@ const PurchasedTestSeriesList = ({
             toggleLoading(false);
         }
     })
-
+    useEffect(() => {
+        const handler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleValidateClose
+        );
+        return () => handler.remove();
+    }, []);
+    const handleValidateClose = () => {
+        /* Here is empty */
+        stopLoading();
+    };
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}

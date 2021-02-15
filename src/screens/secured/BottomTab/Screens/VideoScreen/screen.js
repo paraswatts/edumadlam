@@ -4,6 +4,7 @@ import { ScreenHOC } from '../../../../../components';
 import { COLORS, _scaleText, TEXT_CONST, ROUTES } from '../../../../../shared';
 import { CustomButton } from '../../../../../components'
 import styles from './styles'
+import { isTablet } from 'react-native-device-info';
 let categories = [
     {
         _id: 0,
@@ -55,9 +56,9 @@ const FriendsScreen = ({
                             shadowColor: '#b2b2b2',
                             shadowOffset: { width: 0, height: 1 },
                             shadowOpacity: 0.8,
-                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
+                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: _scaleText(20).fontSize, elevation: 5, backgroundColor: COLORS.WHITE
                         }}>
-                        <Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500' }}>{_title}</Text>
+                        <Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500', fontSize: _scaleText(isTablet() ? 14 : 12).fontSize }}>{_title}</Text>
 
                     </TouchableOpacity>)
                 }}

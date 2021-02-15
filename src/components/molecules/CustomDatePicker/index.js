@@ -5,6 +5,7 @@ const { width, height } = Dimensions.get('window');
 import { CustomTouchableIcon } from '../../atoms';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLORS, TEXT_CONST, _scaleText } from '../../../shared';
+import { isTablet } from 'react-native-device-info';
 
 const CustomDatePicker = ({
     closeDatePicker,
@@ -12,10 +13,8 @@ const CustomDatePicker = ({
     doneClick,
     selectedDate
 }) => {
-    console.log("selectedDate", selectedDate)
     const [date, setDate] = useState(selectedDate || new Date())
     const onChange = (selectedDate) => {
-        console.log("selectedDate", selectedDate)
         const currentDate = selectedDate || date;
         selectDate(currentDate)
         setDate(currentDate);
@@ -37,11 +36,11 @@ const CustomDatePicker = ({
                     <CustomTouchableIcon
                         onPress={closeDatePicker}
                     >
-                        <Text style={{ color: '#626262' }}>{TEXT_CONST.CANCEL}</Text>
+                        <Text style={{ color: '#626262', fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize }}>{TEXT_CONST.CANCEL}</Text>
                     </CustomTouchableIcon>
                     <CustomTouchableIcon
                         onPress={doneClick}>
-                        <Text style={{ color: 'blue' }}>{TEXT_CONST.DONE}</Text>
+                        <Text style={{ color: 'blue', fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize }}>{TEXT_CONST.DONE}</Text>
                     </CustomTouchableIcon>
                 </View>
             </View>
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
         borderWidth: 0, zIndex: 9999999
     },
     innerContainer: {
-        width: '90%',
+        width: isTablet() ? '50%' : '90%',
         borderRadius: _scaleText(10).fontSize,
         backgroundColor: COLORS.GREY.LIGHTER,
         alignItems: 'center',

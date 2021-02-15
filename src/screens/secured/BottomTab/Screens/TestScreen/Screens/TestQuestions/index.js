@@ -1,6 +1,6 @@
 import TestQuestions from './screen';
 import { connect } from 'react-redux';
-import { testQuestionsRequest, testSubmitRequest } from '../../../../../../../redux/actions';
+import { testQuestionsRequest, testSubmitRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -12,7 +12,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         testQuestionsRequest: (payload) => dispatch(testQuestionsRequest(payload)),
-        testSubmitRequest: (payload) => dispatch(testSubmitRequest(payload))
+        testSubmitRequest: (payload) => dispatch(testSubmitRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

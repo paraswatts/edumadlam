@@ -20,7 +20,6 @@ const SigninScreen = ({
 }) => {
     const _onSignin = (formProps) => {
         Keyboard.dismiss();
-        console.log(" email, password ", formProps.email, formProps.password)
         signinRequest({
             netConnected,
             payload: { email: formProps.email.toLowerCase().trim(), password: formProps.password },
@@ -69,9 +68,9 @@ const SigninScreen = ({
                         </View>
                         <Text style={styles.privacyPolicy}>
                             {TEXT_CONST.PRIVACY_POLICY_TEXT}
-                            <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: 'https://www.google.com', title: TEXT_CONST.PRIVACY_POLICY })} style={styles.termsHyperlink}>{TEXT_CONST.PRIVACY_POLICY}</Text>
+                            <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: LINKS.PRIVACY_POLICY, title: TEXT_CONST.PRIVACY_POLICY })} style={styles.termsHyperlink}>{TEXT_CONST.PRIVACY_POLICY}</Text>
                             {TEXT_CONST.AND_AGREE}
-                            <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: 'https://www.google.com', title: TEXT_CONST.TERMS_OF_SERVICE })} style={styles.termsHyperlink}>{TEXT_CONST.TERMS_OF_SERVICE}</Text>.
+                            <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: LINKS.TERMS_OF_SERVICE, title: TEXT_CONST.TERMS_OF_SERVICE })} style={styles.termsHyperlink}>{TEXT_CONST.TERMS_OF_SERVICE}</Text>.
                         </Text>
 
                         <Text style={styles.alreadyMember}>

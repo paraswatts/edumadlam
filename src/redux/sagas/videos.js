@@ -12,7 +12,7 @@ function* getVideoListSaga({ payload: { netConnected, _id, date, success = () =>
             const { data = {}, status } = yield getRequest({
                 API: API.GET_VIDEO_LIST(`?catId=${_id}`)
             })
-            console.log(API.GET_VIDEO_LIST(`?catId=${_id}`), "===========");
+            console.log(API.GET_VIDEO_LIST(`?catId=${_id}`))
             if (status == 200) {
                 yield put(videoListSuccess(data))
                 success(data);
@@ -24,7 +24,6 @@ function* getVideoListSaga({ payload: { netConnected, _id, date, success = () =>
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -40,7 +39,6 @@ function* getYoutubeVideoCategories({ payload: { netConnected, _id, date, succes
             const { data = {}, status } = yield getRequest({
                 API: API.GET_YOUTUBE_VIDEO_CATEGORIES(`?streamId=${_id}&date=${date}`)
             })
-            console.log(API.GET_YOUTUBE_VIDEO_CATEGORIES(`?streamId=${_id}&date=${date}`), "===========");
             if (status == 200) {
                 yield put(videoListSuccess(data))
                 success(data);
@@ -52,7 +50,6 @@ function* getYoutubeVideoCategories({ payload: { netConnected, _id, date, succes
         }
     }
     catch (error) {
-        console.log("hereee", error)
         fail(JSON.stringify(error));
     }
     finally {

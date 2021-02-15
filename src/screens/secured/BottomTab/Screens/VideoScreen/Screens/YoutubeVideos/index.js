@@ -1,6 +1,6 @@
 import VideosScreen from './screen';
 import { connect } from 'react-redux';
-import { videoListRequest } from '../../../../../../../redux/actions';
+import { videoListRequest, stopLoading } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        videoListRequest: (payload) => dispatch(videoListRequest(payload))
+        videoListRequest: (payload) => dispatch(videoListRequest(payload)),
+        stopLoading: () => dispatch(stopLoading())
     }
 }
 

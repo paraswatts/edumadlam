@@ -2,6 +2,8 @@
 export const IMPORTANT_CAT_REQUEST = 'IMPORTANT_CAT_REQUEST';
 export const IMPORTANT_CAT_SUCCESS = 'IMPORTANT_CAT_SUCCESS';
 export const IMPORTANT_SUB_CAT_REQUEST = 'IMPORTANT_SUB_CAT_REQUEST';
+export const IMP_SUB_CAT_SUCCESS = 'IMP_SUB_CAT_SUCCESS';
+export const IMP_SUB_CAT_REQUEST = 'IMP';
 export const IMPORTANT_SUB_CAT_SUCCESS = 'IMPORTANT_SUB_CAT_SUCCESS';
 export const IMPORTANT_DETAIL_REQUEST = 'IMPORTANT_DETAIL_REQUEST';
 export const IMPORTANT_DETAIL_SUCCESS = 'IMPORTANT_DETAIL_SUCCESS';
@@ -35,6 +37,20 @@ export const importantSubCatListSuccess = payload => {
     }
 }
 
+export const impSubCatListRequest = payload => {
+    return {
+        type: IMP_SUB_CAT_REQUEST,
+        payload
+    }
+}
+
+export const impSubCatListSuccess = payload => {
+    return {
+        type: IMP_SUB_CAT_SUCCESS,
+        payload
+    }
+}
+
 export const importantDetailRequest = payload => {
     return {
         type: IMPORTANT_DETAIL_REQUEST,
@@ -50,7 +66,6 @@ export const importantDetailSuccess = payload => {
 }
 
 export const streamRequest = payload => {
-    console.log("payload", payload)
     return {
         type: GET_STREAM_LIST_REQUEST,
         payload

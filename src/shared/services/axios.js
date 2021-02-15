@@ -49,9 +49,6 @@ export const updateAuthToken = (token = '') => {
 
 export const postRequest = ({ API = "", DATA = {}, HEADER = {}, PAYLOAD }) => {
     return new Promise((resolve, reject) => {
-        console.log(apiWithAuth(API), DATA, {
-            ...(PAYLOAD ? PAYLOAD : { ...defaulHeader.headers, ...HEADER })
-        })
         instance
             .post(apiWithAuth(API), DATA, {
                 ...(PAYLOAD ? PAYLOAD : { ...defaulHeader.headers, ...HEADER })
@@ -95,11 +92,6 @@ export const postRequestWithParams = ({
     data = {}
 }) => {
     return new Promise((resolve, reject) => {
-        console.log(apiWithAuth(API), {
-            ...defaulHeader.headers,
-            ...(params && pickBy(params, val => ![""].includes(val))),
-            ...(headers && pickBy(headers, val => ![""].includes(val)))
-        })
         instance
             .post(apiWithAuth(API), {
                 ...defaulHeader.headers,

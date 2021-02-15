@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast } from '../../../../../../../shared';
@@ -14,19 +14,18 @@ const ImportantDetailScreen = ({
     navigation,
     netConnected,
     importantDetailRequest,
-    route: { name, params: { _id, _heading } = {} }
+    route: { name, params: { _id, _heading } = {} },
+    stopLoading
 }) => {
     const [loading, toggleLoading] = useState(false);
     const [data, updateData] = useState(false);
     useEffect(() => { fetchData(true) }, [])
     const fetchData = (refresh = false) => {
-        console.log("_id_id_id", _id)
         toggleLoading(true);
         let payload = {
             netConnected,
             id: _id,
             success: (response = []) => {
-                console.log("response", response)
                 !response.length
                 updateData(refresh ? [...response] : [...data, ...response])
                 toggleLoading(false);
@@ -36,7 +35,6 @@ const ImportantDetailScreen = ({
                 toggleLoading(false);
             }
         }
-        console.log("payload sub cat", payload)
         importantDetailRequest(payload)
     }
 
@@ -45,12 +43,20 @@ const ImportantDetailScreen = ({
             toggleLoading(false);
         }
     })
-
+    useEffect(() => {
+        const handler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleValidateClose
+        );
+        return () => handler.remove();
+    }, []);
+    const handleValidateClose = () => {
+        /* Here is empty */
+        stopLoading();
+    };
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
-    // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}
     />)
-    // console.log("data[0]._important", data[0]._important)
     return (
         <ScreenHOC
             bottomSafeArea
@@ -62,9 +68,9 @@ const ImportantDetailScreen = ({
         >
             {data && data.length &&
                 <ScrollView contentContainerStyle={{ padding: _scaleText(10).fontSize }}>
-                    <Text style={{ fontWeight: 'bold' }}>{data[0]._heading}</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: _scaleText(16).fontSize }}>{data[0]._heading}</Text>
 
-                    <Text style={{ fontSize: 10, marginBottom: 10, fontWeight: 'bold' }}>{data[0]._timestamp}</Text>
+                    <Text style={{ marginBottom: 10, fontWeight: 'bold', fontSize: _scaleText(10).fontSize }}>{data[0]._timestamp}</Text>
 
                     <FastImage
                         style={{ height: 150 }}
@@ -89,28 +95,36 @@ const ImportantDetailScreen = ({
 
 const styles = StyleSheet.create({
     a: {
-        color: COLORS.BLUE_FONT, // make links coloured pink
+        color: COLORS.BLUE_FONT, // make links coloured pink,
+        fontSize: _scaleText(12).fontSize
     },
     p: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h1: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h2: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h3: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h4: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h5: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
     h6: {
         color: COLORS.BLUE_FONT, // make links coloured pink
+        fontSize: _scaleText(12).fontSize
     },
 });
 
