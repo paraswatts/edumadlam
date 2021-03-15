@@ -1,5 +1,5 @@
 import { takeLatest, all, put, takeLeading, takeEvery } from 'redux-saga/effects';
-import { startLoading, stopLoading, TEST_CAT_REQUEST, TEST_SERIES_LIST_REQUEST, testSeriesListSuccess, testCatListSuccess, purchasedTestSeriesListSuccess, PURCHASED_TEST_SERIES_LIST_REQUEST, TEST_QUESTIONS_REQUEST, TEST_LIST_REQUEST, DAILY_QUIZ_REQUEST, TEST_RESULT_SUBMIT_REQUEST, GENERATE_PAYMENT_LINK_REQUEST, QUIZ_RESULT_SUBMIT_REQUEST } from "../actions"
+import { startLoading, stopLoading, TEST_CAT_REQUEST, TEST_SERIES_LIST_REQUEST, testSeriesListSuccess, testCatListSuccess, purchasedTestSeriesListSuccess, PURCHASED_TEST_SERIES_LIST_REQUEST, TEST_QUESTIONS_REQUEST, TEST_LIST_REQUEST, DAILY_QUIZ_REQUEST, TEST_RESULT_SUBMIT_REQUEST, GENERATE_PAYMENT_LINK_REQUEST, QUIZ_RESULT_SUBMIT_REQUEST, COMPLETE_STORE_PAYMENT_REQUEST } from "../actions"
 import { API } from "../../shared/constants/api"
 import { postRequest, getRequest, postRequestWithParams } from "../../shared/services/axios"
 import { TEXT_CONST } from "../../shared"
@@ -237,6 +237,33 @@ function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, t
     }
 }
 
+function* completeStorePayment({ payload: { netConnected, amount, paymentMode, sId, type, productId, transactionId, timestamp, success = () => { }, fail = () => { } } = {} }) {
+    try {
+        if (netConnected) {
+            yield put(startLoading());
+            console.log(API.STORE_PAYMENT(`?amount=${amount}&paymentMode=${paymentMode}&sId=${sId}&type=${type}&productId=${productId}&transactionId=${transactionId}&timestamp=${timestamp}`))
+            const { data = {}, status } = yield getRequest({
+                API: API.STORE_PAYMENT(`?amount=${amount}&paymentMode=${paymentMode}&sId=${sId}&type=${type}&productId=${productId}&transactionId=${transactionId}&timestamp=${timestamp}`)
+            })
+            console.log("data = {}, status")
+            if (status == 200) {
+                success(data);
+            } else {
+                fail(data.msg);
+            }
+        } else {
+            fail(TEXT_CONST.INTERNET_ERROR)
+        }
+    }
+    catch (error) {
+        fail(JSON.stringify(error));
+    }
+    finally {
+        yield put(stopLoading());
+    }
+}
+
+
 
 
 function* FriendsSaga() {
@@ -249,7 +276,8 @@ function* FriendsSaga() {
         takeEvery(DAILY_QUIZ_REQUEST, getDailyQuizSaga),
         takeEvery(TEST_RESULT_SUBMIT_REQUEST, postTestResultSaga),
         takeEvery(GENERATE_PAYMENT_LINK_REQUEST, generatePaymentLink),
-        takeEvery(QUIZ_RESULT_SUBMIT_REQUEST, postDailyQuizSaga)
+        takeEvery(QUIZ_RESULT_SUBMIT_REQUEST, postDailyQuizSaga),
+        takeEvery(COMPLETE_STORE_PAYMENT_REQUEST, completeStorePayment)
     ]);
 }
 

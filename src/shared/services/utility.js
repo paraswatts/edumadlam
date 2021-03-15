@@ -6,6 +6,8 @@ import { showMessage } from "react-native-flash-message";
 import { isTablet } from 'react-native-device-info';
 import { TEXT_CONST } from '../constants';
 import moment from 'moment';
+import * as RNIap from 'react-native-iap';
+
 let dim = Dimensions.get('window')
 let height = dim.height > dim.width ? dim.height : dim.width;
 
@@ -19,6 +21,38 @@ export const _scaleText = (fontSize) => {
         return scaleText({ fontSize });
     }
 }
+
+export const appleInAppPurchase = async (productPrice) => {
+    productPrice = parseInt(productPrice).toString()
+    console.log("productPrice", productPrice)
+    const productIds = Platform.select({
+        ios: [
+            'plan.179',
+            'plan.269',
+            'plan.549',
+            'plan.799',
+            'plan.999',
+            'plan.1499',
+            'plan.1799',
+            'plan.1999',
+            'plan.2299',
+            'plan.2599',
+        ]
+    });
+    const products = await RNIap.getProducts(productIds);
+    console.log(":products", products)
+    let product = findProductToPurchase(products, productPrice)
+    const purchase = await RNIap.requestPurchase(product[0].productId);
+    console.log(purchase, 'products', products)
+    return purchase;
+}
+
+const findProductToPurchase = (products, productPrice) => {
+    let productToPurchase = products && products.length && products.filter((item) => item.price === productPrice)
+    console.log("productToPurchase", productToPurchase)
+    return productToPurchase;
+}
+
 
 export const pad = (n) => {
     return (n < 10) ? ("0" + n) : n;

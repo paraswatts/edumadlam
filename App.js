@@ -9,12 +9,19 @@ import RootNavigator from './src/navigator';
 import Orientation from 'react-native-orientation-locker';
 import { isTablet } from 'react-native-device-info';
 import SplashScreen from 'react-native-splash-screen'
-
+import * as RNIap from 'react-native-iap';
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide()
     !isTablet() && Orientation.lockToPortrait()
+
+
+
+    async function fetchMyAPI() {
+      await RNIap.initConnection()
+    }
+    fetchMyAPI()
   }, [])
   return (
     <Provider store={store}>

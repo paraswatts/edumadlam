@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, BackHandler, View } from 'react-native';
+import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, BackHandler, View, Platform, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
-import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS } from '../../../../../../../shared';
+import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS, appleInAppPurchase } from '../../../../../../../shared';
 import CustomDatePicker from '../../../../../../../components/molecules/CustomDatePicker'
 import moment from 'moment'
 import styles from './styles'
@@ -18,7 +18,8 @@ const TestSeriesListScreen = ({
     generatePaymentLinkRequest,
     sId,
     selectedStream,
-    stopLoading
+    stopLoading,
+    completeStorePayment
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -40,6 +41,7 @@ const TestSeriesListScreen = ({
     useEffect(() => { fetchData(true, selectedStream, date) }, [])
     useEffect(() => { fetchData(true, selectedStream, date) }, [selectedStream])
     const fetchData = (refresh = false, _id, date) => {
+        console.log("fetch Data")
         toggleLoading(!refresh);
         toggleRefreshing(refresh);
         let payload = {
@@ -91,7 +93,6 @@ const TestSeriesListScreen = ({
                     let _webPage = res && res.response
                     navigation.navigate(ROUTES.TEST.PAYMENT_SCREEN, { _webPage: _webPage })
                 }
-
                 toggleLoading(false);
             },
             fail: (message = '') => {
@@ -101,6 +102,35 @@ const TestSeriesListScreen = ({
             }
         }
         generatePaymentLinkRequest(payload)
+
+    }
+
+    const applePayments = async (paymentObj) => {
+        let paymentResponse = await appleInAppPurchase(paymentObj.amount);
+        console.log(paymentResponse.transactionId, "paymentResponse", paymentResponse)
+        let payload = {
+            netConnected,
+            amount: paymentObj.amount,
+            paymentMode: 'appleStore',
+            sId,
+            type: 'testSeries',
+            productId: paymentObj.productId,
+            transactionId: paymentResponse.transactionId,
+            timestamp: paymentResponse.transactionDate,
+            success: (response = []) => {
+                console.log(response, "apple payment")
+                Alert.alert("Purchase Successful")
+                toggleLoading(false);
+                fetchData(true, _id, date)
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+                toggleRefreshing(false);
+            }
+        }
+        console.log(payload)
+        completeStorePayment(payload)
     }
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
@@ -143,6 +173,7 @@ const TestSeriesListScreen = ({
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
                     let { _id, _category, _price, _imgUrl } = item;
+                    let paymentObj = { amount: _price, purpose: _category, productId: _id }
                     return (<View
                         style={{
                             flex: 1,
@@ -170,7 +201,9 @@ const TestSeriesListScreen = ({
                                 {<TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.LIST, { _id: _id, _category: _category, _price: _price })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                     <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.VIEW}</Text>
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
-                                </TouchableOpacity>}{parseInt(_price) > 0 ? <TouchableOpacity onPress={() => fetchPaymentPage({ amount: _price, purpose: _category, productId: _id })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                                </TouchableOpacity>}{parseInt(_price) > 0 ? <TouchableOpacity onPress={() =>
+
+                                    Platform.OS === 'android' ? fetchPaymentPage(paymentObj) : applePayments(paymentObj)} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                     <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.PURCHASE}</Text>
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                                 </TouchableOpacity> : null}

@@ -37,6 +37,7 @@ function* signupSaga({ payload: { netConnected, payload = {}, success = () => { 
             const { status, data = {} } = yield postRequest({
                 API: API.SIGNUP(`?email=${payload.email}&password=${payload.password}&mobile=${payload.mobile}&name=${payload.name}&imei=${payload.imei}`)
             })
+            console.log(payload, "data", data)
             if (status == 200) {
                 if (data[0].remark == 1) {
                     success();
@@ -51,6 +52,8 @@ function* signupSaga({ payload: { netConnected, payload = {}, success = () => { 
         }
     }
     catch (error) {
+
+        console.log('error', error)
         fail(JSON.stringify(error));
     }
     finally {

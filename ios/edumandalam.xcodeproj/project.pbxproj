@@ -19,6 +19,7 @@
 		6483B124C6BBAB6B0AEE2049 /* libPods-edumandalam-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00971FD0F3E7B2DE15FAEE10 /* libPods-edumandalam-tvOS.a */; };
 		6BDD0500854375F2DC8BD547 /* libPods-edumandalam.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CFA4710B303AD165AB44EE9 /* libPods-edumandalam.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8F12A40525EEB237002F824A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F12A40425EEB237002F824A /* StoreKit.framework */; };
 		8F7FE96825CF107500F28EBE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F7FE96725CF107500F28EBE /* GoogleService-Info.plist */; };
 		D97131137F6273C15BBBFC8A /* libPods-edumandalam-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B7B67DD4BD08EDFA6EE99C /* libPods-edumandalam-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -70,6 +71,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = edumandalam/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84BB2C2C302D433C9ABA7AC8 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		8CFA4710B303AD165AB44EE9 /* libPods-edumandalam.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-edumandalam.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F12A40425EEB237002F824A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		8F7FE96725CF107500F28EBE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F7FE96925CF109900F28EBE /* EduMandala.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = EduMandala.entitlements; path = edumandalam/EduMandala.entitlements; sourceTree = "<group>"; };
 		A2019ABF57E0C02B19C61436 /* Pods-edumandalam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-edumandalam.debug.xcconfig"; path = "Target Support Files/Pods-edumandalam/Pods-edumandalam.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BDD0500854375F2DC8BD547 /* libPods-edumandalam.a in Frameworks */,
+				8F12A40525EEB237002F824A /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,6 +163,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8F12A40425EEB237002F824A /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				8CFA4710B303AD165AB44EE9 /* libPods-edumandalam.a */,
@@ -423,7 +427,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		0330FD0C2B01FE8EABF22E50 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -784,7 +788,7 @@
 				CODE_SIGN_ENTITLEMENTS = edumandalam/EduMandala.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 9Z65TQ2297;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = edumandalam/Info.plist;
@@ -813,7 +817,7 @@
 				CODE_SIGN_ENTITLEMENTS = edumandalam/EduMandala.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 9Z65TQ2297;
 				INFOPLIST_FILE = edumandalam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

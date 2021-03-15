@@ -29,6 +29,7 @@ export const GENERATE_PAYMENT_LINK_SUCCESS = 'GENERATE_PAYMENT_LINK_SUCCESS';
 export const QUIZ_RESULT_SUBMIT_REQUEST = 'QUIZ_RESULT_SUBMIT_REQUEST';
 export const QUIZ_RESULT_SUBMIT_SUCCESS = 'QUIZ_RESULT_SUBMIT_SUCCESS';
 
+export const COMPLETE_STORE_PAYMENT_REQUEST = 'COMPLETE_APPLE_PAYMENT_REQUEST';
 
 
 export const testCatListRequest = payload => {
@@ -159,6 +160,13 @@ export const generatePaymentLinkRequest = payload => {
 export const generatePaymentLinkSuccess = payload => {
     return {
         type: GENERATE_PAYMENT_LINK_SUCCESS,
+        payload
+    }
+}
+
+export const completeStorePayment = payload => {
+    return {
+        type: COMPLETE_STORE_PAYMENT_REQUEST,
         payload
     }
 }
