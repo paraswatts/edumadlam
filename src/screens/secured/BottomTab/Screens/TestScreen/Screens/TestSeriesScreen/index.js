@@ -1,12 +1,13 @@
 import TestSeriesList from './screen';
 import { connect } from 'react-redux';
-import { testCatListRequest, generatePaymentLinkRequest, stopLoading, completeStorePayment } from '../../../../../../../redux/actions';
+import { startLoading, testCatListRequest, generatePaymentLinkRequest, stopLoading, completeStorePayment } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
         netConnected: state.common.netConnected,
         sId: state.common.authToken,
-        selectedStream: state.common.selectedStream
+        selectedStream: state.common.selectedStream,
+        authToken: state.common.authToken,
     }
 }
 
@@ -15,7 +16,8 @@ const mapDispatchToProps = dispatch => {
         testCatListRequest: (payload) => dispatch(testCatListRequest(payload)),
         generatePaymentLinkRequest: (payload) => dispatch(generatePaymentLinkRequest(payload)),
         completeStorePayment: (payload) => dispatch(completeStorePayment(payload)),
-        stopLoading: () => dispatch(stopLoading())
+        stopLoading: () => dispatch(stopLoading()),
+        startLoading: () => dispatch(startLoading())
     }
 }
 

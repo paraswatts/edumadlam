@@ -2,7 +2,7 @@ import { takeLatest, all, put } from 'redux-saga/effects';
 import { GET_USER_DETAILS_REQUEST, SIGNIN_REQUEST, reset, startLoading, stopLoading, LOGOUT_REQUEST, updateAuthTokenRedux, updateProfileSuccess, logoutRequest, SIGNUP_REQUEST, REQUEST_OTP, PHONE_UPDATE_OTP_REQUEST, PHONE_UPDATE_REQUEST, GET_USER_ONB_STEPS, getUserONBStepsRequest, getUserDetailsRequest } from "../actions"
 import { API } from "../../shared/constants/api"
 import { postRequest, updateAuthToken, getRequest } from "../../shared/services/axios"
-import { navigate, replace, popToTop, TEXT_CONST, ROUTES } from "../../shared"
+import { navigate, replace, popToTop, TEXT_CONST, ROUTES, _showCustomToast } from "../../shared"
 import { store } from '../store';
 
 function* signinSaga({ payload: { netConnected, payload = {}, success = (id) => { }, fail = () => { } } = {} }) {
@@ -68,7 +68,9 @@ function* logoutSaga({ payload: { } = {} }) {
         yield put(startLoading());
         yield put(reset());
         updateAuthToken('');
-        replace(ROUTES.SIGNIN_SCREEN);
+        _showCustomToast({ message: TEXT_CONST.LOGOUT_SUCCESS, type: 'success' })
+
+        // replace(ROUTES.SIGNIN_SCREEN);
     }
     catch (error) {
         console.log(error);

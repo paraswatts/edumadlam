@@ -4,6 +4,7 @@ export const TEXT_CONST = {
     MOBILE_OR_EMAIL: 'Mobile number or email address',
     PASSWORD: 'Password',
     SIGNIN: 'Sign In',
+    SKIP: 'Skip',
     SIGNUP: 'Sign up',
     //SIGN UP SCREEN
     ALREADY_A_MEMBER: 'Already a member? ',
@@ -378,6 +379,7 @@ export const TEXT_CONST = {
     RATE_US: 'Rate Us',
     SHARE_APP: 'Share App',
     LOGOUT_ALERT: 'Are you sure you want to logout',
+    LOGOUT_SUCCESS: 'Logged out',
     MY_PURCHASE_HISTORY: 'My Purchase History',
     PURCHASED_TESTS: 'Purchased Tests',
     TEST_SERIES_CATEGORIES: 'Test Series Categories',

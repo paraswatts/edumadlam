@@ -7,6 +7,7 @@ import styles from './styles';
 import { CustomButton } from '../../../components/atoms';
 import { COLORS, validator } from '../../../shared';
 import { Field, reduxForm } from 'redux-form';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -39,7 +40,12 @@ const SigninScreen = ({
                 <View style={{ flex: 1 }}>
                     <ScrollView style={styles.scrollContainer}>
                         <View style={{ minHeight: Dimensions.get('window').height - _scaleText(230).fontSize - bottom }}>
-                            <Text style={styles.signup}>{TEXT_CONST.SIGNIN}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.signup}>{TEXT_CONST.SIGNIN}</Text>
+                                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.HOME)}>
+                                    <Text>{TEXT_CONST.SKIP}</Text>
+                                </TouchableOpacity>
+                            </View>
                             <Text style={styles.fillCredentials}>{TEXT_CONST.FILL_CREDENTIALS}</Text>
                             <View style={styles.form}>
                                 <Field

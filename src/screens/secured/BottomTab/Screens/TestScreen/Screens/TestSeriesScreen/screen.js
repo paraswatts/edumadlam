@@ -19,7 +19,9 @@ const TestSeriesListScreen = ({
     sId,
     selectedStream,
     stopLoading,
-    completeStorePayment
+    completeStorePayment,
+    authToken,
+    startLoading
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -85,7 +87,7 @@ const TestSeriesListScreen = ({
             amount: paymentObj.amount,
             purpose: paymentObj.purpose.replace(/\s+/g, ''),
             sId,
-            type: 'testSeries',
+            type: 'testCategory',
             productId: paymentObj.productId,
             success: (response = []) => {
                 let res = response && response.length && response[0]
@@ -106,31 +108,42 @@ const TestSeriesListScreen = ({
     }
 
     const applePayments = async (paymentObj) => {
-        let paymentResponse = await appleInAppPurchase(paymentObj.amount);
-        console.log(paymentResponse.transactionId, "paymentResponse", paymentResponse)
-        let payload = {
-            netConnected,
-            amount: paymentObj.amount,
-            paymentMode: 'appleStore',
-            sId,
-            type: 'testSeries',
-            productId: paymentObj.productId,
-            transactionId: paymentResponse.transactionId,
-            timestamp: paymentResponse.transactionDate,
-            success: (response = []) => {
-                console.log(response, "apple payment")
-                Alert.alert("Purchase Successful")
-                toggleLoading(false);
-                fetchData(true, _id, date)
-            },
-            fail: (message = '') => {
-                _showCustomToast({ message });
-                toggleLoading(false);
-                toggleRefreshing(false);
+        if (authToken) {
+            startLoading()
+            setTimeout(() => {
+                stopLoading()
+            }, 1000)
+            let paymentResponse = await appleInAppPurchase(paymentObj.amount);
+            stopLoading()
+            console.log(paymentResponse.transactionId, "paymentResponse", paymentResponse)
+            let payload = {
+                netConnected,
+                amount: paymentObj.amount,
+                paymentMode: 'appleStore',
+                sId,
+                type: 'testCategory',
+                productId: paymentObj.productId,
+                transactionId: paymentResponse.transactionId,
+                timestamp: paymentResponse.transactionDate,
+                success: (response = []) => {
+                    console.log(response, "apple payment")
+                    Alert.alert("Purchase Successful")
+                    navigation.navigate(ROUTES.TEST.PURCHASED_SERIES)
+                    toggleLoading(false);
+                    stopLoading()
+                },
+                fail: (message = '') => {
+                    _showCustomToast({ message });
+                    toggleLoading(false);
+                    toggleRefreshing(false);
+                    stopLoading()
+                }
             }
+            console.log(payload)
+            completeStorePayment(payload)
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
         }
-        console.log(payload)
-        completeStorePayment(payload)
     }
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}

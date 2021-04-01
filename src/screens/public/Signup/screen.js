@@ -39,7 +39,12 @@ const SignUpScreen = ({
                 <View style={{ flex: 1 }}>
                     <ScrollView style={styles.scrollContainer}>
                         <View style={{ minHeight: Dimensions.get('window').height - _scaleText(230).fontSize - bottom }}>
-                            <Text style={styles.signup}>{TEXT_CONST.SIGNUP}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.signup}>{TEXT_CONST.SIGNUP}</Text>
+                                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.HOME)}>
+                                    <Text>{TEXT_CONST.SKIP}</Text>
+                                </TouchableOpacity>
+                            </View>
                             <Text style={styles.fillCredentials}>{TEXT_CONST.FILL_CREDENTIALS}</Text>
                             <View style={styles.form}>
                                 <Field

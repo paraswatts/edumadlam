@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
     return {
+        authToken: state.common.authToken
     }
 }
 

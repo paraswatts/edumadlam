@@ -29,6 +29,7 @@ export const appleInAppPurchase = async (productPrice) => {
         ios: [
             'plan.179',
             'plan.269',
+            'plan.349',
             'plan.549',
             'plan.799',
             'plan.999',
@@ -42,6 +43,7 @@ export const appleInAppPurchase = async (productPrice) => {
     const products = await RNIap.getProducts(productIds);
     console.log(":products", products)
     let product = findProductToPurchase(products, productPrice)
+    console.log("product", product)
     const purchase = await RNIap.requestPurchase(product[0].productId);
     console.log(purchase, 'products', products)
     return purchase;

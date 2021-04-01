@@ -48,13 +48,14 @@ const DrawerNavigator = ({
             // getDeviceToken();
         }
     }
+    console.log("drawer")
     return (
 
         <Drawer.Navigator
             drawerStyle={{
                 width: _scaleText(240).fontSize,
             }}
-            detachInactiveScreens initialRouteName={ROUTES.BOTTOM_TAB_DASHBOARD} drawerContent={(props) => <CustomDrawer logoutRequest={logoutRequest}{...props} userData={userData} />} >
+            detachInactiveScreens initialRouteName={ROUTES.BOTTOM_TAB_DASHBOARD} drawerContent={(props) => <CustomDrawer sId={sId} logoutRequest={logoutRequest}{...props} userData={userData} />} >
             <Drawer.Screen name={ROUTES.BOTTOM_TAB_DASHBOARD} component={BottomTab} />
             <Drawer.Screen name={ROUTES.MY_PROFILE} component={MyProfile} />
             <Drawer.Screen name={ROUTES.MY_PURCHASE_HISTORY} component={MyPurchaseHistory} />

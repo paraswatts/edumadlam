@@ -20,7 +20,7 @@ const SplashScreen = ({
             navigation.replace(ROUTES.HOME)
         }
         else {
-            (navigation.replace(ROUTES.SIGNIN_SCREEN),
+            (navigation.replace(ROUTES.HOME),
                 setTimeout(() => {
                     Splash.hide();
                 }, 500))

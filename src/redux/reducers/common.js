@@ -76,7 +76,8 @@ const CommonReducer = (state = { ...initialState }, action) => {
             return {
                 ...initialState,
                 netConnected: state.netConnected,
-                showWipeView: state.showWipeView
+                showWipeView: state.showWipeView,
+                authToken: ''
             };
         default:
             return {

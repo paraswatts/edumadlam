@@ -1,18 +1,23 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, Linking, StyleSheet } from 'react-native'
+import { TouchableOpacity, View, Text, Linking, StyleSheet, Platform } from 'react-native'
 import { COLORS, _scaleText, ROUTES, TEXT_CONST } from '../../../shared'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import { isTablet } from 'react-native-device-info';
-const CustomTestItem = ({ _imgUrl, clickable, fetchPaymentPage, _id, _name, _price, _timestamp, _startDate, _endDate, _timetable, navigation, purchased, _webPage }) => {
+const CustomTestItem = ({ applePayments, _imgUrl, clickable, fetchPaymentPage, _id, _name, _price, _timestamp, _startDate, _endDate, _timetable, navigation, purchased, _webPage }) => {
     const goToPaymentScreen = () => {
         let paymentObj = {
             amount: _price,
             purpose: _name,
-            type: 'testSeriesList',
+            type: 'testSeries',
             productId: _id
         }
-        fetchPaymentPage(paymentObj)
+        if (Platform.OS === 'ios') {
+            applePayments(paymentObj)
+        }
+        else {
+            fetchPaymentPage(paymentObj)
+        }
     }
 
     const renderBody = () => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking, View, BackHandler } from 'react-native';
+import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, Linking, View, BackHandler, Alert, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI, CustomTestItem } from '../../../../../../../components';
-import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES } from '../../../../../../../shared';
+import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, appleInAppPurchase } from '../../../../../../../shared';
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { isTablet } from 'react-native-device-info';
@@ -15,7 +15,9 @@ const TestSeriesList = ({
     route: { params: { _id, _category, _price } = {} },
     generatePaymentLinkRequest,
     sId,
-    stopLoading
+    stopLoading,
+    startLoading,
+    completeStorePayment
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -66,7 +68,7 @@ const TestSeriesList = ({
             amount: paymentObj.amount,
             purpose: paymentObj.purpose.replace(/\s+/g, ''),
             sId,
-            type: 'testSeries',
+            type: paymentObj.type,
             productId: paymentObj.productId,
             success: (response = []) => {
                 let res = response && response.length && response[0]
@@ -84,6 +86,54 @@ const TestSeriesList = ({
             }
         }
         generatePaymentLinkRequest(payload)
+    }
+
+    const applePayments = async (paymentObj) => {
+        console.log("paymentObj", paymentObj)
+        if (sId) {
+            startLoading()
+            setTimeout(() => {
+                stopLoading()
+            }, 1000)
+            let paymentResponse = await appleInAppPurchase(paymentObj.amount);
+
+            console.log(paymentResponse.transactionId, "paymentResponse", paymentResponse)
+            let payload = {
+                netConnected,
+                amount: paymentObj.amount,
+                paymentMode: 'appleStore',
+                sId,
+                type: paymentObj.type,
+                productId: paymentObj.productId,
+                transactionId: paymentResponse.transactionId,
+                timestamp: paymentResponse.transactionDate,
+                success: (response = []) => {
+                    console.log(response, "apple payment")
+                    Alert.alert("Purchase Successful")
+                    if (paymentObj.type === 'testCategory') {
+                        navigation.navigate(ROUTES.TEST.PURCHASED_SERIES)
+                    }
+                    else {
+                        navigation.navigate(ROUTES.TEST.PURCHASED_TESTS)
+                    }
+                    toggleLoading(false);
+                    stopLoading()
+                },
+                fail: (message = '') => {
+                    stopLoading()
+                    _showCustomToast({ message });
+                    toggleLoading(false);
+                    toggleRefreshing(false);
+
+                }
+            }
+            console.log(payload)
+            completeStorePayment(payload)
+        }
+
+        else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
 
     const _renderListEmptyComponent = () => (<EmptyDataUI
@@ -107,7 +157,7 @@ const TestSeriesList = ({
                 shadowRadius: 1, padding: _scaleText(10).fontSize, flexDirection: 'row', justifyContent: 'space-between'
             }}><Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500', fontSize: _scaleText(12).fontSize }} > {_category}</Text>
                 {parseInt(_price) ?
-                    <TouchableOpacity onPress={() => fetchPaymentPage({ amount: _price, purpose: _category, productId: _id })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => Platform.OS === 'ios' ? applePayments({ amount: _price, productId: _id, type: 'testCategory' }) : fetchPaymentPage({ amount: _price, purpose: _category, productId: _id, type: 'testCategory' })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                         <Text style={[styles.fontBlue, {
                             fontSize: _scaleText(12).fontSize, textAlign: 'right', marginRight: _scaleText(5).fontSize
                         }]}>{TEXT_CONST.PURCHASE}</Text>
@@ -132,7 +182,7 @@ const TestSeriesList = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    return (<CustomTestItem fetchPaymentPage={fetchPaymentPage} {...item} navigation={navigation} />)
+                    return (<CustomTestItem fetchPaymentPage={fetchPaymentPage} applePayments={applePayments} {...item} navigation={navigation} />)
                 }}
             />
             <SafeAreaView style={{ backgroundColor: 'white', }} />

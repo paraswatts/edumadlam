@@ -5,32 +5,41 @@ import { COLORS, _scaleText, TEXT_CONST, ROUTES } from '../../../../../shared';
 import { CustomButton } from '../../../../../components'
 import styles from './styles'
 import { isTablet } from 'react-native-device-info';
-let categories = [
-    {
-        _id: 0,
-        _title: TEXT_CONST.TEST_SERIES_CATEGORIES,
-        _route: ROUTES.TEST.CATEGORY
-    },
-    {
-        _id: 1,
-        _title: TEXT_CONST.PURCHASED_TEST_SERIES,
-        _route: ROUTES.TEST.PURCHASED_SERIES
-    },
 
-    {
-        _id: 3,
-        _title: TEXT_CONST.PURCHASED_TESTS,
-        _route: ROUTES.TEST.PURCHASED_TESTS
-    }
-]
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const FriendsScreen = ({
-    navigation
+    navigation,
+    authToken
 }) => {
-    const [data, updateData] = useState(categories)
-    const goToRoute = (routeName) => {
-        navigation.navigate(routeName)
+    const goToRoute = (routeName, _id) => {
+        console.log(authToken, "=====")
+        if (authToken || _id === 0) {
+            navigation.navigate(routeName)
+        }
+        else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
+    console.log("authToken", authToken ? true : false)
+    let array = [
+        {
+            _id: 0,
+            _title: TEXT_CONST.TEST_SERIES_CATEGORIES,
+            _route: ROUTES.TEST.CATEGORY,
+        },
+        {
+            _id: 1,
+            _title: TEXT_CONST.PURCHASED_TEST_SERIES,
+            _route: ROUTES.TEST.PURCHASED_SERIES,
+        },
+
+        {
+            _id: 3,
+            _title: TEXT_CONST.PURCHASED_TESTS,
+            _route: ROUTES.TEST.PURCHASED_TESTS,
+        }
+    ]
+    const [categories, updateCategories] = useState(array)
     return (
         <ScreenHOC
 
@@ -43,13 +52,13 @@ const FriendsScreen = ({
         >
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={data}
-                extraData={data}
+                data={categories}
+                extraData={categories}
                 keyExtractor={(item, index) => item._id + ''}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
                     let { _id, _title, _route } = item;
-                    return (<TouchableOpacity onPress={() => goToRoute(_route)}
+                    return (<TouchableOpacity onPress={() => goToRoute(_route, _id)}
                         style={{
                             shadowColor: '#b2b2b2',
                             shadowOffset: { width: 0, height: 1 },

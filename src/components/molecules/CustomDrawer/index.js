@@ -20,26 +20,31 @@ import Share from 'react-native-share';
 function CustomDrawer({ navigation,
     logoutRequest,
     userData,
+    sId,
     state }) {
     const TABS = [
         {
             key: 0,
             title: ROUTES.BOTTOM_TAB_DASHBOARD,
             isRoute: true,
+            isShown: true
         },
         {
             key: 1,
             title: ROUTES.MY_PROFILE,
-            isRoute: true
+            isRoute: true,
+            isShown: sId ? true : false
         },
         {
             key: 2,
             title: ROUTES.MY_PURCHASE_HISTORY,
-            isRoute: true
+            isRoute: true,
+            isShown: sId ? true : false
         }, {
             key: 3,
             title: ROUTES.MONTHLY_MAGAZINE,
-            isRoute: true
+            isRoute: true,
+            isShown: true
         },
         {
             key: 4,
@@ -52,7 +57,8 @@ function CustomDrawer({ navigation,
                     supported && Linking.openURL(appUrl);
                 }, (err) => console.log(err));
 
-            }
+            },
+            isShown: true
         },
         {
             key: 5,
@@ -74,7 +80,8 @@ function CustomDrawer({ navigation,
                     .catch((err) => {
                         err && console.log(err);
                     });
-            }
+            },
+            isShown: true
         },
         {
             key: 6,
@@ -83,7 +90,8 @@ function CustomDrawer({ navigation,
             onPress: () => {
                 navigation.toggleDrawer()
                 logout()
-            }
+            },
+            isShown: sId ? true : false
         },
     ]
     const logout = () => {
@@ -111,24 +119,37 @@ function CustomDrawer({ navigation,
         navigation.closeDrawer()
         navigation.navigate(route)
     }
+
+
     return (
         <View style={{ borderWidth: 0, flex: 1 }}>
             <SafeAreaView style={{ backgroundColor: COLORS.PRIMARY.YELLOW, }} />
             <View style={{ backgroundColor: COLORS.PRIMARY.YELLOW, borderWidth: 0, justifyContent: 'center', padding: _scaleText(10).fontSize }}>
                 <FastImage
-                    style={{ height: _scaleText(80).fontSize, width: _scaleText(48).fontSize, borderRadius: _scaleText(40).fontSize }}
+                    style={{ height: _scaleText(48).fontSize, width: _scaleText(48).fontSize, borderRadius: _scaleText(40).fontSize }}
                     resizeMode={'contain'}
-                    source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ_pgXmULPlkKJ2_x26ijFGrw8GtinmhzSU8g&usqp=CAU' }}
+                    source={require('../../../assets/icons/app_icon.png')}
                 />
-                <Text style={{ fontSize: _scaleText(14).fontSize, fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize, textTransform: 'capitalize' }}>{userData._name}</Text>
-                <Text style={{ color: COLORS.WHITE, marginTop: _scaleText(5).fontSize, fontSize: _scaleText(14).fontSize }}>{userData._email}</Text>
+                {sId ? <View>
+                    <Text style={{ fontSize: _scaleText(14).fontSize, fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize, textTransform: 'capitalize' }}>{userData._name}</Text>
+                    <Text style={{ color: COLORS.WHITE, marginTop: _scaleText(5).fontSize, fontSize: _scaleText(14).fontSize }}>{userData._email}</Text>
+                </View> :
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <TouchableOpacity onPress={() => navigate(ROUTES.SIGNIN_SCREEN)}>
+                            <Text style={{ fontSize: _scaleText(14).fontSize, fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize, textTransform: 'capitalize' }}>{TEXT_CONST.SIGN_IN}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigate(ROUTES.SIGNUP_SCREEN)}>
+                            <Text style={{ fontSize: _scaleText(14).fontSize, fontWeight: 'bold', color: COLORS.WHITE, marginTop: _scaleText(10).fontSize, textTransform: 'capitalize' }}>{TEXT_CONST.SIGNUP}</Text>
+                        </TouchableOpacity>
+                    </View>}
+
             </View>
             {TABS.map((item, index) => {
-                let { title, key, isRoute, } = item;
+                let { title, key, isRoute, isShown } = item;
                 let active = state.index == key;
-                return (<TouchableOpacity style={styles.draweritem(active)} onPress={() => isRoute ? navigate(title) : item.onPress()} key={key}>
+                return (isShown ? <TouchableOpacity style={styles.draweritem(active)} onPress={() => isRoute ? navigate(title) : item.onPress()} key={key}>
                     <Text style={styles.drawerlabel(active)}>{title}</Text>
-                </TouchableOpacity>)
+                </TouchableOpacity> : null)
             })}
         </View >
     );

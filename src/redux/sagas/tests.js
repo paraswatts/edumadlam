@@ -58,10 +58,13 @@ function* getTestSeriesListSaga({ payload: { netConnected, catId, success = () =
 function* getPurchasedTestSeriesListSaga({ payload: { netConnected, sId, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
+            console.log("sId", API.GET_PURCHASED_TEST_LIST(`?sId=${sId}`))
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_PURCHASED_TEST_LIST(`?sId=${sId}`)
             })
+
+            console.log("data", data)
             if (status == 200) {
                 yield put(purchasedTestSeriesListSuccess(data))
                 success(data);
