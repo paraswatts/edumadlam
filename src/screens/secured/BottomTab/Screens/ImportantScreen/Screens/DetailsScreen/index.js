@@ -5,6 +5,7 @@ import { importantDetailRequest, stopLoading } from '../../../../../../../redux/
 const mapStateToProps = state => {
     return {
         netConnected: state.common.netConnected,
+        sId: state.common.authToken
     }
 }
 

@@ -20,9 +20,14 @@ const CustomModal = ({
     data,
     goToQuestion
 }) => {
+    // console.log("answersListObj", answersListObj)
     const quesRef = useRef();
+
     const renderQuestionitem = ({ item, index }) => {
         const { qId, _quest, answer } = item
+        let _questUpdated = _quest.replace(/(\r\n|\n|\r)/gm, "")
+        _questUpdated = _questUpdated.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, "")
+        _questUpdated = _questUpdated.replace(/<[^/>][^>]*><\/[^>]+>/g, "")
         return (
             <TouchableOpacity onPress={() => {
                 _toggleFilterModal()
@@ -34,7 +39,7 @@ const CustomModal = ({
             }} style={{ flexDirection: 'row', marginVertical: _scaleText(5).fontSize, marginHorizontal: _scaleText(10).fontSize, borderWidth: 0.5, padding: _scaleText(5).fontSize, borderRadius: _scaleText(5).fontSize }}>
                 <MaterialCommunityIcons name={answer ? "checkbox-marked-circle" : "checkbox-blank-circle"}
                     color={answer ? COLORS.GREEN : '#c2c2c2'} size={20} />
-                <Text style={{ marginLeft: _scaleText(5).fontSize }}></Text>{<HTMLView stylesheet={styles} addLineBreaks={true} style={{ flex: 1 }} value={_quest.replace(/(\r\n|\n|\r)/gm, "")} />}
+                <Text style={{ marginLeft: _scaleText(5).fontSize }}></Text>{<HTMLView stylesheet={styles} addLineBreaks={true} style={{ flex: 1 }} value={_questUpdated} />}
             </TouchableOpacity>
         )
     }

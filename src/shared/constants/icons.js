@@ -2,6 +2,7 @@ import React from 'react';
 import { _scaleText, COLORS } from '../';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { isTablet } from 'react-native-device-info';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import AVAILABLE from '../../assets/icons/available.svg';
 import BACK from '../../assets/icons/Back.svg';
@@ -201,7 +202,10 @@ export const ICONS = {
     CALENDAR: <EvilIcons name="calendar" size={isTablet() ? 40 : 30} color={'#ffffff'} />,
     LIST: (...params) => <LIST {...iconStyle(...params)} />,
     UP_ARROW: (...params) => <UP_ARROW {...iconStyle(...params)} />,
-    MEDAL: (...params) => <MEDAL {...iconStyle(...params)} />
+    MEDAL: (...params) => <MEDAL {...iconStyle(...params)} />,
+    TELEGRAM: <EvilIcons name="sc-telegram" size={isTablet() ? 40 : 30} />,
+    INSTAGRAM: <FontAwesome name="instagram" size={isTablet() ? 40 : 30} />,
+    YOUTUBE: <FontAwesome name="youtube" size={isTablet() ? 40 : 30} />,
 };
 
 export const ILLUSTRATIONS = {

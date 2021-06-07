@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { CustomToastView, LoaderHOC } from './src/components';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor, store } from './src/redux/store';
@@ -10,12 +10,19 @@ import Orientation from 'react-native-orientation-locker';
 import { isTablet } from 'react-native-device-info';
 import SplashScreen from 'react-native-splash-screen'
 import * as RNIap from 'react-native-iap';
+import * as Sentry from "@sentry/react-native";
+import { Settings } from 'react-native-fbsdk-next';
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide()
     !isTablet() && Orientation.lockToPortrait()
-
+    if (Platform.OS === 'ios') {
+      Settings.initializeSDK();
+    }
+    Sentry.init({
+      dsn: "https://1d53e41ee4334075847fd0800bf4c2fa@o577167.ingest.sentry.io/5731645",
+    });
     RNIap.initConnection().then(() => {
       // we make sure that "ghost" pending payment are removed
       // (ghost = failed pending payment that are still marked as pending in Google's native Vending module cache)

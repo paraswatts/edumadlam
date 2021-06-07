@@ -4,12 +4,38 @@ import { useEffect } from 'react'
 import { Platform, PixelRatio, PermissionsAndroid, Dimensions, Alert, Linking, BackHandler } from 'react-native';
 import { showMessage } from "react-native-flash-message";
 import { isTablet } from 'react-native-device-info';
-import { TEXT_CONST } from '../constants';
+import { ROUTES, TEXT_CONST } from '../constants';
 import moment from 'moment';
 import * as RNIap from 'react-native-iap';
+import * as Sentry from "@sentry/react-native";
+import { navigate } from './navigation';
 
 let dim = Dimensions.get('window')
 let height = dim.height > dim.width ? dim.height : dim.width;
+const NOTIFICATION_CODES = {
+    'news': (_id, _heading) => navigate(ROUTES.NEWS.DETAIL, { _id, _heading }),
+    'important': (_id, _heading) => navigate(ROUTES.IMPORTANT.DETAIL, { _id, _heading }),
+    'test_series': (_id) => navigate(ROUTES.TEST.CATEGORY, { id: _id }),
+    'test_list': (_id, _heading, _category, _price, _productId) => navigate(ROUTES.TEST.LIST, { _id, _heading, _category, _price, _productId }),
+
+};
+
+export const _handleNotifications = ({
+    data: {
+        _notification_type = '',
+        _id = '',
+        _heading = '',
+        _category = '',
+        _price = '',
+        _productId = ''
+    } = {},
+}) => {
+    console.log("data", _notification_type)
+    NOTIFICATION_CODES[_notification_type]
+        ? NOTIFICATION_CODES[_notification_type](_id, _heading, _category, _price, _productId)
+        : navigate(ROUTES.BOTTOM_TAB.HOME);
+};
+
 
 export const _scaleText = (fontSize) => {
     if (isTablet()) {
@@ -22,9 +48,8 @@ export const _scaleText = (fontSize) => {
     }
 }
 
-export const appleInAppPurchase = async (productPrice) => {
-    productPrice = parseInt(productPrice).toString()
-    console.log("productPrice", productPrice)
+export const appleInAppPurchase = async (productId) => {
+    console.log("productId", productId)
     const productIds = Platform.select({
         ios: [
             'plan.179',
@@ -40,18 +65,35 @@ export const appleInAppPurchase = async (productPrice) => {
             'plan.2599',
         ]
     });
-    const products = await RNIap.getProducts(productIds);
+    console.log("productIds", productIds)
+    let products
+    try {
+        products = await RNIap.getProducts(productIds);
+    } catch (error) {
+        console.log("error products", error)
+    }
+    // Sentry.captureException("Exceptio1");
+
     console.log(":products", products)
-    let product = findProductToPurchase(products, productPrice)
+    let product = findProductToPurchase(products, productId)
+    // Sentry.captureException("Exception2");
     console.log("product", product)
     const purchase = await RNIap.requestPurchase(product[0].productId);
+    // Sentry.captureException("exception4");
+    await RNIap.finishTransaction(purchase)
     console.log(purchase, 'products', products)
+    // Sentry.captureException("Exception3")
     return purchase;
 }
 
-const findProductToPurchase = (products, productPrice) => {
-    let productToPurchase = products && products.length && products.filter((item) => item.price === productPrice)
+const findProductToPurchase = (products, productId) => {
+    console.log("products length", products.length)
+    let productToPurchase = products && products.length && products.filter((item) => {
+        console.log(item.price, "item", item.localizedPrice, "name", item.productId)
+        return item.productId === productId
+    })
     console.log("productToPurchase", productToPurchase)
+    // Sentry.captureEvent
     return productToPurchase;
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler } from 'react-native';
+import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast } from '../../../../../../../shared';
@@ -8,7 +8,17 @@ import FastImage from 'react-native-fast-image';
 import momemt from 'moment'
 import HTMLView from 'react-native-htmlview';
 import WebView from 'react-native-webview';
-
+import HTML from "react-native-render-html";
+const INJECTEDJAVASCRIPT = `<style>body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+    </style>
+  `;
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const ImportantDetailScreen = ({
     navigation,
@@ -25,6 +35,7 @@ const ImportantDetailScreen = ({
         let payload = {
             netConnected,
             id: _id,
+            sId: sId,
             success: (response = []) => {
                 !response.length
                 updateData(refresh ? [...response] : [...data, ...response])
@@ -36,6 +47,13 @@ const ImportantDetailScreen = ({
             }
         }
         importantDetailRequest(payload)
+    }
+
+    const replaceString = (str) => {
+        let _questUpdated = str.replace(/(\r\n|\n|\r)/gm, "")
+        _questUpdated = _questUpdated.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, "")
+        _questUpdated = _questUpdated.replace(/<[^/>][^>]*><\/[^>]+>/g, "")
+        return _questUpdated
     }
 
     useEffect(() => {
@@ -67,7 +85,7 @@ const ImportantDetailScreen = ({
             onBackPress={navigation.goBack}
         >
             {data && data.length &&
-                <ScrollView contentContainerStyle={{ padding: _scaleText(10).fontSize }}>
+                <View style={{ padding: _scaleText(10).fontSize, flex: 1 }}>
                     <Text style={{ fontWeight: 'bold', fontSize: _scaleText(16).fontSize }}>{data[0]._heading}</Text>
 
                     <Text style={{ marginBottom: 10, fontWeight: 'bold', fontSize: _scaleText(10).fontSize }}>{data[0]._timestamp}</Text>
@@ -78,10 +96,15 @@ const ImportantDetailScreen = ({
                         source={{ uri: data[0]._imgUrl }}
                     />
                     {/* <View style={{ marginHorizontal: _scaleText(10).fontSize }}> */}
-                    <HTMLView stylesheet={styles} addLineBreaks={true} value={data[0]._important.replace(/(\r\n|\n|\r)/gm, "")} />
+                    {/* <HTML imagesMaxWidth={Dimensions.get('window').width} tagsStyles={styles} source={{ html: replaceString(data[0]._important) }} /> */}
+                    <WebView
+                        showsVerticalScrollIndicator={false}
+
+                        source={{ html: INJECTEDJAVASCRIPT + '<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0">' + data[0]._important }} style={{ flex: 1, borderWidth: 0 }} />
+                    {/* <HTMLView stylesheet={styles} addLineBreaks={true} value={data[0]._important.replace(/(\r\n|\n|\r)/gm, "")} /> */}
                     {/* <WebView source={{ html: data[0]._important.replace("\n", "") }} /> */}
                     {/* </View> */}
-                </ScrollView>}
+                </View>}
             {loading && <View style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, justifyContent: 'center' }}>
                 <ActivityIndicator
                     size='large'

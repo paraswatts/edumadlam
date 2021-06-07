@@ -1,6 +1,6 @@
 import Drawer from './screen';
 import { connect } from 'react-redux';
-import { getUserDetailsRequest, logoutRequest } from '../../../redux/actions';
+import { getUserDetailsRequest, logoutRequest, loginVerifyRequest } from '../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => {
     return {
 
         getUserDetailsRequest: payload => dispatch(getUserDetailsRequest(payload)),
+        loginVerifyRequest: payload => dispatch(loginVerifyRequest(payload)),
         logoutRequest: () => dispatch(logoutRequest())
     }
 }

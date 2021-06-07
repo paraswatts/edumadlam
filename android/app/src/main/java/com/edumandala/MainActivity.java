@@ -2,8 +2,8 @@ package com.edumandala;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen; // here
-import android.os.Bundle; // here
-
+import android.os.Bundle;
+import android.view.WindowManager;
 public class MainActivity extends ReactActivity {
 
   /**
@@ -19,5 +19,6 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);  // here
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
     }
 }

@@ -61,6 +61,7 @@ function* getNewsDetailSaga({ payload: { netConnected, id, success = () => { }, 
     try {
         if (netConnected) {
             yield put(startLoading());
+            console.log("API.GET_NEWS_DETAIL(`?id=${id}`", API.GET_NEWS_DETAIL(`?id=${id}`))
             const { data = {}, status } = yield getRequest({
                 API: API.GET_NEWS_DETAIL(`?id=${id}`)
             })

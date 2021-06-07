@@ -94,6 +94,22 @@ function CustomDrawer({ navigation,
             isShown: sId ? true : false
         },
     ]
+
+    const SOCIAL_ICONS = [
+        {
+            key: 0,
+            url: TEXT_CONST.INSTA_URL,
+            icon: ICONS.INSTAGRAM,
+        },
+        {
+            key: 1,
+            url: TEXT_CONST.TELEGRAM_URL,
+            icon: ICONS.TELEGRAM,
+        }, {
+            key: 2,
+            url: TEXT_CONST.YOUTUBE_URL,
+            icon: ICONS.YOUTUBE,
+        },]
     const logout = () => {
 
         Alert.alert(
@@ -151,6 +167,18 @@ function CustomDrawer({ navigation,
                     <Text style={styles.drawerlabel(active)}>{title}</Text>
                 </TouchableOpacity> : null)
             })}
+            <View style={{ alignItems: 'center' }}>
+                <Text>Follow Us</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
+                    {
+                        SOCIAL_ICONS.map((item, index) => {
+                            let { url, key, icon } = item
+                            return (
+                                <TouchableOpacity onPress={() => Linking.openURL(url)} style={{ borderWidth: 0, padding: 10 }} key={key}>{icon}</TouchableOpacity>)
+                        })
+                    }</View>
+
+            </View>
         </View >
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, KeyboardAvoidingView, Dimensions, Platform, Keyboard, LayoutAnimation, UIManager } from 'react-native';
+import { TouchableOpacity, Text, View, ScrollView, KeyboardAvoidingView, Dimensions, Platform, Keyboard, LayoutAnimation, UIManager } from 'react-native';
 import { ScreenHOC, CustomTextInput, CustomFloatButton, CustomTouchableIcon } from '../../../components';
 import { TEXT_CONST, _scaleText, _formatPhoneNumber, _checkValidPhoneNumber, _checkValidEmail, ROUTES, _showCustomToast, ICONS, LINKS } from '../../../shared';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +22,7 @@ const SignUpScreen = ({
         Keyboard.dismiss();
         signupRequest({
             netConnected,
-            payload: { name: formProps.name, email: formProps.email.toLowerCase().trim(), password: formProps.password, mobile: formProps.mobile, imei: DeviceInfo.getDeviceId() },
+            payload: { name: formProps.name, email: formProps.email.toLowerCase().trim(), password: formProps.password, mobile: formProps.mobile, imei: DeviceInfo.getUniqueId() },
             success: () => {
                 resetForm();
                 navigation.navigate(ROUTES.HOME)

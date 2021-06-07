@@ -58,13 +58,11 @@ function* getTestSeriesListSaga({ payload: { netConnected, catId, success = () =
 function* getPurchasedTestSeriesListSaga({ payload: { netConnected, sId, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
-            console.log("sId", API.GET_PURCHASED_TEST_LIST(`?sId=${sId}`))
             yield put(startLoading());
             const { data = {}, status } = yield getRequest({
                 API: API.GET_PURCHASED_TEST_LIST(`?sId=${sId}`)
             })
 
-            console.log("data", data)
             if (status == 200) {
                 yield put(purchasedTestSeriesListSuccess(data))
                 success(data);
@@ -140,7 +138,6 @@ function* getTestListSaga({ payload: { netConnected, sId, catId, success = () =>
             if (catId) {
                 apiUrl = API.GET_TEST_LIST(`?sId=${sId}&testSeriesId=${catId}`)
             }
-            console.log("apiUrl", apiUrl)
             const { data = {}, status } = yield getRequest({
                 API: apiUrl
             })
@@ -222,7 +219,6 @@ function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, t
             const { data = {}, status } = yield getRequest({
                 API: API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`)
             })
-
             if (status == 200) {
                 success(data);
             } else {

@@ -198,6 +198,8 @@ const QuizScreen = ({
                         onPress: () => {
                             updateExiting(true)
                             submitTest()
+
+                            console.log("hereee")
                             navigation.goBack()
                         }
                     },
@@ -216,7 +218,7 @@ const QuizScreen = ({
     const submitTest = (showModal) => {
         // navigation.goBack()
         let answers = answersList && answersList.length ? answersList : answersKeysLocal
-        let updatedAnswerList = mergeArrays(data && data.length ? data : dataLocal, answersrs)
+        let updatedAnswerList = mergeArrays(data && data.length ? data : dataLocal, answers)
         toggleLoading(true);
         let json = {
             sId: sId,
@@ -258,8 +260,10 @@ const QuizScreen = ({
 
     const updateAnswerList = (answersList, answersKeys) => {
         answersKeysLocal = answersList.map(obj => ({ ...obj }));
+
         updateAnswersListObj(answersKeys)
         updateAnswersList(answersList)
+
     }
     const resultTable = () => {
 
@@ -270,6 +274,7 @@ const QuizScreen = ({
     const goToQuestion = (index) => {
         childRef.current.goToQuestion(index)
     }
+    // console.log("answersListObj =======", answersListObj)
     return (
         <ScreenHOC
             headerTitle={'Daily MCQ'}
@@ -305,7 +310,7 @@ const QuizScreen = ({
             { loading && !exiting ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} />
                 :
                 data && data.length ?
-                    <CustomMCQModal ref={childRef} submitTest={submitTest} updateAnswerList={updateAnswerList} testStarted={testStarted} resetTimer={resetTimer} questionsObj={data} />
+                    <CustomMCQModal ref={childRef} submitTest={submitTest} answersListObj={answersListObj} updateAnswerList={updateAnswerList} testStarted={testStarted} resetTimer={resetTimer} questionsObj={data} />
                     : <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text style={{ fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize }}>No quiz found for the selected date.</Text>
                         <Text style={{ fontSize: isTablet() ? _scaleText(14).fontSize : _scaleText(12).fontSize }}> Please select another date</Text></View>
             }

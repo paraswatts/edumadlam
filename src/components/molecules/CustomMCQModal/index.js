@@ -8,6 +8,8 @@ import FastImage from 'react-native-fast-image';
 import HTMLView from 'react-native-htmlview';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { isTablet } from 'react-native-device-info';
+import WebView from 'react-native-webview';
+import Orientation from 'react-native-orientation-locker';
 
 export const { width, height } = Dimensions.get('window');
 
@@ -28,6 +30,7 @@ const CustomMCQModal = forwardRef(({
     const [isTestStarted, updateIsTestStarted] = useState(false)
     const [answersList, updateAnswersList] = useState([])
     const [answersListObj, updateAnswersListObj] = useState([])
+    const [currentOrientation, setCurrentOrientation] = useState('PORTRAIT')
     useEffect(() => {
         let array = []
         questionsObj.map((obj) => array.push({ qId: obj._id, answer: false, _quest: obj._quest }))
@@ -43,6 +46,16 @@ const CustomMCQModal = forwardRef(({
             updateIsTestStarted(false)
         }
     }, [resetTimer]);
+    useEffect(() => {
+
+        Orientation.lockToPortrait()
+    }, [])
+
+    const _onOrientationDidChange = (orientation) => {
+        console.log(orientation)
+        setCurrentOrientation(orientation)
+
+    };
     useImperativeHandle(ref, () => ({
 
         goToQuestion(index) {
@@ -68,7 +81,9 @@ const CustomMCQModal = forwardRef(({
     }, [])
 
     useEffect(() => {
-        updateAnswerList(answersList, answersListObj)
+        if (answersList && answersList.length) {
+            updateAnswerList(answersList, answersListObj)
+        }
     }, [answersList])
     const secondsToTime = (secs) => {
         let hours = Math.floor(secs / (60 * 60));
@@ -88,6 +103,7 @@ const CustomMCQModal = forwardRef(({
     }
 
     const onPressOption = (option, questionIndex, _id, _quest) => {
+
         // else {
         let optionIndex = answersList.findIndex((answerObj) => answerObj.qId === _id)
         updateAnswersListObj(answersListObj.map(x => {
@@ -99,11 +115,9 @@ const CustomMCQModal = forwardRef(({
         }
         else {
             updateAnswersList(answersList.map((o) => {
-                if (o._id === _id) return { qId: o._id, answer: option }
+                if (o.qId === _id) return { ...o, answer: option }
                 return o;
             }));
-
-
         }
         if (questionIndex < questionsObj.length - 1) {
             updateOption(option)
@@ -148,8 +162,17 @@ const CustomMCQModal = forwardRef(({
         submitTest()
     }
 
+    const findStyle = () => {
+        console.log(currentOrientation, "isTablet()", isTablet())
+        return isTablet() ? currentOrientation === 'PORTRAIT' ? styles.childPortrait : styles.childVertical : styles.child1
+    }
+
     const renderQuestionitem = ({ item, index }) => {
         const { _imgUrl, _quest, _opt1, _opt2, _opt3, _opt4, _remark, _id } = item
+        let _questUpdated = _quest.replace(/(\r\n|\n|\r)/gm, "")
+        _questUpdated = _questUpdated.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, "")
+        _questUpdated = _questUpdated.replace(/<[^/>][^>]*><\/[^>]+>/g, "")
+        console.log("findStyle()", findStyle())
         return (
             <View >
                 <ScrollView key={_id} style={[styles.child]} showsVerticalScrollIndicator={false}>
@@ -163,7 +186,11 @@ const CustomMCQModal = forwardRef(({
                             source={{ uri: _imgUrl }}
                         />}
                         <View style={styles.htmlContainer}>
-                            <HTMLView addLineBreaks={true} stylesheet={styles} value={_quest.replace(/(\r\n|\n|\r)/gm, "")} />
+                            {/* <WebView
+                                scrollEnabled={true}
+                                source={{ html: '<meta name="viewport" content="width=device-width, initial-scale=1">' + _quest }}
+                                style={{ flex: 1, height: '100%', borderWidth: 0 }} /> */}
+                            <HTMLView stylesheet={styles} value={_questUpdated} />
                         </View>
                         <View style={styles.optionsContainer}>
                             {/* {_remark ? <Text style={styles.remarkText}>{_remark}</Text> : null} */}
@@ -174,6 +201,7 @@ const CustomMCQModal = forwardRef(({
                                 {renderOption(_opt4, '_opt4', index, [styles.optionButton, styles.buttonTop], _id, _quest)}
                             </View>
                         </View>
+
                     </View>
                 </ScrollView >
             </View>
@@ -208,7 +236,6 @@ const CustomMCQModal = forwardRef(({
 
             <FlatList
                 getItemLayout={(data, index) => ({ index, length: width, offset: (width * index) })}
-
                 onScrollToIndexFailed={() => { }}
                 keyExtractor={(item, index) => item._id + '' + index}
                 initialScrollIndex={0}

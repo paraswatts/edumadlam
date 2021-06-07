@@ -89,7 +89,7 @@ const FriendsScreen = ({
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
                     let { _id, _catName, _imgUrl, _name } = item;
-                    return (<TouchableOpacity onPress={() => navigation.navigate(ROUTES.IMPORTANT.POST_LIST, { _id: _id, _category: _name })}
+                    return (<TouchableOpacity onPress={() => navigation.navigate(ROUTES.IMPORTANT.CHAPTER_LIST, { _id: _id, _category: _name })}
                         style={{
 
                             flexDirection: 'row',

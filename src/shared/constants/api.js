@@ -77,13 +77,20 @@ export const API = {
     // new api's
     GET_IMPORTANT_CATEGORIES: (params = '') => PREFIX_URL + `importantCategoryJson.php${params}`,
     GET_IMPORTANT_SUB_CATEGORIES_LIST: (params = '') => PREFIX_URL + `importantSubCategory.php${params}`,
-    GET_IMPORTANT_SUB_CATEGORIES: (params = '') => PREFIX_URL + `importantListJson.php${params}`,
+    GET_IMPORTANT_CHAPTER_LIST: (params = '') => PREFIX_URL + `importantChapterList.php${params}`,
+
+    GET_IMPORTANT_SUB_CATEGORIES: (params = '') => PREFIX_URL + `importantList.php${params}`,
     GET_IMPORTANT_DETAIL: (params = '') => PREFIX_URL + `importantFullJson.php${params}`,
     GET_NEWS_CATEGORIES: (params = '') => PREFIX_URL + `newsCategoryJson.php${params}`,
     GET_NEWS_SUB_CATEGORIES: (params = '') => PREFIX_URL + `newsListJson.php${params}`,
     GET_NEWS_DETAIL: (params = '') => PREFIX_URL + `newsFullJson.php${params}`,
     SIGNIN: (params = '') => PREFIX_URL + `loginCheckJson.php${params}`,
+    LOGIN_VERIFY: (params = '') => PREFIX_URL + `loginVerify.php${params}`,
+    FORGET_PASSWORD: (params = '') => PREFIX_URL + `otpCall.php${params}`,
     SIGNUP: (params = '') => PREFIX_URL + `insertStudentJson.php${params}`,
+    UPDATE_USER: (params = '') => PREFIX_URL + `updateProfile.php${params}`,
+    OTP_VERIFY: (params = '') => PREFIX_URL + `otpVerify.php${params}`,
+
     GET_STREAM_LIST: PREFIX_URL + 'streamListJson.php',
     GET_TEST_CATEGORIES: (params = '') => PREFIX_URL + `testSeriesCategoryJson.php${params}`,
     GET_TEST_SERIES: (params = '') => PREFIX_URL + `testSeriesListJson.php${params}`,
@@ -93,7 +100,7 @@ export const API = {
     GET_USER_PROFILE: (params = '') => PREFIX_URL + `profileDataJson.php${params}`,
     GET_USER_PURCHASE_HISTORY: (params = '') => PREFIX_URL + `paymentListCreateJson.php${params}`,
     GET_MONTHLY_MAGAZINE: PREFIX_URL + `monthlyMagzineFullJson.php`,
-
+    GENERATE_PAYMENT_LINK: (params = '') => PREFIX_URL + `generatePLink.php${params}`,
     GET_TEST_QUESTIONS: (params = '') => PREFIX_URL + `questionListJson.php${params}`,
     GET_TEST_LIST: (params = '') => PREFIX_URL + `purchasedTestListJson.php${params}`,
     GET_DAILY_QUIZ: (params = '') => PREFIX_URL + `dailyQuestionJson.php${params}`,

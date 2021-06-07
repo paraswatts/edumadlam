@@ -4,9 +4,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MyProfile, MyPurchaseHistory, MonthlyMagzine } from './Screens';
 import BottomTab from '../BottomTab/index';
 import { NavigationContainer } from '@react-navigation/native';
-import { ROUTES, _showCustomToast, _scaleText } from '../../../shared';
+import { ROUTES, _showCustomToast, _scaleText, _handleNotifications, navigationRef } from '../../../shared';
 import { CustomDrawer } from '../../../components';
 import messaging from '@react-native-firebase/messaging';
+import DeviceInfo from 'react-native-device-info';
 
 const Drawer = createDrawerNavigator();
 const LogoutButton = () => (
@@ -16,14 +17,50 @@ const DrawerNavigator = ({
     params,
     netConnected,
     getUserDetailsRequest,
+    loginVerifyRequest,
     sId,
     userData,
+    navigation,
     logoutRequest
 }) => {
 
     useEffect(() => {
         requestUserPermission()
+
+        messaging().onNotificationOpenedApp((remoteMessage) => {
+            console.log("remoteMessage-=====", remoteMessage)
+
+            _handleNotifications(remoteMessage);
+            console.log(
+                'Notification caused app to open from background state:',
+                remoteMessage,
+            );
+        });
+
+        messaging()
+            .getInitialNotification()
+            .then((remoteMessage) => {
+                console.log("remoteMessage", remoteMessage)
+                if (remoteMessage) {
+                    _handleNotifications(remoteMessage);
+                    console.log(
+                        'Notification caused app to open from quit state:',
+                        remoteMessage,
+                    );
+                }
+            });
         if (sId) {
+            loginVerifyRequest({
+                netConnected,
+                payload: { sId: sId, imei: DeviceInfo.getUniqueId() },
+                success: () => {
+
+                },
+                fail: (message) => {
+                    logoutRequest()
+                    navigation.navigate(ROUTES.SIGNIN_SCREEN)
+                }
+            })
             getUserDetailsRequest({
                 netConnected,
                 payload: { sId: sId },

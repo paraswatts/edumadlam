@@ -11,6 +11,7 @@ function* getUserDetailsSaga({ payload: { netConnected, payload = {}, success = 
             const { status, data = {} } = yield postRequest({
                 API: API.GET_USER_PROFILE(`?sId=${payload.sId}`)
             })
+            console.log("data", data)
             if (status == 200) {
                 if (data[0]._email) {
                     yield put(getUserDetailsSuccess(data[0]));

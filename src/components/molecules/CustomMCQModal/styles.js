@@ -57,6 +57,11 @@ export default StyleSheet.create({
         width,
         marginBottom: _scaleText(60).fontSize
     },
+    child1: {
+        // flex: 1,
+        width,
+        marginBottom: _scaleText(60).fontSize
+    },
     text: {
         fontSize: width * 0.5,
         textAlign: 'center'
@@ -232,7 +237,8 @@ export default StyleSheet.create({
     },
     htmlContainer: {
         marginHorizontal: _scaleText(10).fontSize,
-        marginTop: _scaleText(10).fontSize
+        marginTop: _scaleText(10).fontSize,
+        flex: 1
     },
     optionsContainer: {
         padding: _scaleText(10).fontSize

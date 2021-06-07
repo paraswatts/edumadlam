@@ -3,9 +3,14 @@ export const TEXT_CONST = {
     DONT_HAVE_ACCOUNT: 'Don’t have an account? ',
     MOBILE_OR_EMAIL: 'Mobile number or email address',
     PASSWORD: 'Password',
+    CHANGE_PASSWORD: 'Change Password',
+
     SIGNIN: 'Sign In',
     SKIP: 'Skip',
     SIGNUP: 'Sign up',
+    INSTA_URL: 'https://www.instagram.com/achieveias/',
+    TELEGRAM_URL: 'https://t.me/Achieve_Ias',
+    YOUTUBE_URL: 'https://www.youtube.com/channel/UCBIpFccOlLkzOIotrBL9fVg',
     //SIGN UP SCREEN
     ALREADY_A_MEMBER: 'Already a member? ',
     ALREDY_MEMBER: 'Already a frugbi user. Please enter another',
@@ -32,10 +37,11 @@ export const TEXT_CONST = {
     CODE_NOT_RECEIVED: "Didn't receive the verification code?",
     CODE_RESEND: 'Code has been resent',
     INVALID_CODE: 'Invalid verification code',
-    MOBILE_UPDATE_SUCESS: 'Mobile number updated successfully',
+    UPDATE_SUCESS: 'Profile updated successfully',
     REGISTRATION_SUCESS: 'Registration successful!',
     RESEND_CODE: 'Resend code',
-    VERIFICATION_CODE_SUBTITLE: 'Verification code sent to ',
+    OTP_SENT: 'OTP sent successfully to your registered mobile number',
+    VERIFICATION_CODE_SUBTITLE: 'Verification code sent to your mobile number',
     VERIFICATION_CODE: 'Verification code',
     // PERSIONAL DETAILS SCREEN
     ADD_FRIEND: 'Add friend',
@@ -100,6 +106,8 @@ export const TEXT_CONST = {
     SUBSCRIPTIONS: 'Subscription',
     USER_AGREEMENT: 'User Agreement',
     VERSION: 'Version ',
+    FORGET_PASSWORD: 'Forget Password',
+    PASSWORD_CHANGED: 'Password changed successfully',
 
     //Friends Screen
     ACCEPT: 'Accept',
@@ -218,7 +226,7 @@ export const TEXT_CONST = {
     NO_INTERESTS: 'No Interests',
     PROFILE_PIC_SUCESS: 'Profile picture uploaded successfully',
     TOOK_HELP: 'Help Taken',
-    VERIFIED: 'verified',
+    VERIFIED: 'OTP verified successfully',
     VERIFY_EMAIL_SUCESS: 'Verification link sent to your email address.',
     VERIFY_EMAIL: 'Verify Email',
 
@@ -370,6 +378,8 @@ export const TEXT_CONST = {
     PASSWORD_DONT_MATCH: 'Passwords don\'t match',
     EMAIL_REGEX: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     LOGIN_SUCCESS: 'Login successful!',
+    FORGET_PASSWORD_SUCCESS: 'Please check your email and follow instructions to change your password',
+
     ALL_TEST_SERIES: 'All Test Series',
     PURCHASED_TEST_SERIES: 'Purchased Test Series',
     TIME_LEFT: 'Time Left',
@@ -392,7 +402,7 @@ export const TEXT_CONST = {
     PURCHASE: 'Buy',
     TIMETABLE: 'Timetable: ',
     END_DATE: 'End Date: ',
-    START_DATE: 'Start Date: ',
+    START_DATE: 'Test Start Date: ',
     PRICE: 'Price: ',
     NAME: 'Name: ',
     OK: 'Go Back',
@@ -403,6 +413,7 @@ export const TEXT_CONST = {
     LEFT: 'Left',
     RESULT_PDF: 'Result',
     DOWNLOAD_PDF: 'Answer Key',
+    PDF: 'Download PDF',
     SELECT_QUESTION: 'Select Question',
     VIEW: 'View',
     SELECT_STREAM: 'Select Stream',

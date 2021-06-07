@@ -9,6 +9,7 @@ import styles from './styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import { isTablet } from 'react-native-device-info';
+import * as Sentry from "@sentry/react-native";
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const TestSeriesListScreen = ({
@@ -18,6 +19,7 @@ const TestSeriesListScreen = ({
     generatePaymentLinkRequest,
     sId,
     selectedStream,
+    route: { name, params: { id, } = {} },
     stopLoading,
     completeStorePayment,
     authToken,
@@ -27,7 +29,7 @@ const TestSeriesListScreen = ({
     const [loading, toggleLoading] = useState(false);
     const [refreshing, toggleRefreshing] = useState(true);
     const [showDate, updateShowDate] = useState(false)
-    const [_id, updateId] = useState(selectedStream)
+    const [_id, updateId] = useState(selectedStream ? selectedStream : id)
     const [date, updateDate] = useState(moment(new Date()).format("yyyy-MM-DD"))
     const [selectedDate, updateSelectedDate] = useState(new Date())
 
@@ -81,29 +83,36 @@ const TestSeriesListScreen = ({
         stopLoading();
     };
     const fetchPaymentPage = (paymentObj) => {
-        toggleLoading(true);
-        let payload = {
-            netConnected,
-            amount: paymentObj.amount,
-            purpose: paymentObj.purpose.replace(/\s+/g, ''),
-            sId,
-            type: 'testCategory',
-            productId: paymentObj.productId,
-            success: (response = []) => {
-                let res = response && response.length && response[0]
-                if (res && res.status && res.status == 1) {
-                    let _webPage = res && res.response
-                    navigation.navigate(ROUTES.TEST.PAYMENT_SCREEN, { _webPage: _webPage })
+        console.log("paymentObj", paymentObj)
+        if (authToken) {
+            toggleLoading(true);
+            let payload = {
+                netConnected,
+                amount: paymentObj.amount,
+                purpose: paymentObj.purpose.replace(/\s+/g, ''),
+                sId,
+                type: 'testCategory',
+                productId: paymentObj.id,
+                success: (response = []) => {
+                    let res = response && response.length && response[0]
+                    if (res && res.status && res.status == 1) {
+                        let _webPage = res && res.response
+                        navigation.navigate(ROUTES.TEST.PAYMENT_SCREEN, { _webPage: _webPage })
+                    }
+                    toggleLoading(false);
+                },
+                fail: (message = '') => {
+                    _showCustomToast({ message });
+                    toggleLoading(false);
+                    toggleRefreshing(false);
                 }
-                toggleLoading(false);
-            },
-            fail: (message = '') => {
-                _showCustomToast({ message });
-                toggleLoading(false);
-                toggleRefreshing(false);
             }
+            generatePaymentLinkRequest(payload)
         }
-        generatePaymentLinkRequest(payload)
+        else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+
+        }
 
     }
 
@@ -113,7 +122,8 @@ const TestSeriesListScreen = ({
             setTimeout(() => {
                 stopLoading()
             }, 1000)
-            let paymentResponse = await appleInAppPurchase(paymentObj.amount);
+            let paymentResponse = await appleInAppPurchase(paymentObj.productId);
+
             stopLoading()
             console.log(paymentResponse.transactionId, "paymentResponse", paymentResponse)
             let payload = {
@@ -122,7 +132,7 @@ const TestSeriesListScreen = ({
                 paymentMode: 'appleStore',
                 sId,
                 type: 'testCategory',
-                productId: paymentObj.productId,
+                productId: paymentObj.id,
                 transactionId: paymentResponse.transactionId,
                 timestamp: paymentResponse.transactionDate,
                 success: (response = []) => {
@@ -185,8 +195,9 @@ const TestSeriesListScreen = ({
                 numColumns={isTablet() ? 1 : 1}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _category, _price, _imgUrl } = item;
-                    let paymentObj = { amount: _price, purpose: _category, productId: _id }
+                    let { _id, _category, _price, _imgUrl, _productId } = item;
+                    let paymentObj = { amount: _price, purpose: _category, id: _id, productId: _productId }
+                    // console.log("item", item)
                     return (<View
                         style={{
                             flex: 1,
@@ -211,12 +222,12 @@ const TestSeriesListScreen = ({
                             <Text style={{ fontWeight: '500', fontSize: _scaleText(12).fontSize, marginTop: 10, color: COLORS.BLUE_FONT }}><Text style={styles.fontBold}>{TEXT_CONST.PRICE}</Text>{`₹${_price}`}</Text>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: _scaleText(16).fontSize }}>
-                                {<TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.LIST, { _id: _id, _category: _category, _price: _price })} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                                {<TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.LIST, { _id: _id, _category: _category, _price: _price, _productId })} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                     <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.VIEW}</Text>
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                                 </TouchableOpacity>}{parseInt(_price) > 0 ? <TouchableOpacity onPress={() =>
 
-                                    Platform.OS === 'android' ? fetchPaymentPage(paymentObj) : applePayments(paymentObj)} style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                                    Platform.OS === 'android' ? fetchPaymentPage(paymentObj) : applePayments(paymentObj)} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                     <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.PURCHASE}</Text>
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                                 </TouchableOpacity> : null}

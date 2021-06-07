@@ -7,6 +7,7 @@ import { CustomImage } from '../../../../../../../components/atoms';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment'
 import { isTablet } from 'react-native-device-info';
+
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const NewsSubCategory = ({
     navigation,
@@ -77,6 +78,7 @@ const NewsSubCategory = ({
     // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}
     />)
 
+
     return (
         <ScreenHOC
             bottomSafeArea
@@ -115,18 +117,19 @@ const NewsSubCategory = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _heading, _imgUrl, _timestamp } = item;
+                    console.log("item", item)
+                    let { _id, _heading, _imgUrl, _timestamp, _link } = item;
                     return (
-                        <View style={{ flex: 1 }}>
+                        <View style={{
+                            flex: 1,
+                            shadowColor: '#b2b2b2',
+                            shadowOffset: { width: 0, height: 1 },
+                            shadowOpacity: 0.8,
+                            shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
+                        }}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(ROUTES.NEWS.DETAIL, { _id: _id, _heading: _heading })}
-                                style={{
-                                    flex: 1,
-                                    shadowColor: '#b2b2b2',
-                                    shadowOffset: { width: 0, height: 1 },
-                                    shadowOpacity: 0.8,
-                                    shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
-                                }}>
+                            >
                                 <FastImage
                                     style={{ height: 150 }}
                                     resizeMode={'contain'}

@@ -1,6 +1,6 @@
 import VerificationCodeScreen from './screen';
 import { connect } from 'react-redux';
-import { requestOTP, phoneUpdateOtpRequest, phoneUpdateRequest, signinRequest } from '../../../redux/actions';
+import { requestOTP, otpVerifyRequest } from '../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -10,10 +10,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        phoneUpdateOtpRequest: payload => dispatch(phoneUpdateOtpRequest(payload)),
-        phoneUpdateRequest: payload => dispatch(phoneUpdateRequest(payload)),
-        requestOTP: payload => dispatch(requestOTP(payload)),
-        signinRequest: payload => dispatch(signinRequest(payload)),
+        otpVerifyRequest: payload => dispatch(otpVerifyRequest(payload)),
     }
 }
 

@@ -10,6 +10,9 @@ export default StyleSheet.create({
         backgroundColor: COLORS.GREY.LIGHTER,
         paddingTop: _scaleText(8).fontSize,
     },
+    scrollContainer: {
+        paddingHorizontal: _scaleText(24).fontSize,
+    },
     buttonContainer: {
         padding: _scaleText(16).fontSize,
         flexDirection: 'row',
@@ -26,6 +29,13 @@ export default StyleSheet.create({
         flex: 1,
 
         fontSize: _scaleText(16).fontSize,
+    },
+    buttonStyle: {
+        paddingHorizontal: _scaleText(50).fontSize,
+        marginTop: _scaleText(5).fontSize,
+        borderRadius: _scaleText(5).fontSize,
+        backgroundColor: COLORS.PRIMARY.PINK,
+        borderWidth: 0
     },
     iconStyle: (size = 24) => ({
         width: _scaleText(size).fontSize,

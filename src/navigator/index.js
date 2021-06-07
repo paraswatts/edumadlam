@@ -27,7 +27,10 @@ import {
     TestDetailScreen,
     PaymentWebView,
     YoutubeVideoCategories,
-    ImportantPostList
+    ImportantPostList,
+    ForgetPasswordScreen,
+    ImportantChapterScreen,
+    ChangePasswordScreen
 } from '../screens';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -58,6 +61,8 @@ function RootNavigator({
                 headerMode='none'>
                 <Stack.Screen name={ROUTES.SPLASH_SCREEN} component={SplashScreen} />
                 <Stack.Screen name={ROUTES.SIGNIN_SCREEN} component={SignInScreen} />
+                <Stack.Screen name={ROUTES.FORGET_PASSWORD} component={ForgetPasswordScreen} />
+                <Stack.Screen name={ROUTES.CHANGE_PASSWORD} component={ChangePasswordScreen} />
                 <Stack.Screen name={ROUTES.SIGNUP_SCREEN} component={SignupScreen} />
                 <Stack.Screen name={ROUTES.VERIFICATION_CODE_SCREEN} component={VerificationCodeScreen} />
                 <Stack.Screen name={ROUTES.HOME} component={DrawerNavigator} />
@@ -65,6 +70,7 @@ function RootNavigator({
                 <Stack.Screen name={ROUTES.IMPORTANT.SUB_CATEGORY} component={ImportantSubCategory} />
                 <Stack.Screen name={ROUTES.IMPORTANT.DETAIL} component={DetailsScreen} />
                 <Stack.Screen name={ROUTES.IMPORTANT.POST_LIST} component={ImportantPostList} />
+                <Stack.Screen name={ROUTES.IMPORTANT.CHAPTER_LIST} component={ImportantChapterScreen} />
                 <Stack.Screen name={ROUTES.NEWS.SUB_CATEGORY} component={NewsSubCategory} />
                 <Stack.Screen name={ROUTES.NEWS.DETAIL} component={NewsDetailsScreen} />
                 <Stack.Screen name={ROUTES.TEST.CATEGORY} component={TestSeriesScreen} />

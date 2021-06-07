@@ -41,13 +41,16 @@ const CustomModal = ({
             icon = 'checkbox-blank-circle'
             color = '#c2c2c2'
         }
+        let _questUpdated = _quest.replace(/(\r\n|\n|\r)/gm, "")
+        _questUpdated = _questUpdated.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, "")
+        _questUpdated = _questUpdated.replace(/<[^/>][^>]*><\/[^>]+>/g, "")
         return (
             <View style={{ flexDirection: 'row', marginVertical: _scaleText(5).fontSize, marginHorizontal: _scaleText(10).fontSize, borderWidth: 0.5, padding: _scaleText(5).fontSize, borderRadius: _scaleText(5).fontSize }}>
                 <MaterialCommunityIcons name={icon}
                     color={color} size={_scaleText(isTablet() ? 16 : 15).fontSize} />
                 <View style={{ borderWidth: 0, marginLeft: _scaleText(5).fontSize }}>
                     <View>
-                        <HTMLView addLineBreaks={true} style={{ width: '90%' }} stylesheet={styles} value={_quest.replace(/(\r\n|\n|\r)/gm, "")} />
+                        <HTMLView addLineBreaks={true} style={{ width: '90%' }} stylesheet={styles} value={_questUpdated} />
                         <View>
                             <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'1. '}{_opt1}</Text>
                             <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'2. '}{_opt2}</Text>

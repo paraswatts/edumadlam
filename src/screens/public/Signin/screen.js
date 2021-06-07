@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, KeyboardAvoidingView, Dimensions, Platform, Keyboard, LayoutAnimation, UIManager } from 'react-native';
+import { Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView, Dimensions, Platform, Keyboard, LayoutAnimation, UIManager } from 'react-native';
 import { ScreenHOC, CustomTextInput, CustomFloatButton, CustomTouchableIcon } from '../../../components';
 import { TEXT_CONST, _scaleText, _formatPhoneNumber, _checkValidPhoneNumber, _checkValidEmail, ROUTES, _showCustomToast, ICONS, LINKS } from '../../../shared';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,7 +7,7 @@ import styles from './styles';
 import { CustomButton } from '../../../components/atoms';
 import { COLORS, validator } from '../../../shared';
 import { Field, reduxForm } from 'redux-form';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import DeviceInfo from 'react-native-device-info';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -23,7 +23,7 @@ const SigninScreen = ({
         Keyboard.dismiss();
         signinRequest({
             netConnected,
-            payload: { email: formProps.email.toLowerCase().trim(), password: formProps.password },
+            payload: { email: formProps.email.toLowerCase().trim(), password: formProps.password, imei: DeviceInfo.getUniqueId() },
             success: (id) => {
                 resetForm();
                 navigation.navigate(ROUTES.HOME, { userId: id })
@@ -70,6 +70,11 @@ const SigninScreen = ({
                                     onPress={handleSubmit(_onSignin)}
                                     container={styles.buttonStyle}
                                 />
+                                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FORGET_PASSWORD)} style={{ marginTop: _scaleText(8).fontSize, alignSelf: 'flex-end' }}>
+                                    <Text style={{
+                                        color: 'blue', textDecorationLine: 'underline',
+                                    }}> {TEXT_CONST.FORGET_PASSWORD}</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         <Text style={styles.privacyPolicy}>

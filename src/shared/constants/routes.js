@@ -18,6 +18,8 @@ export const ROUTES = {
     SIGNIN_SCREEN: 'SIGNIN_SCREEN',
     SIGNUP_SCREEN: 'SIGNUP_SCREEN',
     SPLASH_SCREEN: 'SPLASH_SCREEN',
+    FORGET_PASSWORD: 'FORGET_PASSWORD',
+    CHANGE_PASSWORD: 'CHANGE_PASSWORD',
     SUGGESTED_FRIENDS_SCREEN: 'SUGGESTED_FRIENDS_SCREEN',
     TASK_CREATED_SCREEN: 'TASK_CREATED_SCREEN',
     TASK_DETAILS: 'TASK_DETAILS',
@@ -42,7 +44,8 @@ export const ROUTES = {
         SUB_CATEGORY: 'Important Sub Categories',
         LIST: 'Important List',
         DETAIL: 'Important Detail',
-        POST_LIST: 'Important Post List'
+        POST_LIST: 'Important Post List',
+        CHAPTER_LIST: 'Important Chapter List'
     },
     NEWS: {
         SUB_CATEGORY: 'News Sub Categories',

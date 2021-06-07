@@ -81,7 +81,7 @@ const TestQuestions = ({
                         onPress: () => {
                             updateExiting(true)
                             submitTest()
-                            // navigation.goBack()
+                            navigation.goBack()
                         }
                     },
                     {
@@ -117,13 +117,13 @@ const TestQuestions = ({
                 { cancelable: false },
             );
         } else {
-            // navigation.goBack()
+            navigation.goBack()
         }
     }
 
     const submitTest = () => {
         // navigation.goBack()
-
+        console.log("submit test")
         let answers = answersList && answersList.length ? answersList : answersKeysLocal
         let updatedAnswerList = mergeArrays(data && data.length ? data : dataLocal, answers)
         toggleLoading(true);
@@ -136,6 +136,7 @@ const TestQuestions = ({
             netConnected,
             json,
             success: (response) => {
+                console.log("response", response)
                 updateResultObj(response)
                 updatetTestSubmitSuccess(true)
                 toggleLoading(false);
@@ -192,6 +193,7 @@ const TestQuestions = ({
                 _toggleFilterModal={_toggleFilterModal}
                 visible={showFilterModal && isTestStarted}
             />
+
             {!!testSubmitSuccess && !exiting &&
                 <CustomModal
                     name={_test}

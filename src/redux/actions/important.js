@@ -7,6 +7,8 @@ export const IMP_SUB_CAT_REQUEST = 'IMP';
 export const IMPORTANT_SUB_CAT_SUCCESS = 'IMPORTANT_SUB_CAT_SUCCESS';
 export const IMPORTANT_DETAIL_REQUEST = 'IMPORTANT_DETAIL_REQUEST';
 export const IMPORTANT_DETAIL_SUCCESS = 'IMPORTANT_DETAIL_SUCCESS';
+export const IMPORTANT_CHAPTER_REQUEST = 'IMPORTANT_CHAPTER_REQUEST';
+export const IMPORTANT_CHAPTER_SUCCESS = 'IMPORTANT_CHAPTER_SUCCESS';
 export const GET_STREAM_LIST_REQUEST = 'GET_STREAM_LIST_REQUEST';
 export const GET_STREAM_LIST_SUCCESS = 'GET_STREAM_LIST_SUCCESS';
 export const importantCatListRequest = payload => {
@@ -19,6 +21,20 @@ export const importantCatListRequest = payload => {
 export const importantCatListSuccess = payload => {
     return {
         type: IMPORTANT_CAT_SUCCESS,
+        payload
+    }
+}
+
+export const importantChapterListRequest = payload => {
+    return {
+        type: IMPORTANT_CHAPTER_REQUEST,
+        payload
+    }
+}
+
+export const importantChapterListSuccess = payload => {
+    return {
+        type: IMPORTANT_CHAPTER_SUCCESS,
         payload
     }
 }
