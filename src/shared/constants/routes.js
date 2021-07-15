@@ -45,7 +45,8 @@ export const ROUTES = {
         LIST: 'Important List',
         DETAIL: 'Important Detail',
         POST_LIST: 'Important Post List',
-        CHAPTER_LIST: 'Important Chapter List'
+        CHAPTER_LIST: 'Important Chapter List',
+        PURCHASED_CHAPTER_LIST: 'Purchased chapter list'
     },
     NEWS: {
         SUB_CATEGORY: 'News Sub Categories',

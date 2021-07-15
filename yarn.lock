@@ -1191,6 +1191,13 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.7.tgz#769c6b306ea6bbaa1c4a3fffdd183d0cfc30ed7e"
   integrity sha512-NAkkT68oF+M9o6El2xeUqZK7magPjG/tAcEbvCbqyhlh3yElKWnI1e1vpbVvFXzTefy67FwYFWOJqBN6U7Mnkg==
 
+"@react-native-community/push-notification-ios@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.8.0.tgz#7d43cb37b9e644ff3069aafa91befe71688a2dc4"
+  integrity sha512-vxvkeampafjmtDoQBN8Q4azP21l6cMX93+OQZemyIWZmG++OjCVDQVitobf/kWLm5zyGwdylejbpMGo75qo7rA==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/slider@^3.0.3":
   version "3.0.3"
   resolved "http://104.197.213.170:8080/@react-native-community%2fslider/-/slider-3.0.3.tgz#830167fd757ba70ac638747ba3169b2dbae60330"
@@ -6781,6 +6788,11 @@ react-native-orientation-locker@^1.2.0:
   version "1.2.0"
   resolved "http://104.197.213.170:8080/react-native-orientation-locker/-/react-native-orientation-locker-1.2.0.tgz#9fa51b3aade9b847e63066b6fd60509371940a7e"
   integrity sha512-lnwp9Jbt1m/0Gfw9a5Mrwj/APNSuYkVdJEgBKRyQgOshDrKRv5dxpD0P786AgIEjnEbjyrNOS6GQvBdqPYSxsg==
+
+react-native-push-notification@^7.3.2:
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-7.3.2.tgz#9cf64da197646a9bb0822d3d49ac3236e76e8444"
+  integrity sha512-5aJ0EO4hwnr8KCxHJrUwyDYeJL8bDWCfa5l3otM4wTEwb3msv9ihUkgrXbW4RUe62XpqaTuBl8gJWFXsuVCFLA==
 
 react-native-reanimated@^1.13.0:
   version "1.13.1"

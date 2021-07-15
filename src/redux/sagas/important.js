@@ -115,6 +115,7 @@ function* getImportantDetailSaga({ payload: { netConnected, id, sId, success = (
             const { data = {}, status } = yield getRequest({
                 API: API.GET_IMPORTANT_DETAIL(`?id=${id}&sId=${sId}`)
             })
+            console.log("data======", data)
             if (status == 200) {
                 yield put(importantSubCatListSuccess(data))
                 success(data);
@@ -134,14 +135,16 @@ function* getImportantDetailSaga({ payload: { netConnected, id, sId, success = (
 }
 
 
-function* getImportantChapterList({ payload: { netConnected, _id, success = () => { }, fail = () => { } } = {} }) {
+function* getImportantChapterList({ payload: { netConnected, _id, sId, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
             yield put(startLoading());
+            console.log("sId saga", sId)
+            let apiUrl = sId ? API.GET_IMPORTANT_CHAPTER_LIST(`?sId=${sId}`) : API.GET_IMPORTANT_CHAPTER_LIST(`?catId=${_id}`)
             const { data = {}, status } = yield getRequest({
-                API: API.GET_IMPORTANT_CHAPTER_LIST(`?catId=${_id}`)
+                API: apiUrl
             })
-            console.log(API.GET_IMPORTANT_CHAPTER_LIST(`?catId=${_id}`), "data", data)
+            console.log(apiUrl)
             if (status == 200) {
                 yield put(importantChapterListSuccess(data))
                 success(data);

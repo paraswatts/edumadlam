@@ -24,10 +24,10 @@ const SigninScreen = ({
         Keyboard.dismiss();
         forgetPasswordRequest({
             netConnected,
-            payload: { email: email },
+            payload: { email: email, type: 'forget' },
             success: () => {
                 resetForm();
-                navigation.navigate(ROUTES.VERIFICATION_CODE_SCREEN, { email: email })
+                navigation.navigate(ROUTES.VERIFICATION_CODE_SCREEN, { email: email, login: false })
                 _showCustomToast({ message: TEXT_CONST.OTP_SENT, type: 'success' })
             },
             fail: (message) => _showCustomToast({ message, type: 'error' })

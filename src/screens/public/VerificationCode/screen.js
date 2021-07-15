@@ -9,7 +9,7 @@ const VerificationScreen = ({
     netConnected,
     phoneUpdateOtpRequest,
     phoneUpdateRequest,
-    route: { name, params: { email } = {} },
+    route: { name, params: { email, login } = {} },
     otpVerifyRequest,
     requestOTP,
     signinRequest,
@@ -23,7 +23,11 @@ const VerificationScreen = ({
             netConnected,
             payload: { email: email, otp: phoneOTP.join('') },
             success: (sId) => {
-                navigation.navigate(ROUTES.CHANGE_PASSWORD, { email: email, sId: sId })
+                if (login) {
+                    navigation.navigate(ROUTES.HOME)
+                } else {
+                    navigation.navigate(ROUTES.CHANGE_PASSWORD, { email: email, sId: sId })
+                }
                 _showCustomToast({ message: TEXT_CONST.VERIFIED, type: 'success' })
             },
             fail: (message) => _showCustomToast({ message, type: 'error' })
@@ -32,7 +36,12 @@ const VerificationScreen = ({
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS == 'ios' ? 'padding' : ''}>
-            <ScreenHOC bottomSafeArea containerStyle={styles.container} >
+            <ScreenHOC bottomSafeArea containerStyle={styles.container} showBackIcon
+                backIcon={ICONS.BACK(30)}
+                showHeader
+                onBackPress={() => navigation.goBack()}
+            // onBackPress={_toggleFilterModal}
+            >
                 <View style={{ flex: 1 }}>
                     <CustomTouchableIcon style={styles.back} onPress={navigation.goBack}>
                         {ICONS.BACK(24)}

@@ -30,9 +30,11 @@ import {
     ImportantPostList,
     ForgetPasswordScreen,
     ImportantChapterScreen,
-    ChangePasswordScreen
+    ChangePasswordScreen,
+    ImportantPurchasedChapterScreen
 } from '../screens';
 import NetInfo from "@react-native-community/netinfo";
+import { Alert } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -43,6 +45,8 @@ function RootNavigator({
 }) {
     React.useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(({ isConnected, isInternetReachable }) => {
+            console.log(isConnected, "herere", isInternetReachable)
+            // Alert.alert(isConnected + "isConnected" + isInternetReachable)
             updateInternetStatus(isConnected)
         });
         return unsubscribe
@@ -71,6 +75,7 @@ function RootNavigator({
                 <Stack.Screen name={ROUTES.IMPORTANT.DETAIL} component={DetailsScreen} />
                 <Stack.Screen name={ROUTES.IMPORTANT.POST_LIST} component={ImportantPostList} />
                 <Stack.Screen name={ROUTES.IMPORTANT.CHAPTER_LIST} component={ImportantChapterScreen} />
+                <Stack.Screen name={ROUTES.IMPORTANT.PURCHASED_CHAPTER_LIST} component={ImportantPurchasedChapterScreen} />
                 <Stack.Screen name={ROUTES.NEWS.SUB_CATEGORY} component={NewsSubCategory} />
                 <Stack.Screen name={ROUTES.NEWS.DETAIL} component={NewsDetailsScreen} />
                 <Stack.Screen name={ROUTES.TEST.CATEGORY} component={TestSeriesScreen} />

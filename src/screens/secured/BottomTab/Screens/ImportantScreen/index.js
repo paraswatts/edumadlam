@@ -5,7 +5,8 @@ import { importantCatListRequest } from '../../../../../redux/actions';
 const mapStateToProps = state => {
     return {
         netConnected: state.common.netConnected,
-        selectedStream: state.common.selectedStream
+        selectedStream: state.common.selectedStream,
+        sId: state.common.authToken,
     }
 }
 

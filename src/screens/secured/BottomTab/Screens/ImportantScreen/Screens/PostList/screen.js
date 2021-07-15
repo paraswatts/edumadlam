@@ -216,7 +216,7 @@ const ImportantSubCategory = ({
                                 />
                                 <Text style={{ fontWeight: '500', fontSize: _scaleText(14).fontSize, marginTop: 10, marginBottom: 10, color: COLORS.BLUE_FONT }}>{_heading}</Text>
                                 <Text style={{ color: COLORS.BLUE_FONT, textAlign: 'right', bottom: 5, right: 10, position: 'absolute', marginTop: 20, fontSize: _scaleText(10).fontSize }}>{_timestamp}</Text>
-                                {
+                                {/* {
                                     !!_pdf && <TouchableOpacity onPress={() => {
                                         try {
                                             Linking.openURL(_pdf)
@@ -225,7 +225,7 @@ const ImportantSubCategory = ({
                                         }
                                     }}><Text style={styles.fontItem}><Text style={styles.fontBold}>{TEXT_CONST.PDF}</Text></Text>
                                     </TouchableOpacity>
-                                }
+                                } */}
                             </TouchableOpacity>
                         </View>
                     )

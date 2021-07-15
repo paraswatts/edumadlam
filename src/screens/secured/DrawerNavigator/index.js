@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => {
 
         getUserDetailsRequest: payload => dispatch(getUserDetailsRequest(payload)),
         loginVerifyRequest: payload => dispatch(loginVerifyRequest(payload)),
-        logoutRequest: () => dispatch(logoutRequest())
+        logoutRequest: (payload) => dispatch(logoutRequest(payload))
     }
 }
 

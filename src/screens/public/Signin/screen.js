@@ -17,22 +17,54 @@ const SigninScreen = ({
     netConnected,
     signinRequest,
     handleSubmit,
+    forgetPasswordRequest,
     resetForm
 }) => {
+
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [email, setEmail] = useState('')
     const _onSignin = (formProps) => {
+        let email = formProps.email.toLowerCase().trim()
         Keyboard.dismiss();
+        console.log('herere', loggedIn)
+        setEmail(email)
         signinRequest({
             netConnected,
-            payload: { email: formProps.email.toLowerCase().trim(), password: formProps.password, imei: DeviceInfo.getUniqueId() },
+            payload: { email: email, password: formProps.password, imei: DeviceInfo.getUniqueId() },
             success: (id) => {
+                console.log("heferrer")
+                setLoggedIn(true)
+
                 resetForm();
-                navigation.navigate(ROUTES.HOME, { userId: id })
-                _showCustomToast({ message: TEXT_CONST.LOGIN_SUCCESS, type: 'success' })
             },
             fail: (message) => _showCustomToast({ message, type: 'error' })
         })
-
     }
+
+    useEffect(() => {
+        console.log("loggedIn", loggedIn)
+        if (loggedIn) {
+            console.log("herer")
+            forgetPasswordRequest({
+                netConnected,
+                payload: { email: email, type: 'login' },
+                success: () => {
+                    console.log("gpo to verification ")
+                    resetForm();
+                    navigation.navigate(ROUTES.VERIFICATION_CODE_SCREEN, { email: email, login: true })
+                    _showCustomToast({ message: TEXT_CONST.OTP_SENT, type: 'success' })
+                },
+                fail: (message) => _showCustomToast({ message, type: 'error' })
+            })
+        }
+    }, [loggedIn])
+    console.log("loggedIn")
+    useEffect(() => {
+        return () => {
+            setLoggedIn(false)
+        }
+    })
+
     let { bottom } = useSafeAreaInsets();
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS == 'ios' ? 'padding' : ''}>

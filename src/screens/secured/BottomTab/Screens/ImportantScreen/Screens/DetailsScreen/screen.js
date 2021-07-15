@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler, Dimensions } from 'react-native';
+import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler, Dimensions, Platform } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
-import { COLORS, TEXT_CONST, _scaleText, _showCustomToast } from '../../../../../../../shared';
+import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, appleInAppPurchase, ROUTES } from '../../../../../../../shared';
 import { CustomImage } from '../../../../../../../components/atoms';
 import FastImage from 'react-native-fast-image';
 import momemt from 'moment'
@@ -25,7 +25,11 @@ const ImportantDetailScreen = ({
     netConnected,
     importantDetailRequest,
     route: { name, params: { _id, _heading } = {} },
-    stopLoading
+    sId: sId,
+    stopLoading,
+    completeStorePayment,
+    generatePaymentLinkRequest,
+    startLoading
 }) => {
     const [loading, toggleLoading] = useState(false);
     const [data, updateData] = useState(false);
@@ -37,6 +41,7 @@ const ImportantDetailScreen = ({
             id: _id,
             sId: sId,
             success: (response = []) => {
+                console.log("response", response)
                 !response.length
                 updateData(refresh ? [...response] : [...data, ...response])
                 toggleLoading(false);
@@ -75,6 +80,80 @@ const ImportantDetailScreen = ({
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     />)
+
+    const fetchPaymentPage = (paymentObj) => {
+        if (sId) {
+            console.log("paymentObj", paymentObj)
+            toggleLoading(true);
+            let payload = {
+                netConnected,
+                amount: paymentObj.amount,
+                purpose: paymentObj.purpose.replace(/\s+/g, ''),
+                sId,
+                type: paymentObj.type,
+                productId: paymentObj.productId,
+                success: (response = []) => {
+                    let res = response && response.length && response[0]
+                    if (res && res.status && res.status == 1) {
+                        let _webPage = res && res.response
+                        navigation.navigate(ROUTES.TEST.PAYMENT_SCREEN, { _webPage: _webPage })
+                    }
+
+                    toggleLoading(false);
+                },
+                fail: (message = '') => {
+                    console.log("herer")
+                    _showCustomToast({ message });
+                    toggleLoading(false);
+                }
+            }
+            generatePaymentLinkRequest(payload)
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
+    }
+
+    const applePayments = async (paymentObj) => {
+        console.log("paymentObj", paymentObj)
+        if (sId) {
+            startLoading()
+            setTimeout(() => {
+                stopLoading()
+            }, 1000)
+            let paymentResponse = await appleInAppPurchase(paymentObj.productId);
+
+            console.log(paymentResponse.transactionId, "paymentResponse", paymentResponse)
+            let payload = {
+                netConnected,
+                amount: paymentObj.amount,
+                paymentMode: 'appleStore',
+                sId,
+                type: paymentObj.type,
+                productId: paymentObj.id,
+                transactionId: paymentResponse.transactionId,
+                timestamp: paymentResponse.transactionDate,
+                success: (response = []) => {
+                    console.log(response, "apple payment")
+                    Alert.alert("Purchase Successful")
+                    fetchData(true)
+                    toggleLoading(false);
+                    stopLoading()
+                },
+                fail: (message = '') => {
+                    stopLoading()
+                    _showCustomToast({ message });
+                    toggleLoading(false);
+
+                }
+            }
+            console.log(payload)
+            completeStorePayment(payload)
+        }
+
+        else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
+    }
     return (
         <ScreenHOC
             bottomSafeArea
@@ -95,6 +174,25 @@ const ImportantDetailScreen = ({
                         resizeMode={'contain'}
                         source={{ uri: data[0]._imgUrl }}
                     />
+                    {data[0]._price.length ? <TouchableOpacity onPress={() => {
+                        let paymentObj = { amount: data[0]._price, purpose: data[0]._chapterName, id: data[0]._id, productId: data[0]._productId, type: 'importantChapter' }
+
+                        if (Platform.OS === 'ios') {
+                            applePayments(paymentObj)
+                        }
+                        else {
+                            fetchPaymentPage(paymentObj)
+                        }
+                    }}><Text style={{ alignSelf: 'flex-start', textDecorationLine: 'underline', color: 'blue', padding: 10 }}>Buy</Text></TouchableOpacity> : null}
+
+
+                    {data[0]._pdf.length ? <TouchableOpacity onPress={() => {
+                        try {
+                            Linking.openURL(data[0]._pdf)
+                        } catch (error) {
+                            console.log("error", error)
+                        }
+                    }}><Text style={{ alignSelf: 'flex-start', textDecorationLine: 'underline', color: 'blue', padding: 10 }}>Download PDF</Text></TouchableOpacity> : null}
                     {/* <View style={{ marginHorizontal: _scaleText(10).fontSize }}> */}
                     {/* <HTML imagesMaxWidth={Dimensions.get('window').width} tagsStyles={styles} source={{ html: replaceString(data[0]._important) }} /> */}
                     <WebView

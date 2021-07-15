@@ -132,8 +132,8 @@ android {
         applicationId "com.edumandala"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
-        versionName "1.0.4"
+        versionCode 11
+        versionName "1.0.9"
         multiDexEnabled true
     }
     splits {

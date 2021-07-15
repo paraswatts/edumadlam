@@ -15,6 +15,7 @@ public class MainActivity extends ReactActivity {
     return "edumandalam";
   }
 
+
   @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);  // here

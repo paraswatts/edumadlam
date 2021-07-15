@@ -9,13 +9,22 @@ import momemt from 'moment'
 import WebView from 'react-native-webview';
 import HTMLView from 'react-native-htmlview';
 import { isTablet } from 'react-native-device-info';
-
+const INJECTEDJAVASCRIPT = `<style>body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+    </style>
+  `;
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const TestDetailScreen = ({
     navigation,
     route: { name, params: { _id, _webPage, _heading } = {} }
 }) => {
-
+    console.log("webpage", _webPage)
 
     return (
         <ScreenHOC
@@ -27,9 +36,13 @@ const TestDetailScreen = ({
             onBackPress={navigation.goBack}
         >
 
-            <ScrollView contentContainerStyle={{ padding: 10 }}>
-                <HTMLView stylesheet={styles} addLineBreaks={true} value={_webPage.replace(/(\r\n|\n|\r)/gm, "")} />
-            </ScrollView>
+            <View style={{ padding: 10, flex: 1 }}>
+                <WebView
+                    showsVerticalScrollIndicator={false}
+
+                    source={{ html: INJECTEDJAVASCRIPT + '<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0">' + _webPage }} style={{ flex: 1, borderWidth: 0 }} />
+                {/* <HTMLView stylesheet={styles} addLineBreaks={true} value={_webPage.replace(/(\r\n|\n|\r)/gm, "")} /> */}
+            </View>
 
         </ScreenHOC>
     );

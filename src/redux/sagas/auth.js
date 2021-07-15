@@ -12,9 +12,9 @@ function* signinSaga({ payload: { netConnected, payload = {}, success = (id) => 
             const { data = {} } = yield postRequest({
                 API: API.SIGNIN(`?email=${payload.email}&password=${payload.password}&imei=${payload.imei}`)
             })
+            console.log("hererre sign in", data)
             if (data && data.length && data[0].remark == 1) {
-                yield put(updateAuthTokenRedux(data[0].id));
-                success(data[0].id);
+                success();
             } else {
                 fail(data[0].msg);
             }
@@ -23,6 +23,7 @@ function* signinSaga({ payload: { netConnected, payload = {}, success = (id) => 
         }
     }
     catch (error) {
+        console.log("error", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -43,6 +44,7 @@ function* signupSaga({ payload: { netConnected, payload = {}, success = () => { 
                     success();
                 } else {
                     fail(data[0].msg);
+
                 }
             } else {
                 fail(data[0].msg)
@@ -63,12 +65,15 @@ function* signupSaga({ payload: { netConnected, payload = {}, success = () => { 
 
 
 
-function* logoutSaga({ payload: { } = {} }) {
+function* logoutSaga({ payload: { verify } = {} }) {
     try {
+        console.log("verify", verify)
         yield put(startLoading());
         yield put(reset());
         updateAuthToken('');
-        _showCustomToast({ message: TEXT_CONST.LOGOUT_SUCCESS, type: 'success' })
+        if (!verify) {
+            _showCustomToast({ message: TEXT_CONST.LOGOUT_SUCCESS, type: 'success' })
+        }
 
         // replace(ROUTES.SIGNIN_SCREEN);
     }
@@ -84,12 +89,13 @@ function* logoutSaga({ payload: { } = {} }) {
 function* forgetPasswordSaga({ payload: { netConnected, payload = {}, success = (id) => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
+            console.log("forgetPasswordSaga")
             yield put(startLoading());
-            console.log("API.FORGET_PASSWORD(`?email=${payload.email}`", API.FORGET_PASSWORD(`?email=${payload.email}`))
+            console.log("API.FORGET_PASSWORD(`?email=${payload.email}`", API.FORGET_PASSWORD(`?email=${payload.email}&type=${payload.type}`))
             const { data = {} } = yield postRequest({
-                API: API.FORGET_PASSWORD(`?email=${payload.email}`)
+                API: API.FORGET_PASSWORD(`?email=${payload.email}&type=${payload.type}`)
             })
-            console.log("data", data)
+            console.log(data && data.length && data[0]._status == 1, "data forgetPasswordSaga", data)
             if (data && data.length && data[0]._status == 1) {
                 success();
             } else {
@@ -100,6 +106,7 @@ function* forgetPasswordSaga({ payload: { netConnected, payload = {}, success = 
         }
     }
     catch (error) {
+        console.log("forgetPasswordSaga error", error)
         fail(JSON.stringify(error));
     }
     finally {
@@ -150,8 +157,8 @@ function* otpVerifyRequest({ payload: { netConnected, payload = {}, success = ()
             const { _status, data = {} } = yield postRequest({
                 API: API.OTP_VERIFY(`?email=${payload.email}&otp=${payload.otp}`)
             })
-            console.log(payload, "data", data)
             if (data && data.length && data[0]._status == "1") {
+                yield put(updateAuthTokenRedux(data[0]._sId));
                 success(data[0]._sId);
             } else {
                 fail(data[0]._msg)
@@ -172,22 +179,24 @@ function* otpVerifyRequest({ payload: { netConnected, payload = {}, success = ()
 
 function* loginVerifySaga({ payload: { netConnected, payload = {}, success = () => { }, fail = () => { } } = {} }) {
     try {
+        console.log("netConnected", netConnected)
         if (netConnected) {
             yield put(startLoading());
             const { data = {} } = yield postRequest({
                 API: API.LOGIN_VERIFY(`?sId=${payload.sId}&imei=${payload.imei}`)
             })
-            console.log("loginVerify", data)
             if (data && data.length && data[0]._status == 1) {
                 success();
             } else {
-                fail();
+                console.log("loginVerify", data[0])
+                fail(data[0].msg);
             }
         } else {
             fail(TEXT_CONST.INTERNET_ERROR)
         }
     }
     catch (error) {
+        console.log("================fail login verify")
         fail(JSON.stringify(error));
     }
     finally {

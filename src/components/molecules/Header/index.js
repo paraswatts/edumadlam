@@ -83,6 +83,7 @@ const CustomHeader = ({
             </View>
         </Menu>
     )
+    console.log("container", container)
     return (
         <View style={[styles.container, container]}>
             {showBackIcon && <CustomTouchableIcon

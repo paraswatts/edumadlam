@@ -12,7 +12,8 @@ const FriendsScreen = ({
     navigation,
     netConnected,
     importantCatListRequest,
-    selectedStream
+    selectedStream,
+    sId
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -84,6 +85,18 @@ const FriendsScreen = ({
                         updateShowDate(false)
                     }} />
             }
+
+
+            {sId ?
+                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.IMPORTANT.PURCHASED_CHAPTER_LIST)} style={{
+                    shadowColor: '#b2b2b2',
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 1, borderRadius: 10, marginTop: _scaleText(10).fontSize, marginHorizontal: _scaleText(10).fontSize, marginVertical: 5,
+                    elevation: 5, padding: _scaleText(15).fontSize, borderRadius: 10, marginHorizontal: 12, backgroundColor: 'white'
+                }}>
+                    <Text style={{ color: COLORS.BLUE_FONT, fontWeight: 'bold' }}>Purchased Chapters</Text>
+                </TouchableOpacity> : null}
 
             <FlatList
                 showsVerticalScrollIndicator={false}

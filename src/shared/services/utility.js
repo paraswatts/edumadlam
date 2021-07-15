@@ -15,9 +15,9 @@ let height = dim.height > dim.width ? dim.height : dim.width;
 const NOTIFICATION_CODES = {
     'news': (_id, _heading) => navigate(ROUTES.NEWS.DETAIL, { _id, _heading }),
     'important': (_id, _heading) => navigate(ROUTES.IMPORTANT.DETAIL, { _id, _heading }),
+    'important_chapter': (_id, _heading, _category) => navigate(ROUTES.IMPORTANT.CHAPTER_LIST, { _id, _category }),
     'test_series': (_id) => navigate(ROUTES.TEST.CATEGORY, { id: _id }),
     'test_list': (_id, _heading, _category, _price, _productId) => navigate(ROUTES.TEST.LIST, { _id, _heading, _category, _price, _productId }),
-
 };
 
 export const _handleNotifications = ({

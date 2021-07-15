@@ -1,6 +1,6 @@
 import SignInScreen from './screen';
 import { connect } from 'react-redux';
-import { signinRequest } from '../../../redux/actions';
+import { signinRequest, forgetPasswordRequest } from '../../../redux/actions';
 import { reset } from 'redux-form';
 
 const mapStateToProps = state => {
@@ -12,6 +12,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         signinRequest: payload => dispatch(signinRequest(payload)),
+        forgetPasswordRequest: payload => dispatch(forgetPasswordRequest(payload)),
         resetForm: () => dispatch(reset('login'))
     }
 }

@@ -28,14 +28,13 @@ const FriendsScreen = ({
     const [showDate, updateShowDate] = useState(false)
     const [date, updateDate] = useState(moment(new Date()).format("yyyy-MM-DD"))
     const [selectedDate, updateSelectedDate] = useState(new Date())
-
+    console.log("sId", sId)
     const selectDate = (date) => {
         updateSelectedDate(date)
         let selectedDate = moment(date).format("yyyy-MM-DD")
         updateDate(selectedDate)
     }
     useEffect(() => { fetchData(true) }, [])
-
 
     const fetchData = (refresh = false) => {
         toggleLoading(!refresh);
@@ -122,12 +121,7 @@ const FriendsScreen = ({
                 success: (response = []) => {
                     console.log(response, "apple payment")
                     Alert.alert("Purchase Successful")
-                    if (paymentObj.type === 'testCategory') {
-                        navigation.navigate(ROUTES.TEST.PURCHASED_SERIES)
-                    }
-                    else {
-                        navigation.navigate(ROUTES.TEST.PURCHASED_TESTS)
-                    }
+                    fetchData(true)
                     toggleLoading(false);
                     stopLoading()
                 },
@@ -147,6 +141,7 @@ const FriendsScreen = ({
             navigation.navigate(ROUTES.SIGNIN_SCREEN)
         }
     }
+    console.log("_category_category_category", _category)
     return (
         <ScreenHOC
             bottomSafeArea
@@ -157,7 +152,6 @@ const FriendsScreen = ({
             onBackPress={navigation.goBack}
         // headerRight={ICONS.CALENDAR}
         >
-
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={data}
