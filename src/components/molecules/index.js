@@ -15,3 +15,4 @@ export { default as CustomDrawer } from './CustomDrawer';
 export { default as CustomMCQModal } from './CustomMCQModal';
 export { default as CustomTestItem } from './CustomTestItem';
 export { default as CustomModalPopup } from './CustomModalPopup';
+export { default as CustomModalCoupon } from './CustomModalCoupon';

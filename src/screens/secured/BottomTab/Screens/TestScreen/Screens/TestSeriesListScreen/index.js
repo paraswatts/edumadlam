@@ -1,6 +1,6 @@
 import TestSeriesList from './screen';
 import { connect } from 'react-redux';
-import { startLoading, testSeriesListRequest, generatePaymentLinkRequest, stopLoading, completeStorePayment } from '../../../../../../../redux/actions';
+import { verifyPromo, startLoading, testSeriesListRequest, generatePaymentLinkRequest, stopLoading, completeStorePayment } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -16,7 +16,8 @@ const mapDispatchToProps = dispatch => {
         generatePaymentLinkRequest: (payload) => dispatch(generatePaymentLinkRequest(payload)),
         completeStorePayment: (payload) => dispatch(completeStorePayment(payload)),
         stopLoading: () => dispatch(stopLoading()),
-        startLoading: () => dispatch(startLoading())
+        startLoading: () => dispatch(startLoading()),
+        verifyPromo: (payload) => dispatch(verifyPromo(payload)),
     }
 }
 

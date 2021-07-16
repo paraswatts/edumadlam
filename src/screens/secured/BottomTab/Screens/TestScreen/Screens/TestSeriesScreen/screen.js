@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import { isTablet } from 'react-native-device-info';
 import * as Sentry from "@sentry/react-native";
+import prompt from 'react-native-prompt-android';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const TestSeriesListScreen = ({
@@ -23,7 +24,8 @@ const TestSeriesListScreen = ({
     stopLoading,
     completeStorePayment,
     authToken,
-    startLoading
+    startLoading,
+    verifyPromo
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -158,6 +160,101 @@ const TestSeriesListScreen = ({
     const _renderListEmptyComponent = () => (<EmptyDataUI
         title={TEXT_CONST.NO_DATA_FOUND}
     />)
+
+    const buyPackage = (paymentObj, discountedObj) => {
+        Alert.alert(
+            "Do you have a coupon code?",
+            "",
+            [
+                {
+                    text: "No",
+                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                    style: "cancel",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        if (Platform.OS === 'ios') {
+                            Alert.prompt('Enter coupon code', '', [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                },
+                            ]);
+                        } else {
+                            prompt(
+                                'Enter coupon code',
+                                '',
+                                [
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('Cancel Pressed'),
+                                        style: 'cancel',
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                    },
+                                ],
+                                {
+                                    cancelable: true,
+                                    defaultValue: '',
+                                    placeholder: '',
+                                },
+                            )
+                        }
+                    }
+                },
+            ],
+        );
+    }
+
+    const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
+        console.log(discountedObj, "promoCode", paymentObj)
+        let payload = {
+            netConnected,
+            promoCode,
+            success: (response = []) => {
+                if (discountedObj.amount === paymentObj.amount) {
+                    Alert.alert(
+                        "We are already giving you best rate possible",
+                        "",
+                        [
+                            {
+                                text: "Ok",
+                                onPress: () => { },
+                                style: "cancel",
+                            },
+                        ],
+                        {
+                            cancelable: true
+                        }
+                    );
+                }
+                else {
+                    if (Platform.OS === 'ios') {
+                        applePayments(discountedObj)
+                    }
+                    else {
+                        generatePaymentLinkRequest(discountedObj)
+                    }
+                }
+                toggleLoading(false);
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+            }
+        }
+        verifyPromo(payload)
+    }
+
+
     return (
         <ScreenHOC
             bottomSafeArea
@@ -195,9 +292,11 @@ const TestSeriesListScreen = ({
                 numColumns={isTablet() ? 1 : 1}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    let { _id, _category, _price, _imgUrl, _productId } = item;
+                    let { _id, _category, _price, _imgUrl, _productId, _dPrice } = item;
                     let paymentObj = { amount: _price, purpose: _category, id: _id, productId: _productId }
-                    // console.log("item", item)
+                    let discountedObj = { amount: _dPrice, purpose: _category, id: _id, productId: _productId }
+
+                    console.log("item", item)
                     return (<View
                         style={{
                             flex: 1,
@@ -227,7 +326,7 @@ const TestSeriesListScreen = ({
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                                 </TouchableOpacity>}{parseInt(_price) > 0 ? <TouchableOpacity onPress={() =>
 
-                                    Platform.OS === 'android' ? fetchPaymentPage(paymentObj) : applePayments(paymentObj)} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                                    buyPackage(paymentObj, discountedObj)} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                     <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.PURCHASE}</Text>
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                                 </TouchableOpacity> : null}

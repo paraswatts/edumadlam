@@ -11,6 +11,8 @@ export const IMPORTANT_CHAPTER_REQUEST = 'IMPORTANT_CHAPTER_REQUEST';
 export const IMPORTANT_CHAPTER_SUCCESS = 'IMPORTANT_CHAPTER_SUCCESS';
 export const GET_STREAM_LIST_REQUEST = 'GET_STREAM_LIST_REQUEST';
 export const GET_STREAM_LIST_SUCCESS = 'GET_STREAM_LIST_SUCCESS';
+export const VERIFY_PROMO_REQUEST = 'VERIFY_PROMO_REQUEST';
+
 export const importantCatListRequest = payload => {
     return {
         type: IMPORTANT_CAT_REQUEST,
@@ -91,6 +93,13 @@ export const streamRequest = payload => {
 export const streamSucess = payload => {
     return {
         type: GET_STREAM_LIST_SUCCESS,
+        payload
+    }
+}
+
+export const verifyPromo = payload => {
+    return {
+        type: VERIFY_PROMO_REQUEST,
         payload
     }
 }

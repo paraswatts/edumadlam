@@ -17,7 +17,7 @@ const NOTIFICATION_CODES = {
     'important': (_id, _heading) => navigate(ROUTES.IMPORTANT.DETAIL, { _id, _heading }),
     'important_chapter': (_id, _heading, _category) => navigate(ROUTES.IMPORTANT.CHAPTER_LIST, { _id, _category }),
     'test_series': (_id) => navigate(ROUTES.TEST.CATEGORY, { id: _id }),
-    'test_list': (_id, _heading, _category, _price, _productId) => navigate(ROUTES.TEST.LIST, { _id, _heading, _category, _price, _productId }),
+    'test_list': (_id, _heading, _category, _price, _dPrice, _productId) => navigate(ROUTES.TEST.LIST, { _id, _heading, _category, _price, _dPrice, _productId }),
 };
 
 export const _handleNotifications = ({
@@ -27,12 +27,13 @@ export const _handleNotifications = ({
         _heading = '',
         _category = '',
         _price = '',
+        _dPrice = '',
         _productId = ''
     } = {},
 }) => {
     console.log("data", _notification_type)
     NOTIFICATION_CODES[_notification_type]
-        ? NOTIFICATION_CODES[_notification_type](_id, _heading, _category, _price, _productId)
+        ? NOTIFICATION_CODES[_notification_type](_id, _heading, _category, _price, _dPrice, _productId)
         : navigate(ROUTES.BOTTOM_TAB.HOME);
 };
 

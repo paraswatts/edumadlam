@@ -1,5 +1,5 @@
 import { takeLatest, all, put, takeLeading, takeEvery } from 'redux-saga/effects';
-import { streamSucess, startLoading, stopLoading, IMPORTANT_CAT_REQUEST, importantCatListSuccess, IMPORTANT_SUB_CAT_SUCCESS, IMPORTANT_SUB_CAT_REQUEST, importantSubCatListSuccess, IMPORTANT_DETAIL_SUCCESS, IMPORTANT_DETAIL_REQUEST, GET_STREAM_LIST_SUCCESS, GET_STREAM_LIST_REQUEST, IMP_SUB_CAT_REQUEST, IMPORTANT_CHAPTER_REQUEST, importantChapterListSuccess } from "../actions"
+import { VERIFY_PROMO_REQUEST, streamSucess, startLoading, stopLoading, IMPORTANT_CAT_REQUEST, importantCatListSuccess, IMPORTANT_SUB_CAT_SUCCESS, IMPORTANT_SUB_CAT_REQUEST, importantSubCatListSuccess, IMPORTANT_DETAIL_SUCCESS, IMPORTANT_DETAIL_REQUEST, GET_STREAM_LIST_SUCCESS, GET_STREAM_LIST_REQUEST, IMP_SUB_CAT_REQUEST, IMPORTANT_CHAPTER_REQUEST, importantChapterListSuccess } from "../actions"
 import { API } from "../../shared/constants/api"
 import { postRequest, getRequest } from "../../shared/services/axios"
 import { TEXT_CONST } from "../../shared"
@@ -163,6 +163,30 @@ function* getImportantChapterList({ payload: { netConnected, _id, sId, success =
     }
 }
 
+function* verifyPromo({ payload: { netConnected, promoCode, success = () => { }, fail = () => { } } = {} }) {
+    try {
+        if (netConnected) {
+            yield put(startLoading());
+            const { data = {}, status } = yield getRequest({
+                API: API.VERIFY_PROMO(`?promoCode=${promoCode}`)
+            })
+            console.log(data, "verifyPromo", API.VERIFY_PROMO(`?promoCode=${promoCode}`))
+            if (data && data.length && data[0]._status == 1) {
+                success(data);
+            } else {
+                fail(data[0].msg);
+            }
+        } else {
+            fail(TEXT_CONST.INTERNET_ERROR)
+        }
+    }
+    catch (error) {
+        fail(JSON.stringify(error));
+    }
+    finally {
+        yield put(stopLoading());
+    }
+}
 
 function* FriendsSaga() {
     yield all([
@@ -171,8 +195,8 @@ function* FriendsSaga() {
         takeLatest(IMPORTANT_DETAIL_REQUEST, getImportantDetailSaga),
         takeLatest(GET_STREAM_LIST_REQUEST, getStreamListSaga),
         takeLatest(IMP_SUB_CAT_REQUEST, getImportantSubCats),
-        takeLatest(IMPORTANT_CHAPTER_REQUEST, getImportantChapterList)
-
+        takeLatest(IMPORTANT_CHAPTER_REQUEST, getImportantChapterList),
+        takeLatest(VERIFY_PROMO_REQUEST, verifyPromo)
     ]);
 }
 

@@ -106,6 +106,6 @@ export const API = {
     GET_DAILY_QUIZ: (params = '') => PREFIX_URL + `dailyQuestionJson.php${params}`,
     SUBMIT_TEST: (params = '') => PREFIX_URL + `insertCheckQuestionJson.php${params}`,
     SUBMIT_DAILY_QUIZ: (params = '') => PREFIX_URL + `insertCheckDailyQuestionJson.php${params}`,
-    STORE_PAYMENT: (params = '') => PREFIX_URL + `submitStorePayment.php${params}`
-
+    STORE_PAYMENT: (params = '') => PREFIX_URL + `submitStorePayment.php${params}`,
+    VERIFY_PROMO: (params = '') => PREFIX_URL + `promoCodeVerify.php${params}`
 }

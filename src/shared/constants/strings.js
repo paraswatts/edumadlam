@@ -417,7 +417,8 @@ export const TEXT_CONST = {
     SELECT_QUESTION: 'Select Question',
     VIEW: 'View',
     SELECT_STREAM: 'Select Stream',
-    TEST_RESULT: 'Test Result'
+    TEST_RESULT: 'Test Result',
+    ENTER_COUPON: 'Enter Coupon Code',
 }
 
 

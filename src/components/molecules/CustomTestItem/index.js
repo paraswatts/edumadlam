@@ -1,10 +1,11 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, Linking, StyleSheet, Platform } from 'react-native'
-import { COLORS, _scaleText, ROUTES, TEXT_CONST } from '../../../shared'
+import { TouchableOpacity, View, Text, Linking, StyleSheet, Platform, Alert } from 'react-native'
+import { COLORS, _scaleText, ROUTES, TEXT_CONST, _showCustomToast } from '../../../shared'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import { isTablet } from 'react-native-device-info';
-const CustomTestItem = ({ applePayments, _imgUrl, clickable, fetchPaymentPage, _id, _name, _price, _timestamp, _startDate, _endDate, _timetable, navigation, purchased, _webPage, _productId }) => {
+import prompt from 'react-native-prompt-android'
+const CustomTestItem = ({ verifyPromo, toggleLoading, netConnected, applePayments, _imgUrl, clickable, fetchPaymentPage, _id, _name, _dPrice, _price, _timestamp, _startDate, _endDate, _timetable, navigation, purchased, _webPage, _productId }) => {
     const goToPaymentScreen = () => {
         let paymentObj = {
             amount: _price,
@@ -13,12 +14,107 @@ const CustomTestItem = ({ applePayments, _imgUrl, clickable, fetchPaymentPage, _
             id: _id,
             productId: _productId
         }
-        if (Platform.OS === 'ios') {
-            applePayments(paymentObj)
+        let discountedObj = {
+            amount: _dPrice,
+            purpose: _name,
+            type: 'testSeries',
+            id: _id,
+            productId: _productId
         }
-        else {
-            fetchPaymentPage(paymentObj)
+        buyPackage(paymentObj, discountedObj)
+    }
+
+    const buyPackage = (paymentObj, discountedObj) => {
+        Alert.alert(
+            "Do you have a coupon code?",
+            "",
+            [
+                {
+                    text: "No",
+                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                    style: "cancel",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        if (Platform.OS === 'ios') {
+                            Alert.prompt('Enter coupon code', '', [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                },
+                            ]);
+                        } else {
+                            prompt(
+                                'Enter coupon code',
+                                '',
+                                [
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('Cancel Pressed'),
+                                        style: 'cancel',
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                    },
+                                ],
+                                {
+                                    cancelable: true,
+                                    defaultValue: '',
+                                    placeholder: '',
+                                },
+                            )
+                        }
+                    }
+                },
+            ],
+        );
+    }
+
+    const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
+        console.log(discountedObj, "promoCode", paymentObj)
+        let payload = {
+            netConnected,
+            promoCode,
+            success: (response = []) => {
+                if (discountedObj.amount === paymentObj.amount) {
+                    Alert.alert(
+                        "We are already giving you best rate possible",
+                        "",
+                        [
+                            {
+                                text: "Ok",
+                                onPress: () => { },
+                                style: "cancel",
+                            },
+                        ],
+                        {
+                            cancelable: true
+                        }
+                    );
+                }
+                else {
+                    if (Platform.OS === 'ios') {
+                        applePayments(discountedObj)
+                    }
+                    else {
+                        generatePaymentLinkRequest(discountedObj)
+                    }
+                }
+                toggleLoading(false);
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+            }
         }
+        verifyPromo(payload)
     }
 
     const renderBody = () => {

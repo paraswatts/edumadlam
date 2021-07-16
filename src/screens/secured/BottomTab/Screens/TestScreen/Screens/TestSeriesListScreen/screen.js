@@ -6,18 +6,19 @@ import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, appleInAppPur
 import styles from './styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { isTablet } from 'react-native-device-info';
-
+import prompt from 'react-native-prompt-android';
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const TestSeriesList = ({
     navigation,
     netConnected,
     testSeriesListRequest,
-    route: { params: { _id, _category, _price, _productId } = {} },
+    route: { params: { _id, _category, _price, _dPrice, _productId } = {} },
     generatePaymentLinkRequest,
     sId,
     stopLoading,
     startLoading,
-    completeStorePayment
+    completeStorePayment,
+    verifyPromo
 }) => {
     console.log("_id, _category, _price, _productId", _id, _category, _price, _productId)
     const [data, updateData] = useState([]);
@@ -147,6 +148,100 @@ const TestSeriesList = ({
     // subTitle1={TEXT_CONST.NO_USER_FOUND_WITH_THIS_NAME}
     />)
 
+
+    const buyPackage = (paymentObj, discountedObj) => {
+        Alert.alert(
+            "Do you have a coupon code?",
+            "",
+            [
+                {
+                    text: "No",
+                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                    style: "cancel",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        if (Platform.OS === 'ios') {
+                            Alert.prompt('Enter coupon code', '', [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                },
+                            ]);
+                        } else {
+                            prompt(
+                                'Enter coupon code',
+                                '',
+                                [
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('Cancel Pressed'),
+                                        style: 'cancel',
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                    },
+                                ],
+                                {
+                                    cancelable: true,
+                                    defaultValue: '',
+                                    placeholder: '',
+                                },
+                            )
+                        }
+                    }
+                },
+            ],
+        );
+    }
+
+    const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
+        console.log(discountedObj, "promoCode", paymentObj)
+        let payload = {
+            netConnected,
+            promoCode,
+            success: (response = []) => {
+                if (discountedObj.amount === paymentObj.amount) {
+                    Alert.alert(
+                        "We are already giving you best rate possible",
+                        "",
+                        [
+                            {
+                                text: "Ok",
+                                onPress: () => { },
+                                style: "cancel",
+                            },
+                        ],
+                        {
+                            cancelable: true
+                        }
+                    );
+                }
+                else {
+                    if (Platform.OS === 'ios') {
+                        applePayments(discountedObj)
+                    }
+                    else {
+                        generatePaymentLinkRequest(discountedObj)
+                    }
+                }
+                toggleLoading(false);
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+            }
+        }
+        verifyPromo(payload)
+    }
+
     return (
         <ScreenHOC
             bottomSafeArea
@@ -164,7 +259,12 @@ const TestSeriesList = ({
                 shadowRadius: 1, padding: _scaleText(10).fontSize, flexDirection: 'row', justifyContent: 'space-between'
             }}><Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500', fontSize: _scaleText(12).fontSize }} > {_category}</Text>
                 {parseInt(_price) ?
-                    <TouchableOpacity onPress={() => Platform.OS === 'ios' ? applePayments({ amount: _price, productId: _productId, id: _id, type: 'testCategory' }) : fetchPaymentPage({ amount: _price, purpose: _category, productId: _id, type: 'testCategory' })}
+                    <TouchableOpacity onPress={() => {
+                        let paymentObj = { amount: _price, productId: _productId, id: _id, type: 'testCategory' }
+                        let discountedObj = { amount: _dPrice, productId: _productId, id: _id, type: 'testCategory' }
+                        buyPackage(paymentObj, discountedObj)
+                    }
+                    }
                         style={{ padding: 10, borderWidth: 0, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                         <Text style={[styles.fontBlue, {
                             fontSize: _scaleText(12).fontSize, textAlign: 'right', marginRight: _scaleText(5).fontSize
@@ -190,7 +290,7 @@ const TestSeriesList = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    return (<CustomTestItem fetchPaymentPage={fetchPaymentPage} applePayments={applePayments} {...item} navigation={navigation} />)
+                    return (<CustomTestItem toggleLoading={toggleLoading} fetchPaymentPage={fetchPaymentPage} netConnected={netConnected} applePayments={applePayments} {...item} navigation={navigation} verifyPromo={verifyPromo} />)
                 }}
             />
             <SafeAreaView style={{ backgroundColor: 'white', }} />

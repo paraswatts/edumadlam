@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler, Dimensions, Platform } from 'react-native';
+import { Alert, Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, BackHandler, Dimensions, Platform } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, appleInAppPurchase, ROUTES } from '../../../../../../../shared';
@@ -9,6 +9,8 @@ import momemt from 'moment'
 import HTMLView from 'react-native-htmlview';
 import WebView from 'react-native-webview';
 import HTML from "react-native-render-html";
+import prompt from 'react-native-prompt-android';
+
 const INJECTEDJAVASCRIPT = `<style>body {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -29,7 +31,8 @@ const ImportantDetailScreen = ({
     stopLoading,
     completeStorePayment,
     generatePaymentLinkRequest,
-    startLoading
+    startLoading,
+    verifyPromo
 }) => {
     const [loading, toggleLoading] = useState(false);
     const [data, updateData] = useState(false);
@@ -154,6 +157,99 @@ const ImportantDetailScreen = ({
             navigation.navigate(ROUTES.SIGNIN_SCREEN)
         }
     }
+
+    const buyPackage = (paymentObj, discountedObj) => {
+        Alert.alert(
+            "Do you have a coupon code?",
+            "",
+            [
+                {
+                    text: "No",
+                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                    style: "cancel",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        if (Platform.OS === 'ios') {
+                            Alert.prompt('Enter coupon code', '', [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                },
+                            ]);
+                        } else {
+                            prompt(
+                                'Enter coupon code',
+                                '',
+                                [
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('Cancel Pressed'),
+                                        style: 'cancel',
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                    },
+                                ],
+                                {
+                                    cancelable: true,
+                                    defaultValue: '',
+                                    placeholder: '',
+                                },
+                            )
+                        }
+                    }
+                },
+            ],
+        );
+    }
+
+    const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
+        console.log(discountedObj, "promoCode", paymentObj)
+        let payload = {
+            netConnected,
+            promoCode,
+            success: (response = []) => {
+                if (discountedObj.amount === paymentObj.amount) {
+                    Alert.alert(
+                        "We are already giving you best rate possible",
+                        "",
+                        [
+                            {
+                                text: "Ok",
+                                onPress: () => { },
+                                style: "cancel",
+                            },
+                        ],
+                        {
+                            cancelable: true
+                        }
+                    );
+                }
+                else {
+                    if (Platform.OS === 'ios') {
+                        applePayments(discountedObj)
+                    }
+                    else {
+                        generatePaymentLinkRequest(discountedObj)
+                    }
+                }
+                toggleLoading(false);
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+            }
+        }
+        verifyPromo(payload)
+    }
     return (
         <ScreenHOC
             bottomSafeArea
@@ -176,13 +272,8 @@ const ImportantDetailScreen = ({
                     />
                     {data[0]._price.length ? <TouchableOpacity onPress={() => {
                         let paymentObj = { amount: data[0]._price, purpose: data[0]._chapterName, id: data[0]._id, productId: data[0]._productId, type: 'importantChapter' }
-
-                        if (Platform.OS === 'ios') {
-                            applePayments(paymentObj)
-                        }
-                        else {
-                            fetchPaymentPage(paymentObj)
-                        }
+                        let discountedObj = { amount: data[0]._dPrice, purpose: data[0]._chapterName, id: data[0]._id, productId: data[0]._productId, type: 'importantChapter' }
+                        buyPackage(paymentObj, discountedObj)
                     }}><Text style={{ alignSelf: 'flex-start', textDecorationLine: 'underline', color: 'blue', padding: 10 }}>Buy</Text></TouchableOpacity> : null}
 
 

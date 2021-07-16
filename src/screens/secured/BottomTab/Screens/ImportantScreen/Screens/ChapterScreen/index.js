@@ -1,6 +1,6 @@
 import FriendsScreen from './screen';
 import { connect } from 'react-redux';
-import { importantChapterListRequest, completeStorePayment, generatePaymentLinkRequest, startLoading, stopLoading } from '../../../../../../../redux/actions';
+import { importantChapterListRequest, completeStorePayment, generatePaymentLinkRequest, startLoading, stopLoading, verifyPromo } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -15,6 +15,7 @@ const mapDispatchToProps = dispatch => {
         importantChapterListRequest: (payload) => dispatch(importantChapterListRequest(payload)),
         completeStorePayment: (payload) => dispatch(completeStorePayment(payload)),
         generatePaymentLinkRequest: (payload) => dispatch(generatePaymentLinkRequest(payload)),
+        verifyPromo: (payload) => dispatch(verifyPromo(payload)),
         stopLoading: () => dispatch(stopLoading()),
         startLoading: () => dispatch(startLoading())
     }
