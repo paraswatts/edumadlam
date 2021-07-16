@@ -72,9 +72,10 @@ const TestSeriesList = ({
                 purpose: paymentObj.purpose.replace(/\s+/g, ''),
                 sId,
                 type: paymentObj.type,
-                productId: paymentObj.productId,
+                productId: paymentObj.id,
                 success: (response = []) => {
                     let res = response && response.length && response[0]
+                    console.log("res", res)
                     if (res && res.status && res.status == 1) {
                         let _webPage = res && res.response
                         navigation.navigate(ROUTES.TEST.PAYMENT_SCREEN, { _webPage: _webPage })
@@ -150,35 +151,22 @@ const TestSeriesList = ({
 
 
     const buyPackage = (paymentObj, discountedObj) => {
-        Alert.alert(
-            "Do you have a coupon code?",
-            "",
-            [
-                {
-                    text: "No",
-                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                    style: "cancel",
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        if (Platform.OS === 'ios') {
-                            Alert.prompt('Enter coupon code', '', [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log('Cancel Pressed'),
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: 'OK',
-                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                },
-                            ]);
-                        } else {
-                            prompt(
-                                'Enter coupon code',
-                                '',
-                                [
+        console.log("paymentObj", paymentObj)
+        if (sId) {
+            Alert.alert(
+                "Do you have a coupon code?",
+                "",
+                [
+                    {
+                        text: "No",
+                        onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Alert.prompt('Enter coupon code', '', [
                                     {
                                         text: 'Cancel',
                                         onPress: () => console.log('Cancel Pressed'),
@@ -188,18 +176,36 @@ const TestSeriesList = ({
                                         text: 'OK',
                                         onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                                     },
-                                ],
-                                {
-                                    cancelable: true,
-                                    defaultValue: '',
-                                    placeholder: '',
-                                },
-                            )
+                                ]);
+                            } else {
+                                prompt(
+                                    'Enter coupon code',
+                                    '',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                        },
+                                    ],
+                                    {
+                                        cancelable: true,
+                                        defaultValue: '',
+                                        placeholder: '',
+                                    },
+                                )
+                            }
                         }
-                    }
-                },
-            ],
-        );
+                    },
+                ],
+            );
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
@@ -229,7 +235,7 @@ const TestSeriesList = ({
                         applePayments(discountedObj)
                     }
                     else {
-                        generatePaymentLinkRequest(discountedObj)
+                        fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);
@@ -260,8 +266,9 @@ const TestSeriesList = ({
             }}><Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500', fontSize: _scaleText(12).fontSize }} > {_category}</Text>
                 {parseInt(_price) ?
                     <TouchableOpacity onPress={() => {
-                        let paymentObj = { amount: _price, productId: _productId, id: _id, type: 'testCategory' }
-                        let discountedObj = { amount: _dPrice, productId: _productId, id: _id, type: 'testCategory' }
+                        console.log("_productId", _productId)
+                        let paymentObj = { amount: _price, productId: _productId, id: _id, type: 'testCategory', purpose: _category }
+                        let discountedObj = { amount: _dPrice, productId: _productId, id: _id, type: 'testCategory', purpose: _category }
                         buyPackage(paymentObj, discountedObj)
                     }
                     }
@@ -290,7 +297,7 @@ const TestSeriesList = ({
                 />}
                 style={{ marginVertical: 5 }}
                 renderItem={({ item, index }) => {
-                    return (<CustomTestItem toggleLoading={toggleLoading} fetchPaymentPage={fetchPaymentPage} netConnected={netConnected} applePayments={applePayments} {...item} navigation={navigation} verifyPromo={verifyPromo} />)
+                    return (<CustomTestItem sId={sId} toggleLoading={toggleLoading} fetchPaymentPage={fetchPaymentPage} netConnected={netConnected} applePayments={applePayments} {...item} navigation={navigation} verifyPromo={verifyPromo} />)
                 }}
             />
             <SafeAreaView style={{ backgroundColor: 'white', }} />

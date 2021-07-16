@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FastImage from 'react-native-fast-image';
 import { isTablet } from 'react-native-device-info';
 import prompt from 'react-native-prompt-android'
-const CustomTestItem = ({ verifyPromo, toggleLoading, netConnected, applePayments, _imgUrl, clickable, fetchPaymentPage, _id, _name, _dPrice, _price, _timestamp, _startDate, _endDate, _timetable, navigation, purchased, _webPage, _productId }) => {
+const CustomTestItem = ({ sId, verifyPromo, toggleLoading, netConnected, applePayments, _imgUrl, clickable, fetchPaymentPage, _id, _name, _dPrice, _price, _timestamp, _startDate, _endDate, _timetable, navigation, purchased, _webPage, _productId }) => {
     const goToPaymentScreen = () => {
         let paymentObj = {
             amount: _price,
@@ -25,35 +25,22 @@ const CustomTestItem = ({ verifyPromo, toggleLoading, netConnected, applePayment
     }
 
     const buyPackage = (paymentObj, discountedObj) => {
-        Alert.alert(
-            "Do you have a coupon code?",
-            "",
-            [
-                {
-                    text: "No",
-                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                    style: "cancel",
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        if (Platform.OS === 'ios') {
-                            Alert.prompt('Enter coupon code', '', [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log('Cancel Pressed'),
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: 'OK',
-                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                },
-                            ]);
-                        } else {
-                            prompt(
-                                'Enter coupon code',
-                                '',
-                                [
+        if (sId) {
+
+            Alert.alert(
+                "Do you have a coupon code?",
+                "",
+                [
+                    {
+                        text: "No",
+                        onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Alert.prompt('Enter coupon code', '', [
                                     {
                                         text: 'Cancel',
                                         onPress: () => console.log('Cancel Pressed'),
@@ -63,18 +50,36 @@ const CustomTestItem = ({ verifyPromo, toggleLoading, netConnected, applePayment
                                         text: 'OK',
                                         onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                                     },
-                                ],
-                                {
-                                    cancelable: true,
-                                    defaultValue: '',
-                                    placeholder: '',
-                                },
-                            )
+                                ]);
+                            } else {
+                                prompt(
+                                    'Enter coupon code',
+                                    '',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                        },
+                                    ],
+                                    {
+                                        cancelable: true,
+                                        defaultValue: '',
+                                        placeholder: '',
+                                    },
+                                )
+                            }
                         }
-                    }
-                },
-            ],
-        );
+                    },
+                ],
+            );
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
@@ -104,7 +109,7 @@ const CustomTestItem = ({ verifyPromo, toggleLoading, netConnected, applePayment
                         applePayments(discountedObj)
                     }
                     else {
-                        generatePaymentLinkRequest(discountedObj)
+                        fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);

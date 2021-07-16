@@ -1,6 +1,6 @@
 import ImportantSubCategory from './screen';
 import { connect } from 'react-redux';
-import { importantSubCatListRequest, stopLoading, startLoading, generatePaymentLinkRequest, completeStorePayment } from '../../../../../../../redux/actions';
+import { verifyPromo, importantSubCatListRequest, stopLoading, startLoading, generatePaymentLinkRequest, completeStorePayment } from '../../../../../../../redux/actions';
 
 const mapStateToProps = state => {
     return {
@@ -15,7 +15,8 @@ const mapDispatchToProps = dispatch => {
         completeStorePayment: (payload) => dispatch(completeStorePayment(payload)),
         generatePaymentLinkRequest: (payload) => dispatch(generatePaymentLinkRequest(payload)),
         stopLoading: () => dispatch(stopLoading()),
-        startLoading: () => dispatch(startLoading())
+        startLoading: () => dispatch(startLoading()),
+        verifyPromo: (payload) => dispatch(verifyPromo(payload)),
     }
 }
 

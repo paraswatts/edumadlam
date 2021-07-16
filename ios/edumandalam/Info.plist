@@ -35,6 +35,8 @@
 	<string>222107269299908</string>
 	<key>FacebookDisplayName</key>
 	<string>Edumandala</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, BackHandler, View, TouchableOpacity, Linking } from 'react-native';
+import { Alert, Text, UIManager, FlatList, ActivityIndicator, RefreshControl, SafeAreaView, BackHandler, View, TouchableOpacity, Linking } from 'react-native';
 import { ScreenHOC, EmptyDataUI, CustomDatePicker } from '../../../../../../../components';
 import { COLORS, TEXT_CONST, _scaleText, _showCustomToast, ROUTES, ICONS, appleInAppPurchase } from '../../../../../../../shared';
 import { CustomImage } from '../../../../../../../components/atoms';
@@ -8,6 +8,7 @@ import moment from 'moment'
 import { isTablet } from 'react-native-device-info';
 import styles from './styles'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import prompt from 'react-native-prompt-android';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const ImportantSubCategory = ({
@@ -18,8 +19,9 @@ const ImportantSubCategory = ({
     generatePaymentLinkRequest,
     sId,
     startLoading,
-    route: { params: { _id, _category, _price, _productId } = {} },
-    stopLoading
+    route: { params: { _id, _category, _price, _dPrice, _productId } = {} },
+    stopLoading,
+    verifyPromo
 }) => {
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -151,6 +153,106 @@ const ImportantSubCategory = ({
         }
     }
 
+    const buyPackage = (paymentObj, discountedObj) => {
+        if (sId) {
+
+            Alert.alert(
+                "Do you have a coupon code?",
+                "",
+                [
+                    {
+                        text: "No",
+                        onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Alert.prompt('Enter coupon code', '', [
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('Cancel Pressed'),
+                                        style: 'cancel',
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                    },
+                                ]);
+                            } else {
+                                prompt(
+                                    'Enter coupon code',
+                                    '',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                        },
+                                    ],
+                                    {
+                                        cancelable: true,
+                                        defaultValue: '',
+                                        placeholder: '',
+                                    },
+                                )
+                            }
+                        }
+                    },
+                ],
+            );
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
+    }
+
+    const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
+        console.log("promoCode", promoCode)
+        let payload = {
+            netConnected,
+            promoCode,
+            success: (response = []) => {
+                if (discountedObj.amount === paymentObj.amount) {
+                    Alert.alert(
+                        "We are already giving you best rate possible",
+                        "",
+                        [
+                            {
+                                text: "Ok",
+                                onPress: () => { },
+                                style: "cancel",
+                            },
+                        ],
+                        {
+                            cancelable: true
+                        }
+                    );
+                }
+                else {
+                    if (Platform.OS === 'ios') {
+                        applePayments(discountedObj)
+                    }
+                    else {
+                        fetchPaymentPage(discountedObj)
+                    }
+                }
+                toggleLoading(false);
+                toggleRefreshing(false);
+            },
+            fail: (message = '') => {
+                _showCustomToast({ message });
+                toggleLoading(false);
+                toggleRefreshing(false);
+            }
+        }
+        verifyPromo(payload)
+    }
+
     return (
         <ScreenHOC
             bottomSafeArea
@@ -168,7 +270,11 @@ const ImportantSubCategory = ({
                 shadowRadius: 1, padding: _scaleText(10).fontSize, flexDirection: 'row', justifyContent: 'space-between'
             }}><Text style={{ color: COLORS.BLUE_FONT, fontWeight: '500', fontSize: _scaleText(12).fontSize }} > {_category}</Text>
                 {parseInt(_price) ?
-                    <TouchableOpacity onPress={() => Platform.OS === 'ios' ? applePayments({ amount: _price, productId: _productId, id: _id, type: 'importantChapter' }) : fetchPaymentPage({ amount: _price, purpose: _category, productId: _id, type: 'testCategory' })}
+                    <TouchableOpacity onPress={() => {
+                        let paymentObj = { amount: _price, productId: _productId, id: _id, type: 'importantChapter', purpose: _category }
+                        let discountedObj = { amount: _dPrice, productId: _productId, id: _id, type: 'importantChapter', purpose: _category }
+                        buyPackage(paymentObj, discountedObj)
+                    }}
                         style={{ padding: 10, borderWidth: 0, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                         <Text style={[styles.fontBlue, {
                             fontSize: _scaleText(12).fontSize, textAlign: 'right', marginRight: _scaleText(5).fontSize

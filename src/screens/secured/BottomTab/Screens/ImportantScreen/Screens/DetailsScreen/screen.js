@@ -159,35 +159,22 @@ const ImportantDetailScreen = ({
     }
 
     const buyPackage = (paymentObj, discountedObj) => {
-        Alert.alert(
-            "Do you have a coupon code?",
-            "",
-            [
-                {
-                    text: "No",
-                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                    style: "cancel",
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        if (Platform.OS === 'ios') {
-                            Alert.prompt('Enter coupon code', '', [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log('Cancel Pressed'),
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: 'OK',
-                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                },
-                            ]);
-                        } else {
-                            prompt(
-                                'Enter coupon code',
-                                '',
-                                [
+        if (sId) {
+
+            Alert.alert(
+                "Do you have a coupon code?",
+                "",
+                [
+                    {
+                        text: "No",
+                        onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Alert.prompt('Enter coupon code', '', [
                                     {
                                         text: 'Cancel',
                                         onPress: () => console.log('Cancel Pressed'),
@@ -197,26 +184,45 @@ const ImportantDetailScreen = ({
                                         text: 'OK',
                                         onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                                     },
-                                ],
-                                {
-                                    cancelable: true,
-                                    defaultValue: '',
-                                    placeholder: '',
-                                },
-                            )
+                                ]);
+                            } else {
+                                prompt(
+                                    'Enter coupon code',
+                                    '',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                        },
+                                    ],
+                                    {
+                                        cancelable: true,
+                                        defaultValue: '',
+                                        placeholder: '',
+                                    },
+                                )
+                            }
                         }
-                    }
-                },
-            ],
-        );
+                    },
+                ],
+            );
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
-
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
         console.log(discountedObj, "promoCode", paymentObj)
         let payload = {
             netConnected,
             promoCode,
             success: (response = []) => {
+                console.log("hello")
+
                 if (discountedObj.amount === paymentObj.amount) {
                     Alert.alert(
                         "We are already giving you best rate possible",
@@ -238,7 +244,8 @@ const ImportantDetailScreen = ({
                         applePayments(discountedObj)
                     }
                     else {
-                        generatePaymentLinkRequest(discountedObj)
+                        console.log("hererererrerer")
+                        fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);

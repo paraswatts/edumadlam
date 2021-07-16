@@ -216,6 +216,7 @@ function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, t
     try {
         if (netConnected) {
             yield put(startLoading());
+            console.log(API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`))
             const { data = {}, status } = yield getRequest({
                 API: API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`)
             })

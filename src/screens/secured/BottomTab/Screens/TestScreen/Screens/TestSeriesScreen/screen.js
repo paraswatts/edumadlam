@@ -162,35 +162,22 @@ const TestSeriesListScreen = ({
     />)
 
     const buyPackage = (paymentObj, discountedObj) => {
-        Alert.alert(
-            "Do you have a coupon code?",
-            "",
-            [
-                {
-                    text: "No",
-                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                    style: "cancel",
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        if (Platform.OS === 'ios') {
-                            Alert.prompt('Enter coupon code', '', [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log('Cancel Pressed'),
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: 'OK',
-                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                },
-                            ]);
-                        } else {
-                            prompt(
-                                'Enter coupon code',
-                                '',
-                                [
+        if (authToken) {
+
+            Alert.alert(
+                "Do you have a coupon code?",
+                "",
+                [
+                    {
+                        text: "No",
+                        onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Alert.prompt('Enter coupon code', '', [
                                     {
                                         text: 'Cancel',
                                         onPress: () => console.log('Cancel Pressed'),
@@ -200,18 +187,36 @@ const TestSeriesListScreen = ({
                                         text: 'OK',
                                         onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                                     },
-                                ],
-                                {
-                                    cancelable: true,
-                                    defaultValue: '',
-                                    placeholder: '',
-                                },
-                            )
+                                ]);
+                            } else {
+                                prompt(
+                                    'Enter coupon code',
+                                    '',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                        },
+                                    ],
+                                    {
+                                        cancelable: true,
+                                        defaultValue: '',
+                                        placeholder: '',
+                                    },
+                                )
+                            }
                         }
-                    }
-                },
-            ],
-        );
+                    },
+                ],
+            );
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
@@ -241,7 +246,7 @@ const TestSeriesListScreen = ({
                         applePayments(discountedObj)
                     }
                     else {
-                        generatePaymentLinkRequest(discountedObj)
+                        fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);
@@ -321,7 +326,7 @@ const TestSeriesListScreen = ({
                             <Text style={{ fontWeight: '500', fontSize: _scaleText(12).fontSize, marginTop: 10, color: COLORS.BLUE_FONT }}><Text style={styles.fontBold}>{TEXT_CONST.PRICE}</Text>{`₹${_price}`}</Text>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: _scaleText(16).fontSize }}>
-                                {<TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.LIST, { _id: _id, _category: _category, _price: _price, _productId })} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                                {<TouchableOpacity onPress={() => navigation.navigate(ROUTES.TEST.LIST, { _id: _id, _category: _category, _price: _price, _dPrice: _dPrice, _productId })} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                     <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.VIEW}</Text>
                                     <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                                 </TouchableOpacity>}{parseInt(_price) > 0 ? <TouchableOpacity onPress={() =>

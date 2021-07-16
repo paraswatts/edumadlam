@@ -102,35 +102,21 @@ const FriendsScreen = ({
     }
 
     const buyPackage = (paymentObj, discountedObj) => {
-        Alert.alert(
-            "Do you have a coupon code?",
-            "",
-            [
-                {
-                    text: "No",
-                    onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                    style: "cancel",
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        if (Platform.OS === 'ios') {
-                            Alert.prompt('Enter coupon code', '', [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => console.log('Cancel Pressed'),
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: 'OK',
-                                    onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                },
-                            ]);
-                        } else {
-                            prompt(
-                                'Enter coupon code',
-                                '',
-                                [
+        if (sId) {
+            Alert.alert(
+                "Do you have a coupon code?",
+                "",
+                [
+                    {
+                        text: "No",
+                        onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Yes",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Alert.prompt('Enter coupon code', '', [
                                     {
                                         text: 'Cancel',
                                         onPress: () => console.log('Cancel Pressed'),
@@ -140,18 +126,36 @@ const FriendsScreen = ({
                                         text: 'OK',
                                         onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                                     },
-                                ],
-                                {
-                                    cancelable: true,
-                                    defaultValue: '',
-                                    placeholder: '',
-                                },
-                            )
+                                ]);
+                            } else {
+                                prompt(
+                                    'Enter coupon code',
+                                    '',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                                        },
+                                    ],
+                                    {
+                                        cancelable: true,
+                                        defaultValue: '',
+                                        placeholder: '',
+                                    },
+                                )
+                            }
                         }
-                    }
-                },
-            ],
-        );
+                    },
+                ],
+            );
+        } else {
+            navigation.navigate(ROUTES.SIGNIN_SCREEN)
+        }
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
@@ -181,7 +185,7 @@ const FriendsScreen = ({
                         applePayments(discountedObj)
                     }
                     else {
-                        generatePaymentLinkRequest(discountedObj)
+                        fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);
@@ -283,7 +287,7 @@ const FriendsScreen = ({
                             shadowRadius: 1, borderRadius: 10, marginHorizontal: _scaleText(10).fontSize, marginVertical: 5,
                             elevation: 5, backgroundColor: COLORS.WHITE
                         }}>
-                        <TouchableOpacity style={{ borderWidth: 0, flex: 1, flexDirection: 'row' }} onPress={() => navigation.navigate(ROUTES.IMPORTANT.POST_LIST, { _id: _id, _category: _name, _price: _price, _productId: _productId })}>
+                        <TouchableOpacity style={{ borderWidth: 0, flex: 1, flexDirection: 'row' }} onPress={() => navigation.navigate(ROUTES.IMPORTANT.POST_LIST, { _id: _id, _category: _name, _price: _price, _dPrice: _dPrice, _productId: _productId })}>
                             {_imgUrl ?
                                 <FastImage
 
