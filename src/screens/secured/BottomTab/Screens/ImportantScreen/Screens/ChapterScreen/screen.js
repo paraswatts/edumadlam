@@ -30,6 +30,8 @@ const FriendsScreen = ({
     const [showDate, updateShowDate] = useState(false)
     const [date, updateDate] = useState(moment(new Date()).format("yyyy-MM-DD"))
     const [selectedDate, updateSelectedDate] = useState(new Date())
+    const [promoCodeValue, setPromoCodeValue] = useState('')
+
     console.log("sId", sId)
     const selectDate = (date) => {
         updateSelectedDate(date)
@@ -101,65 +103,49 @@ const FriendsScreen = ({
         }
     }
 
-    const buyPackage = (paymentObj, discountedObj) => {
+    const buyPackage = (promoCodeValue, paymentObj, discountedObj) => {
         if (sId) {
-            Alert.alert(
-                "Do you have a coupon code?",
-                "",
-                [
+            if (Platform.OS === 'ios') {
+                Alert.prompt('Enter coupon code', '', [
                     {
-                        text: "No",
+                        text: 'Skip',
                         onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                        style: "cancel",
+                        style: 'cancel',
                     },
                     {
-                        text: "Yes",
-                        onPress: () => {
-                            if (Platform.OS === 'ios') {
-                                Alert.prompt('Enter coupon code', '', [
-                                    {
-                                        text: 'Cancel',
-                                        onPress: () => console.log('Cancel Pressed'),
-                                        style: 'cancel',
-                                    },
-                                    {
-                                        text: 'OK',
-                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                    },
-                                ]);
-                            } else {
-                                prompt(
-                                    'Enter coupon code',
-                                    '',
-                                    [
-                                        {
-                                            text: 'Cancel',
-                                            onPress: () => console.log('Cancel Pressed'),
-                                            style: 'cancel',
-                                        },
-                                        {
-                                            text: 'OK',
-                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                        },
-                                    ],
-                                    {
-                                        cancelable: true,
-                                        defaultValue: '',
-                                        placeholder: '',
-                                    },
-                                )
-                            }
-                        }
+                        text: 'OK',
+                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                     },
-                ],
-            );
+                ], 'plain-text', promoCodeValue);
+            } else {
+                prompt(
+                    'Enter coupon code',
+                    '',
+                    [
+                        {
+                            text: 'Skip',
+                            onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK',
+                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                        defaultValue: promoCodeValue,
+                        placeholder: '',
+                    },
+                )
+            }
+
         } else {
             navigation.navigate(ROUTES.SIGNIN_SCREEN)
         }
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
-        console.log("promoCode", promoCode)
         let payload = {
             netConnected,
             promoCode,
@@ -182,9 +168,11 @@ const FriendsScreen = ({
                 }
                 else {
                     if (Platform.OS === 'ios') {
+                        _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
                         applePayments(discountedObj)
                     }
                     else {
+                        _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
                         fetchPaymentPage(discountedObj)
                     }
                 }
@@ -192,7 +180,13 @@ const FriendsScreen = ({
                 toggleRefreshing(false);
             },
             fail: (message = '') => {
-                _showCustomToast({ message });
+                buyPackage(promoCode, paymentObj, discountedObj)
+                if (Platform.OS === 'ios') {
+                    _showCustomToast({ message, position: 'center' });
+                }
+                else {
+                    _showCustomToast({ message, position: 'top' });
+                }
                 toggleLoading(false);
                 toggleRefreshing(false);
             }
@@ -276,7 +270,7 @@ const FriendsScreen = ({
                     let paymentObj = { amount: _price, purpose: _category, id: _id, productId: _productId, type: 'importantChapter' }
                     let discountedObj = { amount: _dPrice, purpose: _category, id: _id, productId: _productId, type: 'importantChapter' }
 
-                    console.log("_price chapter", item)
+                    console.log("_price chapter", _dPrice)
                     return (<View
                         style={{
 
@@ -305,10 +299,10 @@ const FriendsScreen = ({
                             </View>
                         </TouchableOpacity>
                         <View style={{ marginLeft: _scaleText(20).fontSize, flexDirection: 'row', justifyContent: 'space-between', marginTop: _scaleText(16).fontSize }}>
-                            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.IMPORTANT.POST_LIST, { _id: _id, _category: _name, _price: _price, _productId: _productId })} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.IMPORTANT.POST_LIST, { _id: _id, _category: _name, _price: _price, _dPrice: _dPrice, _productId: _productId })} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                 <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.VIEW}</Text>
                                 <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
-                            </TouchableOpacity>{parseInt(_price) > 0 ? <TouchableOpacity onPress={() => buyPackage(paymentObj, discountedObj)} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+                            </TouchableOpacity>{parseInt(_price) > 0 ? <TouchableOpacity onPress={() => buyPackage('', paymentObj, discountedObj)} style={{ padding: 10, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                                 <Text style={[styles.fontBlue, { textAlign: 'right', marginRight: _scaleText(5).fontSize, fontSize: _scaleText(13).fontSize }]}>{TEXT_CONST.PURCHASE}</Text>
                                 <Ionicons name="arrow-forward-circle-outline" size={isTablet() ? _scaleText(15).fontSize : _scaleText(14).fontSize} color='blue' />
                             </TouchableOpacity> : null}

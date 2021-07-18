@@ -18,6 +18,7 @@ const NOTIFICATION_CODES = {
     'important_chapter': (_id, _heading, _category) => navigate(ROUTES.IMPORTANT.CHAPTER_LIST, { _id, _category }),
     'test_series': (_id) => navigate(ROUTES.TEST.CATEGORY, { id: _id }),
     'test_list': (_id, _heading, _category, _price, _dPrice, _productId) => navigate(ROUTES.TEST.LIST, { _id, _heading, _category, _price, _dPrice, _productId }),
+    'youtube_list': () => navigate(ROUTES.VIDEO.YOUTUBE_CATEGORIES)
 };
 
 export const _handleNotifications = ({

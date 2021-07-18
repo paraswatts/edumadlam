@@ -150,66 +150,49 @@ const TestSeriesList = ({
     />)
 
 
-    const buyPackage = (paymentObj, discountedObj) => {
-        console.log("paymentObj", paymentObj)
+    const buyPackage = (promoCodeValue, paymentObj, discountedObj) => {
         if (sId) {
-            Alert.alert(
-                "Do you have a coupon code?",
-                "",
-                [
+            if (Platform.OS === 'ios') {
+                Alert.prompt('Enter coupon code', '', [
                     {
-                        text: "No",
+                        text: 'Skip',
                         onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                        style: "cancel",
+                        style: 'cancel',
                     },
                     {
-                        text: "Yes",
-                        onPress: () => {
-                            if (Platform.OS === 'ios') {
-                                Alert.prompt('Enter coupon code', '', [
-                                    {
-                                        text: 'Cancel',
-                                        onPress: () => console.log('Cancel Pressed'),
-                                        style: 'cancel',
-                                    },
-                                    {
-                                        text: 'OK',
-                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                    },
-                                ]);
-                            } else {
-                                prompt(
-                                    'Enter coupon code',
-                                    '',
-                                    [
-                                        {
-                                            text: 'Cancel',
-                                            onPress: () => console.log('Cancel Pressed'),
-                                            style: 'cancel',
-                                        },
-                                        {
-                                            text: 'OK',
-                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                        },
-                                    ],
-                                    {
-                                        cancelable: true,
-                                        defaultValue: '',
-                                        placeholder: '',
-                                    },
-                                )
-                            }
-                        }
+                        text: 'OK',
+                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                     },
-                ],
-            );
+                ], 'plain-text', promoCodeValue);
+            } else {
+                prompt(
+                    'Enter coupon code',
+                    '',
+                    [
+                        {
+                            text: 'Skip',
+                            onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK',
+                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                        defaultValue: promoCodeValue,
+                        placeholder: '',
+                    },
+                )
+            }
+
         } else {
             navigation.navigate(ROUTES.SIGNIN_SCREEN)
         }
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
-        console.log(discountedObj, "promoCode", paymentObj)
         let payload = {
             netConnected,
             promoCode,
@@ -232,17 +215,27 @@ const TestSeriesList = ({
                 }
                 else {
                     if (Platform.OS === 'ios') {
+                        _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
                         applePayments(discountedObj)
                     }
                     else {
+                        _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
                         fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);
+                toggleRefreshing(false);
             },
             fail: (message = '') => {
-                _showCustomToast({ message });
+                buyPackage(promoCode, paymentObj, discountedObj)
+                if (Platform.OS === 'ios') {
+                    _showCustomToast({ message, position: 'center' });
+                }
+                else {
+                    _showCustomToast({ message, position: 'top' });
+                }
                 toggleLoading(false);
+                toggleRefreshing(false);
             }
         }
         verifyPromo(payload)
@@ -269,7 +262,7 @@ const TestSeriesList = ({
                         console.log("_productId", _productId)
                         let paymentObj = { amount: _price, productId: _productId, id: _id, type: 'testCategory', purpose: _category }
                         let discountedObj = { amount: _dPrice, productId: _productId, id: _id, type: 'testCategory', purpose: _category }
-                        buyPackage(paymentObj, discountedObj)
+                        buyPackage('', paymentObj, discountedObj)
                     }
                     }
                         style={{ padding: 10, borderWidth: 0, flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>

@@ -158,71 +158,53 @@ const ImportantDetailScreen = ({
         }
     }
 
-    const buyPackage = (paymentObj, discountedObj) => {
+    const buyPackage = (promoCodeValue, paymentObj, discountedObj) => {
         if (sId) {
-
-            Alert.alert(
-                "Do you have a coupon code?",
-                "",
-                [
+            if (Platform.OS === 'ios') {
+                Alert.prompt('Enter coupon code', '', [
                     {
-                        text: "No",
+                        text: 'Skip',
                         onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
-                        style: "cancel",
+                        style: 'cancel',
                     },
                     {
-                        text: "Yes",
-                        onPress: () => {
-                            if (Platform.OS === 'ios') {
-                                Alert.prompt('Enter coupon code', '', [
-                                    {
-                                        text: 'Cancel',
-                                        onPress: () => console.log('Cancel Pressed'),
-                                        style: 'cancel',
-                                    },
-                                    {
-                                        text: 'OK',
-                                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                    },
-                                ]);
-                            } else {
-                                prompt(
-                                    'Enter coupon code',
-                                    '',
-                                    [
-                                        {
-                                            text: 'Cancel',
-                                            onPress: () => console.log('Cancel Pressed'),
-                                            style: 'cancel',
-                                        },
-                                        {
-                                            text: 'OK',
-                                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
-                                        },
-                                    ],
-                                    {
-                                        cancelable: true,
-                                        defaultValue: '',
-                                        placeholder: '',
-                                    },
-                                )
-                            }
-                        }
+                        text: 'OK',
+                        onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
                     },
-                ],
-            );
+                ], 'plain-text', promoCodeValue);
+            } else {
+                prompt(
+                    'Enter coupon code',
+                    '',
+                    [
+                        {
+                            text: 'Skip',
+                            onPress: () => Platform.OS === 'ios' ? applePayments(paymentObj) : fetchPaymentPage(paymentObj),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK',
+                            onPress: promoCode => verifyPromoCode(promoCode, discountedObj, paymentObj)
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                        defaultValue: promoCodeValue,
+                        placeholder: '',
+                    },
+                )
+            }
+
         } else {
             navigation.navigate(ROUTES.SIGNIN_SCREEN)
         }
     }
+
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
-        console.log(discountedObj, "promoCode", paymentObj)
         let payload = {
             netConnected,
             promoCode,
             success: (response = []) => {
-                console.log("hello")
-
                 if (discountedObj.amount === paymentObj.amount) {
                     Alert.alert(
                         "We are already giving you best rate possible",
@@ -241,18 +223,27 @@ const ImportantDetailScreen = ({
                 }
                 else {
                     if (Platform.OS === 'ios') {
+                        _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
                         applePayments(discountedObj)
                     }
                     else {
-                        console.log("hererererrerer")
+                        _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
                         fetchPaymentPage(discountedObj)
                     }
                 }
                 toggleLoading(false);
+                toggleRefreshing(false);
             },
             fail: (message = '') => {
-                _showCustomToast({ message });
+                buyPackage(promoCode, paymentObj, discountedObj)
+                if (Platform.OS === 'ios') {
+                    _showCustomToast({ message, position: 'center' });
+                }
+                else {
+                    _showCustomToast({ message, position: 'top' });
+                }
                 toggleLoading(false);
+                toggleRefreshing(false);
             }
         }
         verifyPromo(payload)
@@ -280,7 +271,7 @@ const ImportantDetailScreen = ({
                     {data[0]._price.length ? <TouchableOpacity onPress={() => {
                         let paymentObj = { amount: data[0]._price, purpose: data[0]._chapterName, id: data[0]._id, productId: data[0]._productId, type: 'importantChapter' }
                         let discountedObj = { amount: data[0]._dPrice, purpose: data[0]._chapterName, id: data[0]._id, productId: data[0]._productId, type: 'importantChapter' }
-                        buyPackage(paymentObj, discountedObj)
+                        buyPackage('', paymentObj, discountedObj)
                     }}><Text style={{ alignSelf: 'flex-start', textDecorationLine: 'underline', color: 'blue', padding: 10 }}>Buy</Text></TouchableOpacity> : null}
 
 

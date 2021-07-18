@@ -181,6 +181,7 @@ function* verifyPromo({ payload: { netConnected, promoCode, success = () => { },
         }
     }
     catch (error) {
+        console.log("error", error)
         fail(JSON.stringify(error));
     }
     finally {
