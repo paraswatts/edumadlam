@@ -67,27 +67,33 @@ const CustomTestItem = ({ sId, verifyPromo, toggleLoading, netConnected, applePa
     }
 
     const verifyPromoCode = (promoCode, discountedObj, paymentObj) => {
-        let payload = {
-            netConnected,
-            promoCode,
-            success: (response = []) => {
-                if (discountedObj.amount === paymentObj.amount) {
-                    Alert.alert(
-                        "We are already giving you best rate possible",
-                        "",
-                        [
-                            {
-                                text: "Ok",
-                                onPress: () => { },
-                                style: "cancel",
-                            },
-                        ],
-                        {
-                            cancelable: true
-                        }
-                    );
+        if (discountedObj.amount === paymentObj.amount) {
+            Alert.alert(
+                "We are already giving you best rate possible",
+                "",
+                [
+                    {
+                        text: "Ok",
+                        onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                applePayments(paymentObj)
+                            }
+                            else {
+                                fetchPaymentPage(paymentObj)
+                            }
+                        },
+                        style: "cancel",
+                    },
+                ],
+                {
+                    cancelable: true
                 }
-                else {
+            );
+        } else {
+            let payload = {
+                netConnected,
+                promoCode,
+                success: (response = []) => {
                     if (Platform.OS === 'ios') {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
                         applePayments(discountedObj)
@@ -96,23 +102,21 @@ const CustomTestItem = ({ sId, verifyPromo, toggleLoading, netConnected, applePa
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
                         fetchPaymentPage(discountedObj)
                     }
+                    toggleLoading(false);
+                },
+                fail: (message = '') => {
+                    buyPackage(promoCode, paymentObj, discountedObj)
+                    if (Platform.OS === 'ios') {
+                        _showCustomToast({ message, position: 'center' });
+                    }
+                    else {
+                        _showCustomToast({ message, position: 'top' });
+                    }
+                    toggleLoading(false);
                 }
-                toggleLoading(false);
-                toggleRefreshing(false);
-            },
-            fail: (message = '') => {
-                buyPackage(promoCode, paymentObj, discountedObj)
-                if (Platform.OS === 'ios') {
-                    _showCustomToast({ message, position: 'center' });
-                }
-                else {
-                    _showCustomToast({ message, position: 'top' });
-                }
-                toggleLoading(false);
-                toggleRefreshing(false);
             }
+            verifyPromo(payload)
         }
-        verifyPromo(payload)
     }
 
     const renderBody = () => {
