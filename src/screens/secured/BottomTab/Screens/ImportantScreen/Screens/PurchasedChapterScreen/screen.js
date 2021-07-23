@@ -67,7 +67,7 @@ const FriendsScreen = ({
     />)
 
 
-    const fetchPaymentPage = (paymentObj) => {
+    const fetchPaymentPage = (paymentObj, promoCode) => {
         if (sId) {
             console.log("paymentObj", paymentObj)
             toggleLoading(true);
@@ -78,6 +78,7 @@ const FriendsScreen = ({
                 sId,
                 type: paymentObj.type,
                 productId: paymentObj.productId,
+                promoCode,
                 success: (response = []) => {
                     let res = response && response.length && response[0]
                     if (res && res.status && res.status == 1) {

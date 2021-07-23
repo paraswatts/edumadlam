@@ -76,10 +76,10 @@ const CustomTestItem = ({ sId, verifyPromo, toggleLoading, netConnected, applePa
                         text: "Ok",
                         onPress: () => {
                             if (Platform.OS === 'ios') {
-                                applePayments(paymentObj)
+                                applePayments(paymentObj, promoCode)
                             }
                             else {
-                                fetchPaymentPage(paymentObj)
+                                fetchPaymentPage(paymentObj, promoCode)
                             }
                         },
                         style: "cancel",
@@ -96,11 +96,11 @@ const CustomTestItem = ({ sId, verifyPromo, toggleLoading, netConnected, applePa
                 success: (response = []) => {
                     if (Platform.OS === 'ios') {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
-                        applePayments(discountedObj)
+                        applePayments(discountedObj, promoCode)
                     }
                     else {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
-                        fetchPaymentPage(discountedObj)
+                        fetchPaymentPage(discountedObj, promoCode)
                     }
                     toggleLoading(false);
                 },

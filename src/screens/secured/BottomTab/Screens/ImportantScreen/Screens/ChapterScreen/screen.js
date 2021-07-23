@@ -70,7 +70,7 @@ const FriendsScreen = ({
     />)
 
 
-    const fetchPaymentPage = (paymentObj) => {
+    const fetchPaymentPage = (paymentObj, promoCode) => {
         if (sId) {
             console.log("paymentObj", paymentObj)
             toggleLoading(true);
@@ -81,6 +81,7 @@ const FriendsScreen = ({
                 sId,
                 type: paymentObj.type,
                 productId: paymentObj.productId,
+                promoCode,
                 success: (response = []) => {
                     let res = response && response.length && response[0]
                     if (res && res.status && res.status == 1) {
@@ -155,10 +156,10 @@ const FriendsScreen = ({
                         text: "Ok",
                         onPress: () => {
                             if (Platform.OS === 'ios') {
-                                applePayments(paymentObj)
+                                applePayments(paymentObj, promoCode)
                             }
                             else {
-                                fetchPaymentPage(paymentObj)
+                                fetchPaymentPage(paymentObj, promoCode)
                             }
                         },
                         style: "cancel",
@@ -175,11 +176,11 @@ const FriendsScreen = ({
                 success: (response = []) => {
                     if (Platform.OS === 'ios') {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
-                        applePayments(discountedObj)
+                        applePayments(discountedObj, promoCode)
                     }
                     else {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
-                        fetchPaymentPage(discountedObj)
+                        fetchPaymentPage(discountedObj, promoCode)
                     }
                     toggleLoading(false);
                 },
@@ -198,7 +199,7 @@ const FriendsScreen = ({
         }
     }
 
-    const applePayments = async (paymentObj) => {
+    const applePayments = async (paymentObj, promoCode) => {
         console.log("paymentObj", paymentObj)
         if (sId) {
             startLoading()
@@ -217,6 +218,7 @@ const FriendsScreen = ({
                 productId: paymentObj.id,
                 transactionId: paymentResponse.transactionId,
                 timestamp: paymentResponse.transactionDate,
+                promoCode,
                 success: (response = []) => {
                     console.log(response, "apple payment")
                     Alert.alert("Purchase Successful")

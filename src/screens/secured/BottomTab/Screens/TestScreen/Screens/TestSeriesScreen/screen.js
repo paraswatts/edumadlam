@@ -84,7 +84,7 @@ const TestSeriesListScreen = ({
         /* Here is empty */
         stopLoading();
     };
-    const fetchPaymentPage = (paymentObj) => {
+    const fetchPaymentPage = (paymentObj, promoCode) => {
         console.log("paymentObj", paymentObj)
         if (authToken) {
             toggleLoading(true);
@@ -95,6 +95,7 @@ const TestSeriesListScreen = ({
                 sId,
                 type: 'testCategory',
                 productId: paymentObj.id,
+                promoCode,
                 success: (response = []) => {
                     let res = response && response.length && response[0]
                     if (res && res.status && res.status == 1) {
@@ -118,7 +119,7 @@ const TestSeriesListScreen = ({
 
     }
 
-    const applePayments = async (paymentObj) => {
+    const applePayments = async (paymentObj, promoCode) => {
         if (authToken) {
             startLoading()
             setTimeout(() => {
@@ -137,6 +138,7 @@ const TestSeriesListScreen = ({
                 productId: paymentObj.id,
                 transactionId: paymentResponse.transactionId,
                 timestamp: paymentResponse.transactionDate,
+                promoCode,
                 success: (response = []) => {
                     console.log(response, "apple payment")
                     Alert.alert("Purchase Successful")
@@ -213,10 +215,10 @@ const TestSeriesListScreen = ({
                         text: "Ok",
                         onPress: () => {
                             if (Platform.OS === 'ios') {
-                                applePayments(paymentObj)
+                                applePayments(paymentObj, promoCode)
                             }
                             else {
-                                fetchPaymentPage(paymentObj)
+                                fetchPaymentPage(paymentObj, promoCode)
                             }
                         },
                         style: "cancel",
@@ -233,11 +235,11 @@ const TestSeriesListScreen = ({
                 success: (response = []) => {
                     if (Platform.OS === 'ios') {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'center' });
-                        applePayments(discountedObj)
+                        applePayments(discountedObj, promoCode)
                     }
                     else {
                         _showCustomToast({ message: 'Promocode has been applied successfully', type: 'success', position: 'top' });
-                        fetchPaymentPage(discountedObj)
+                        fetchPaymentPage(discountedObj, promoCode)
                     }
                     toggleLoading(false);
                 },

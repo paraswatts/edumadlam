@@ -212,13 +212,16 @@ function* postDailyQuizSaga({ payload: { netConnected, json, success = () => { }
 
 
 
-function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, type, productId, success = () => { }, fail = () => { } } = {} }) {
+function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, type, productId, promoCode, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
             yield put(startLoading());
-            console.log(API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`))
+            let endPoint = promoCode ? API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}&promoCode=${promoCode}`)
+                : API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`)
+
+            console.log(endPoint)
             const { data = {}, status } = yield getRequest({
-                API: API.GENERATE_PAYMENT_LINK(`?amount=${amount}&purpose=${purpose}&sId=${sId}&type=${type}&productId=${productId}`)
+                API: endPoint
             })
             if (status == 200) {
                 success(data);
@@ -237,13 +240,17 @@ function* generatePaymentLink({ payload: { netConnected, amount, purpose, sId, t
     }
 }
 
-function* completeStorePayment({ payload: { netConnected, amount, paymentMode, sId, type, productId, transactionId, timestamp, success = () => { }, fail = () => { } } = {} }) {
+function* completeStorePayment({ payload: { netConnected, amount, paymentMode, sId, type, productId, transactionId, timestamp, promoCode, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
             yield put(startLoading());
-            console.log(API.STORE_PAYMENT(`?amount=${amount}&paymentMode=${paymentMode}&sId=${sId}&type=${type}&productId=${productId}&transactionId=${transactionId}&timestamp=${timestamp}`))
+            let endPoint = promoCode ?
+                API.STORE_PAYMENT(`?amount=${amount}&paymentMode=${paymentMode}&sId=${sId}&type=${type}&productId=${productId}&transactionId=${transactionId}&timestamp=${timestamp}&promoCode=${promoCode}`)
+                : API.STORE_PAYMENT(`?amount=${amount}&paymentMode=${paymentMode}&sId=${sId}&type=${type}&productId=${productId}&transactionId=${transactionId}&timestamp=${timestamp}`)
+
+            console.log(endPoint)
             const { data = {}, status } = yield getRequest({
-                API: API.STORE_PAYMENT(`?amount=${amount}&paymentMode=${paymentMode}&sId=${sId}&type=${type}&productId=${productId}&transactionId=${transactionId}&timestamp=${timestamp}`)
+                API: endPoint
             })
             console.log("data = {}, status")
             if (status == 200) {
