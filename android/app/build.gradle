@@ -132,9 +132,10 @@ android {
         applicationId "com.edumandala"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "1.2"
+        versionCode 14
+        versionName "1.2.2"
         multiDexEnabled true
+        missingDimensionStrategy 'store', 'play'
     }
     splits {
         abi {

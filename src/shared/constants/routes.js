@@ -51,7 +51,8 @@ export const ROUTES = {
     NEWS: {
         SUB_CATEGORY: 'News Sub Categories',
         LIST: 'News List',
-        DETAIL: 'News Detail'
+        DETAIL: 'News Detail',
+        TAGS: 'Tags'
     },
     TEST: {
         CATEGORY: 'Test Categories',

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, UIManager, FlatList, ActivityIndicator, RefreshControl, Image, useWindowDimensions, SafeAreaView, StyleSheet, BackHandler, Dimensions } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Text, View, UIManager, FlatList, ActivityIndicator, TouchableOpacity, Image, useWindowDimensions, SafeAreaView, StyleSheet, BackHandler, Dimensions } from 'react-native';
 import { ScreenHOC, EmptyDataUI } from '../../../../../../../components';
-import { COLORS, TEXT_CONST, _scaleText, _showCustomToast } from '../../../../../../../shared';
+import { COLORS, ROUTES, TEXT_CONST, _scaleText, _showCustomToast } from '../../../../../../../shared';
 import { CustomImage } from '../../../../../../../components/atoms';
 import FastImage from 'react-native-fast-image';
 import momemt from 'moment'
@@ -33,6 +32,7 @@ const NewsDetailScreen = ({
 }) => {
     const [loading, toggleLoading] = useState(false);
     const [data, updateData] = useState(false);
+    const [currentTag, setCurrentTag] = useState(null)
     useEffect(() => { fetchData(true) }, [])
     useEffect(() => {
         const handler = BackHandler.addEventListener(
@@ -45,12 +45,29 @@ const NewsDetailScreen = ({
         /* Here is empty */
         stopLoading();
     };
+
+    useEffect(() => {
+        console.log("currentTag", currentTag)
+        fetchData(true)
+    }, [JSON.stringify(currentTag)])
+
+    const setTag = (tagObj, topTag) => {
+        console.log("tagObj", tagObj._tagId)
+        navigation.navigate(ROUTES.NEWS.TAGS, { _tagId: tagObj._tagId, _name: tagObj._name })
+        if (topTag) {
+            setCurrentTag(null)
+        } else {
+            setCurrentTag(tagObj)
+        }
+    }
+
     const fetchData = (refresh = false) => {
         toggleLoading(true);
         let payload = {
             netConnected,
             id: _id,
             success: (response = []) => {
+                console.log("response", response)
                 !response.length
                 updateData(refresh ? [...response] : [...data, ...response])
                 toggleLoading(false);
@@ -108,7 +125,29 @@ const NewsDetailScreen = ({
                 err && console.log(err);
             });
     }
+    const TagView = ({ tagObj, topTag, addMargin }) => {
+        console.log("tagObj", tagObj)
+        return (
 
+            <TouchableOpacity
+                style={{
+                    marginRight: topTag ? 0 : 10,
+                    borderRadius: 5, backgroundColor: '#4284df', marginHorizontal: topTag ? 10 : 0,
+                    marginTop: topTag ? 10 : 0,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    flexDirection: "row",
+                    alignSelf: "flex-start",
+                    alignItems: 'center'
+                }}
+                onPress={() => setTag(tagObj, topTag)} >
+                <Text style={{ color: 'white' }}>
+                    {tagObj._name}
+                </Text>
+                {topTag && ICONS.CLOSE_WHITE(24)}
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <ScreenHOC
@@ -133,7 +172,10 @@ const NewsDetailScreen = ({
                         source={{ uri: data[0]._imgUrl }}
                     />
                     <MaterialIcons name="share" size={_scaleText(24).fontSize} color='blue' style={{ alignSelf: 'flex-end', padding: 10 }} onPress={() => openSharing(data[0]._link ? data[0]._link : 'www.edumandala.com')} />
-
+                    <View style={{ flexDirection: 'row', marginTop: 10 }}>{data[0]._tags && data[0]._tags.length ? data[0]._tags.map((obj, index) => (
+                        <TagView key={index.toString()} tagObj={obj} />
+                    )) : null}
+                    </View>
                     {/* <View style={{ marginHorizontal: _scaleText(10).fontSize }}> */}
                     <WebView
                         showsVerticalScrollIndicator={false}

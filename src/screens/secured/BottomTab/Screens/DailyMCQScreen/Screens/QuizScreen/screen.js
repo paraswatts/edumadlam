@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, UIManager, View, StyleSheet, ActivityIndicator, Dimensions, SafeAreaView, ScrollView, Alert, FlatList, BackHandler } from 'react-native';
 import { ScreenHOC, CustomButton, CustomDatePicker, CustomMCQModal, CustomModal, CustomFloatButton, CustomModalFullScreen } from '../../../../../../../components';
-import { COLORS, ICONS, _scaleText, TEXT_CONST } from '../../../../../../../shared';
+import { COLORS, ICONS, _scaleText, TEXT_CONST, _showCustomToast } from '../../../../../../../shared';
 import styles from './styles';
 import { isTablet } from 'react-native-device-info';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -83,6 +83,7 @@ const QuizScreen = ({
     const [answersListObj, updateAnswersListObj] = useState([])
     const childRef = useRef();
     const selectDate = (date) => {
+        console.log("date", date)
         updateSelectedDate(date)
         let selectedDate = moment(date).format("yyyy-MM-DD")
         updateHeaderDate(moment(date).format("DD MMM"))
@@ -101,9 +102,16 @@ const QuizScreen = ({
             netConnected,
             date,
             success: (response = []) => {
+                console.log("response[0]", response)
+                let timestamp = response && response.length && response[0]._timestamp
+                updateSelectedDate(new Date(timestamp))
+                updateDate(moment(new Date(timestamp)).format("yyyy-MM-DD"))
+                updateHeaderDate(moment(new Date(timestamp)).format("DD MMM"))
+
+                console.log("response daily", response[0]?._questions.length)
                 updateResetTimer(true)
-                dataLocal = response.map(obj => ({ ...obj }));
-                updateData([...response])
+                dataLocal = response && response.length && response[0]?._questions.map(obj => ({ ...obj }));
+                updateData(response && response.length && response[0]?._questions)
                 toggleLoading(false);
             },
             fail: (message = '') => {
@@ -229,6 +237,7 @@ const QuizScreen = ({
             netConnected,
             json,
             success: (response) => {
+                console.log("result   responseresponse", response)
                 updateResultObj(response)
                 if (!showModal) {
                     updatetTestSubmitSuccess(true)
@@ -307,7 +316,7 @@ const QuizScreen = ({
 
                 </CustomModal>}
 
-            { loading && !exiting ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} />
+            {loading && !exiting ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} />
                 :
                 data && data.length ?
                     <CustomMCQModal ref={childRef} submitTest={submitTest} answersListObj={answersListObj} updateAnswerList={updateAnswerList} testStarted={testStarted} resetTimer={resetTimer} questionsObj={data} />

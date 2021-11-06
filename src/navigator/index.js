@@ -31,7 +31,8 @@ import {
     ForgetPasswordScreen,
     ImportantChapterScreen,
     ChangePasswordScreen,
-    ImportantPurchasedChapterScreen
+    ImportantPurchasedChapterScreen,
+    TagNews
 } from '../screens';
 import NetInfo from "@react-native-community/netinfo";
 import { Alert } from 'react-native';
@@ -78,6 +79,7 @@ function RootNavigator({
                 <Stack.Screen name={ROUTES.IMPORTANT.PURCHASED_CHAPTER_LIST} component={ImportantPurchasedChapterScreen} />
                 <Stack.Screen name={ROUTES.NEWS.SUB_CATEGORY} component={NewsSubCategory} />
                 <Stack.Screen name={ROUTES.NEWS.DETAIL} component={NewsDetailsScreen} />
+                <Stack.Screen name={ROUTES.NEWS.TAGS} component={TagNews} />
                 <Stack.Screen name={ROUTES.TEST.CATEGORY} component={TestSeriesScreen} />
                 <Stack.Screen name={ROUTES.TEST.LIST} component={TestSeriesListScreen} />
                 <Stack.Screen name={ROUTES.TEST.PURCHASED_SERIES} component={PurchasedTestSeriesListScreen} />

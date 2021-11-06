@@ -5,14 +5,18 @@ import { postRequest, getRequest } from "../../shared/services/axios"
 import { TEXT_CONST } from "../../shared"
 
 
-function* getVideoListSaga({ payload: { netConnected, _id, date, success = () => { }, fail = () => { } } = {} }) {
+function* getVideoListSaga({ payload: { netConnected, _id, homePage, date, success = () => { }, fail = () => { } } = {} }) {
     try {
         if (netConnected) {
             yield put(startLoading());
+            let apiUrl = API.GET_VIDEO_LIST(`?catId=${_id}`)
+            if (homePage) {
+                apiUrl = API.GET_VIDEO_LIST(`?catId=${_id}&homePage=1`)
+            }
             const { data = {}, status } = yield getRequest({
-                API: API.GET_VIDEO_LIST(`?catId=${_id}`)
+                API: apiUrl
             })
-            console.log(API.GET_VIDEO_LIST(`?catId=${_id}`))
+            console.log(apiUrl)
             if (status == 200) {
                 yield put(videoListSuccess(data))
                 success(data);

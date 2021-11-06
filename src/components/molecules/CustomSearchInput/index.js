@@ -13,29 +13,29 @@ const CustomSearchInput = ({
     style,
     value = '',
 }) => (
-        <View style={[styles.container(active), style]}>
-            {!active && ICONS.SEARCH(24)}
-            <CustomTextInput
-                containerStyle={styles.inputContainer}
-                inputContainer={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChangeText}
-                onFocus={onFocus}
-                maxLength={maxLength}
-                placeholder={placeholder}
-                placeholderTextColor={COLORS.GREY.MEDIUM}
-                returnKeyType='search'
-                showError={false}
-                style={styles.textInput}
-                value={value}
-            />
-            {!!value.length && <CustomTouchableIcon
-                onPress={() => onChangeText('')}
-            >
-                {ICONS.CLOSE(24)}
-            </CustomTouchableIcon>}
-        </View>
-    );
+    <View style={[styles.container(active), style]}>
+        {!active && ICONS.SEARCH(24)}
+        <CustomTextInput
+            containerStyle={styles.inputContainer}
+            inputContainer={styles.input}
+            onBlur={onBlur}
+            onChangeText={onChangeText}
+            onFocus={onFocus}
+            maxLength={maxLength}
+            placeholder={placeholder}
+            placeholderTextColor={COLORS.GREY.MEDIUM}
+            returnKeyType='search'
+            showError={false}
+            style={styles.textInput}
+            value={value}
+        />
+        {!!value.length && <CustomTouchableIcon
+            onPress={() => onChangeText('')}
+        >
+            {ICONS.CLOSE(24)}
+        </CustomTouchableIcon>}
+    </View>
+);
 
 export default CustomSearchInput;
 

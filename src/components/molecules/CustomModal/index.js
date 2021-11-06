@@ -4,10 +4,21 @@ import { CustomTouchableIcon, CustomButton, CustomImage, ScreenHOC, CustomFloatB
 import { ICONS, ILLUSTRATIONS, _scaleText, COLORS, BASE_URL, TEXT_CONST } from '../../../shared';
 import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Feather from 'react-native-vector-icons/Feather'
 import HTMLView from 'react-native-htmlview';
 import Share from 'react-native-share';
 import { isTablet } from 'react-native-device-info';
 
+const INJECTEDJAVASCRIPT = `<style>body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+    </style>
+  `;
 const CustomModal = ({
     buttonLabel,
     icon = ILLUSTRATIONS.FRIEND_MOVED(150, 120),
@@ -28,6 +39,7 @@ const CustomModal = ({
     const quesRef = useRef();
     const renderQuestionitem = ({ item, index }) => {
         const { qId, _quest, answer, status, remark, _opt1, _opt2, _opt3, _opt4, _yourAnswer } = item
+        console.log("renderQuestionitem item", item)
         let icon, color
         if (status == 0) {
             icon = 'close-circle-outline'
@@ -50,6 +62,11 @@ const CustomModal = ({
                     color={color} size={_scaleText(isTablet() ? 16 : 15).fontSize} />
                 <View style={{ borderWidth: 0, marginLeft: _scaleText(5).fontSize }}>
                     <View>
+                        {/* <WebView
+                            showsVerticalScrollIndicator={false}
+
+                            source={{ html: INJECTEDJAVASCRIPT + '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">' + _questUpdated }}
+                            style={{ flex: 1, borderWidth: 0 }} /> */}
                         <HTMLView addLineBreaks={true} style={{ width: '90%' }} stylesheet={styles} value={_questUpdated} />
                         <View>
                             <Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{'1. '}{_opt1}</Text>
@@ -71,7 +88,8 @@ const CustomModal = ({
                                 <Text style={{ fontWeight: 'bold', color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>Remark</Text>
 
                                 <View style={{ width: '95%' }}>
-                                    <Text style={{ fontSize: _scaleText(13).fontSize, flex: 1, borderWidth: 0, flexWrap: 'wrap', color: COLORS.BLUE_FONT }}>{remark}</Text>
+
+                                    <HTMLView addLineBreaks={true} style={{ width: '90%' }} stylesheet={styles} value={remark} />
                                 </View></View> : null}
                     </View>
                 </View>
@@ -123,7 +141,8 @@ const CustomModal = ({
                         {
                             ICONS.MEDAL(70)
                         }
-                        {resultObj.grade ? <Text style={{ marginVertical: _scaleText(10).fontSize, color: COLORS.BLUE_FONT }}>{'Your grade is ' + resultObj.grade}</Text> : <Text style={{ marginVertical: _scaleText(10).fontSize, color: COLORS.BLUE_FONT }}>{''}</Text>}
+                        {resultObj.rank ? <Text style={{ marginVertical: _scaleText(10).fontSize, color: COLORS.BLUE_FONT }}>{'Rank : ' + resultObj.rank}</Text> : null}
+                        {resultObj.grade ? <Text style={{ marginVertical: _scaleText(10).fontSize, color: COLORS.BLUE_FONT }}>{'Your grade is :' + resultObj.grade}</Text> : null}
                         <View style={{ flexDirection: 'row', borderTopWidth: 0.5, width: '100%', padding: _scaleText(10).fontSize }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'center' }}><MaterialCommunityIcons name={'circle-double'}
                                 color={'red'} size={_scaleText(isTablet() ? 16 : 15).fontSize} /><View style={{ marginLeft: _scaleText(20).fontSize, color: COLORS.BLUE_FONT }}><Text style={{ minWidth: 100, color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{TEXT_CONST.SCORE} </Text><Text style={{ color: COLORS.BLUE_FONT, fontSize: _scaleText(13).fontSize }}>{resultObj.score}</Text></View></View>
@@ -152,7 +171,7 @@ const CustomModal = ({
                     <FlatList
                         ref={quesRef}
                         keyExtractor={(item, index) => item.qId + '' + index}
-                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
                         scrollEnabled={true}
                         data={data}
                         extraData={data}

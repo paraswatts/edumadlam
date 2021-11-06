@@ -20,7 +20,7 @@ const TestSeriesList = ({
     const [data, updateData] = useState([]);
     const [loading, toggleLoading] = useState(false);
     const [refreshing, toggleRefreshing] = useState(true);
-    useEffect(() => { fetchData(true) }, [])
+    // useEffect(() => { fetchData(true) }, [])
     const fetchData = (refresh = false) => {
         toggleLoading(!refresh);
         toggleRefreshing(false);
@@ -44,6 +44,17 @@ const TestSeriesList = ({
         }
         testListRequest(payload)
     }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            fetchData(true)
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
     useEffect(() => {
         const handler = BackHandler.addEventListener(
             'hardwareBackPress',

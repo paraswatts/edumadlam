@@ -109,6 +109,7 @@ function* getDailyQuizSaga({ payload: { netConnected, date, success = () => { },
     try {
         if (netConnected) {
             yield put(startLoading());
+            console.log("API.GET_DAILY_QUIZ(`?date=${date}`", API.GET_DAILY_QUIZ(`?date=${date}`))
             const { data = {}, status } = yield getRequest({
                 API: API.GET_DAILY_QUIZ(`?date=${date}`)
             })

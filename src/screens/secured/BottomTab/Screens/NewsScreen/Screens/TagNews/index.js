@@ -1,4 +1,4 @@
-import NewsSubCategory from './screen';
+import TagNews from './screen';
 import { connect } from 'react-redux';
 import { newsSubCatListRequest, stopLoading, tagSearchRequest } from '../../../../../../../redux/actions';
 
@@ -16,5 +16,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewsSubCategory)
+export default connect(mapStateToProps, mapDispatchToProps)(TagNews)
 

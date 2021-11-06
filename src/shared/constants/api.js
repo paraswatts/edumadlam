@@ -103,9 +103,10 @@ export const API = {
     GENERATE_PAYMENT_LINK: (params = '') => PREFIX_URL + `generatePLink.php${params}`,
     GET_TEST_QUESTIONS: (params = '') => PREFIX_URL + `questionListJson.php${params}`,
     GET_TEST_LIST: (params = '') => PREFIX_URL + `purchasedTestListJson.php${params}`,
-    GET_DAILY_QUIZ: (params = '') => PREFIX_URL + `dailyQuestionJson.php${params}`,
+    GET_DAILY_QUIZ: (params = '') => PREFIX_URL + `dailyQuestionJsonV2.php${params}`,
     SUBMIT_TEST: (params = '') => PREFIX_URL + `insertCheckQuestionJson.php${params}`,
     SUBMIT_DAILY_QUIZ: (params = '') => PREFIX_URL + `insertCheckDailyQuestionJson.php${params}`,
     STORE_PAYMENT: (params = '') => PREFIX_URL + `submitStorePayment.php${params}`,
-    VERIFY_PROMO: (params = '') => PREFIX_URL + `promoCodeVerify.php${params}`
+    VERIFY_PROMO: (params = '') => PREFIX_URL + `promoCodeVerify.php${params}`,
+    SEARCH_TAG: (params = '') => PREFIX_URL + `tagsListCreateJson.php${params}`,
 }

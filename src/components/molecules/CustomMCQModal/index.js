@@ -162,17 +162,11 @@ const CustomMCQModal = forwardRef(({
         submitTest()
     }
 
-    const findStyle = () => {
-        console.log(currentOrientation, "isTablet()", isTablet())
-        return isTablet() ? currentOrientation === 'PORTRAIT' ? styles.childPortrait : styles.childVertical : styles.child1
-    }
-
     const renderQuestionitem = ({ item, index }) => {
         const { _imgUrl, _quest, _opt1, _opt2, _opt3, _opt4, _remark, _id } = item
         let _questUpdated = _quest.replace(/(\r\n|\n|\r)/gm, "")
         _questUpdated = _questUpdated.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, "")
         _questUpdated = _questUpdated.replace(/<[^/>][^>]*><\/[^>]+>/g, "")
-        console.log("findStyle()", findStyle())
         return (
             <View >
                 <ScrollView key={_id} style={[styles.child]} showsVerticalScrollIndicator={false}>

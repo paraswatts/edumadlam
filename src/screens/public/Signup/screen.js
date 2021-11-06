@@ -99,7 +99,7 @@ const SignUpScreen = ({
                             <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: LINKS.PRIVACY_POLICY, title: TEXT_CONST.PRIVACY_POLICY })} style={styles.termsHyperlink}>{TEXT_CONST.PRIVACY_POLICY}</Text>
                             {TEXT_CONST.AND_AGREE}
                             <Text onPress={() => navigation.navigate(ROUTES.WEB_VIEW_SCREEN, { uri: LINKS.TERMS_OF_SERVICE, title: TEXT_CONST.TERMS_OF_SERVICE })} style={styles.termsHyperlink}>{TEXT_CONST.TERMS_OF_SERVICE}</Text>.
-                            </Text>
+                        </Text>
 
                         <Text style={styles.alreadyMember}>
                             {TEXT_CONST.ALREADY_A_MEMBER}

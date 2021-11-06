@@ -136,7 +136,7 @@ const TestQuestions = ({
             netConnected,
             json,
             success: (response) => {
-                console.log("response", response)
+                console.log("response test", response)
                 updateResultObj(response)
                 updatetTestSubmitSuccess(true)
                 toggleLoading(false);
@@ -212,7 +212,7 @@ const TestQuestions = ({
                     style={{ bottom: _scaleText(70).fontSize, zIndex: 10000000000 }}
                     onPress={_toggleFilterModal}
                 /> : null}
-            { loading && !exiting ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} /> :
+            {loading && !exiting ? <ActivityIndicator size={'large'} color={COLORS.GREY._2} /> :
                 <CustomMCQModal ref={childRef} _testDuration={_testDuration} submitTest={submitTest} answersListObj={answersListObj} updateAnswerList={updateAnswerList} testStarted={testStarted} questionsObj={data} />}
         </ScreenHOC>
     );

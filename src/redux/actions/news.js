@@ -7,6 +7,8 @@ export const NEWS_SUB_CAT_SUCCESS = 'NEWS_SUB_CAT_SUCCESS';
 
 export const NEWS_DETAIL_REQUEST = 'NEWS_DETAIL_REQUEST';
 export const NEWS_DETAIL_SUCCESS = 'NEWS_DETAIL_SUCCESS';
+export const TAG_SEARCH_REQUEST = 'TAG_SEARCH_REQUEST';
+
 export const newsCatListRequest = payload => {
     return {
         type: NEWS_CAT_REQUEST,
@@ -47,6 +49,13 @@ export const newsDetailRequest = payload => {
 export const newsDetailSuccess = payload => {
     return {
         type: NEWS_DETAIL_SUCCESS,
+        payload
+    }
+}
+
+export const tagSearchRequest = payload => {
+    return {
+        type: TAG_SEARCH_REQUEST,
         payload
     }
 }

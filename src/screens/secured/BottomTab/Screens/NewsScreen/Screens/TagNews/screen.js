@@ -11,11 +11,11 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import Feather from "react-native-vector-icons/Feather"
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-const NewsSubCategory = ({
+const TagNews = ({
     navigation,
     netConnected,
     newsSubCatListRequest,
-    route: { name, params: { _id, _category } = {} },
+    route: { name, params: { _tagId, _name } = {} },
     stopLoading,
     tagSearchRequest
 }) => {
@@ -26,7 +26,7 @@ const NewsSubCategory = ({
     const [date, updateDate] = useState(moment(new Date()).format("yyyy-MM-DD"))
     const [selectedDate, updateSelectedDate] = useState(new Date())
     const [headerDate, updateHeaderDate] = useState(moment(new Date()).format("DD MMM"))
-    const [currentTag, setCurrentTag] = useState(null)
+    const [currentTag, setCurrentTag] = useState({ _tagId: _tagId, _name: _name })
     const [loadingTag, setLoadingTag] = useState(false)
     const [suggestionsList, setSuggestionsList] = useState(null)
     const [selectedItem, setSelectedItem] = useState(null)
@@ -65,7 +65,7 @@ const NewsSubCategory = ({
 
 
     const onClearPress = useCallback(() => {
-        setCurrentTag(null)
+        setCurrentTag({ _tagId: _tagId, _name: _name })
         setSuggestionsList(null)
     }, [])
 
@@ -98,10 +98,11 @@ const NewsSubCategory = ({
     const fetchData = (refresh = false) => {
         toggleLoading(!refresh);
         toggleRefreshing(false);
+        console.log("_tagId", _tagId)
         let payload = {
             netConnected,
-            catId: _id,
-            date,
+            tagId: _tagId,
+            onlyTag: true,
             success: (response = []) => {
                 console.log("response news", response)
                 updateData([...response])
@@ -114,9 +115,10 @@ const NewsSubCategory = ({
                 toggleRefreshing(false);
             }
         }
-        if (currentTag) {
+        if (currentTag?._tagId) {
             payload['tagId'] = currentTag?._tagId
         }
+        console.log("payload", payload)
         newsSubCatListRequest(payload)
     }
 
@@ -134,7 +136,7 @@ const NewsSubCategory = ({
         setSearched(false)
         setSuggestionsList(null)
         if (topTag) {
-            setCurrentTag(null)
+            setCurrentTag({ _tagId: _tagId, _name: _name })
         } else {
             setCurrentTag(tagObj)
         }
@@ -143,6 +145,7 @@ const NewsSubCategory = ({
     const TagView = ({ tagObj, topTag, addMargin }) => {
         console.log("tagObj", tagObj)
         return (
+
             <TouchableOpacity
                 style={{
                     marginRight: topTag ? 0 : 10,
@@ -167,13 +170,13 @@ const NewsSubCategory = ({
         <ScreenHOC
             bottomSafeArea
             containerStyle={{ backgroundColor: COLORS.GREY.LIGHT, }}
-            headerTitle={_category}
+            headerTitle={_name}
             showHeader
             showBackIcon
             onBackPress={navigation.goBack}
-            headerRight={ICONS.CALENDAR}
+            // headerRight={ICONS.CALENDAR}
             onRightPress={() => updateShowDate(true)}
-            rightText={headerDate}
+        // rightText={headerDate}
         >
             {showDate &&
                 <CustomDatePicker
@@ -266,8 +269,8 @@ const NewsSubCategory = ({
                 refreshControl={<RefreshControl
                     colors={[COLORS.GREY._2]}
                     onRefresh={() => {
-                        fetchData(true)
-                        setCurrentTag(null)
+                        // fetchData(true)
+                        setCurrentTag({ _tagId: _tagId, _name: _name })
                     }}
                     refreshing={refreshing}
                     tintColor={COLORS.GREY._2}
@@ -288,7 +291,10 @@ const NewsSubCategory = ({
                             shadowRadius: 1, borderRadius: 10, marginHorizontal: 10, marginVertical: 5, padding: 20, elevation: 5, backgroundColor: COLORS.WHITE
                         }}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate(ROUTES.NEWS.DETAIL, { _id: _id, _heading: _heading })}
+                                onPress={() => {
+                                    console.log("navigate detail news")
+                                    navigation.navigate(ROUTES.NEWS.DETAIL, { _id: _id, _heading: _heading })
+                                }}
                             >
                                 <FastImage
                                     style={{ height: 150 }}
@@ -313,4 +319,4 @@ const NewsSubCategory = ({
     );
 }
 
-export default NewsSubCategory;
+export default TagNews;
