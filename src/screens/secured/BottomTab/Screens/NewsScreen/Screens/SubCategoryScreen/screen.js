@@ -121,7 +121,7 @@ const NewsSubCategory = ({
     }
 
     useEffect(() => {
-        console.log("currentTag", currentTag)
+        console.log("currentTag===", currentTag)
         fetchData(true, date)
     }, [JSON.stringify(currentTag)])
 
@@ -235,7 +235,8 @@ const NewsSubCategory = ({
                 }}
                 suggestionsListContainerStyle={{
                     marginHorizontal: 10,
-                    width: 'auto'
+                    // flex: 1
+                    width: '95%'
                 }}
                 // containerStyle={{ flexGrow: 1, flexShrink: 1 }}
                 renderItem={(item, text) => (
@@ -252,7 +253,7 @@ const NewsSubCategory = ({
                 showClear={true}
             />
             <View>
-                {currentTag && !searched ? <TagView tagObj={currentTag} topTag={true} /> : null}
+                {currentTag?._tagId ? <TagView tagObj={currentTag} topTag={true} /> : null}
             </View>
 
             <FlatList

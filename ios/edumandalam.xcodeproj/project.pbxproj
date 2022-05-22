@@ -20,8 +20,8 @@
 		6BDD0500854375F2DC8BD547 /* libPods-edumandalam.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CFA4710B303AD165AB44EE9 /* libPods-edumandalam.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8F12A40525EEB237002F824A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F12A40425EEB237002F824A /* StoreKit.framework */; };
+		8F156AC82788998F000877F9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F156AC72788998F000877F9 /* GoogleService-Info.plist */; };
 		8F4C5E23264AD0C700C4DA7D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4C5E22264AD0C700C4DA7D /* File.swift */; };
-		8F7FE96825CF107500F28EBE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F7FE96725CF107500F28EBE /* GoogleService-Info.plist */; };
 		D97131137F6273C15BBBFC8A /* libPods-edumandalam-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B7B67DD4BD08EDFA6EE99C /* libPods-edumandalam-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -73,9 +73,9 @@
 		84BB2C2C302D433C9ABA7AC8 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		8CFA4710B303AD165AB44EE9 /* libPods-edumandalam.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-edumandalam.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F12A40425EEB237002F824A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8F156AC72788998F000877F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F4C5E21264AD0C700C4DA7D /* edumandalam-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "edumandalam-Bridging-Header.h"; sourceTree = "<group>"; };
 		8F4C5E22264AD0C700C4DA7D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		8F7FE96725CF107500F28EBE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F7FE96925CF109900F28EBE /* EduMandala.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = EduMandala.entitlements; path = edumandalam/EduMandala.entitlements; sourceTree = "<group>"; };
 		8F924B3A2603D1E9003DA850 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		A2019ABF57E0C02B19C61436 /* Pods-edumandalam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-edumandalam.debug.xcconfig"; path = "Target Support Files/Pods-edumandalam/Pods-edumandalam.debug.xcconfig"; sourceTree = "<group>"; };
@@ -153,8 +153,8 @@
 			children = (
 				8F7FE96925CF109900F28EBE /* EduMandala.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
-				8F7FE96725CF107500F28EBE /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				8F156AC72788998F000877F9 /* GoogleService-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				8F4C5E22264AD0C700C4DA7D /* File.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -350,7 +350,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 9Z65TQ2297;
+						DevelopmentTeam = GGMLDH89DQ;
 						LastSwiftMigration = 1240;
 						ProvisioningStyle = Automatic;
 					};
@@ -399,8 +399,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				8F156AC82788998F000877F9 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				8F7FE96825CF107500F28EBE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -803,7 +803,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9Z65TQ2297;
+				DEVELOPMENT_TEAM = GGMLDH89DQ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = edumandalam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -813,7 +813,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.edumandala;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getchya.getchya;
 				PRODUCT_NAME = EduMandala;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "edumandalam-Bridging-Header.h";
@@ -834,7 +834,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9Z65TQ2297;
+				DEVELOPMENT_TEAM = GGMLDH89DQ;
 				INFOPLIST_FILE = edumandalam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.9;
@@ -843,7 +843,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.edumandala;
+				PRODUCT_BUNDLE_IDENTIFIER = com.getchya.getchya;
 				PRODUCT_NAME = EduMandala;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "edumandalam-Bridging-Header.h";

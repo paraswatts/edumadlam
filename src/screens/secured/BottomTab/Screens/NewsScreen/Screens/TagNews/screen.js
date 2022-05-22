@@ -238,7 +238,8 @@ const TagNews = ({
                 }}
                 suggestionsListContainerStyle={{
                     marginHorizontal: 10,
-                    width: 'auto'
+                    width: '95%'
+                    // width: 'auto'
                 }}
                 // containerStyle={{ flexGrow: 1, flexShrink: 1 }}
                 renderItem={(item, text) => (
@@ -255,7 +256,7 @@ const TagNews = ({
                 showClear={true}
             />
             <View>
-                {currentTag && !searched ? <TagView tagObj={currentTag} topTag={true} /> : null}
+                {currentTag?._tagId ? <TagView tagObj={currentTag} topTag={true} /> : null}
             </View>
 
             <FlatList

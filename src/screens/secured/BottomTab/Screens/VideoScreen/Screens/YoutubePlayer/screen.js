@@ -5,6 +5,7 @@ import { COLORS } from '../../../../../../../shared';
 import Video from 'react-native-video';
 import YouTube from 'react-native-youtube';
 import HTMLView from 'react-native-htmlview';
+import YoutubePlayer from "react-native-youtube-iframe";
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const YoutubePlayerScreen = ({
@@ -26,7 +27,13 @@ const YoutubePlayerScreen = ({
             onBackPress={navigation.goBack}
         >
             <View style={{ flex: 1, borderWidth: 0, alignItems: 'center', }}>
-                <YouTube
+                {
+                    <YoutubePlayer
+                        height={250}
+                        videoId={getVideoIdFromUrl(_link)}
+                    />
+                }
+                {/* <YouTube
                     apiKey='AIzaSyAanj5hB1lBH5XDmuTpLXoD47LM_0OerGI'
                     videoId={getVideoIdFromUrl(_link)} // The YouTube video ID
                     play // control playback of video with true/false
@@ -37,7 +44,7 @@ const YoutubePlayerScreen = ({
                     // onChangeQuality={e => this.setState({ quality: e.quality })}
                     // onError={e => this.setState({ error: e.error })}
                     style={{ alignSelf: 'stretch', height: 300 }}
-                />
+                /> */}
                 {_webPage ?
                     <HTMLView addLineBreaks={true} value={_webPage.replace(/(\r\n|\n|\r)/gm, "")} /> : null}
                 {/* <Video

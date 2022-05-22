@@ -7,6 +7,7 @@ import CustomDatePicker from '../../../../../../../components/molecules/CustomDa
 import moment from 'moment'
 import YouTube from 'react-native-youtube';
 import FastImage from 'react-native-fast-image';
+import YoutubePlayer from "react-native-youtube-iframe";
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 const VideosScreen = ({
@@ -81,7 +82,13 @@ const VideosScreen = ({
 
     return (
         <>
-            {link ?
+            {
+                link ? <YoutubePlayer
+                    height={250}
+                    videoId={getVideoIdFromUrl(link)}
+                /> : null
+            }
+            {/* {link ?
                 <YouTube
                     apiKey='AIzaSyAanj5hB1lBH5XDmuTpLXoD47LM_0OerGI'
                     videoId={getVideoIdFromUrl(link)} // The YouTube video ID
@@ -92,7 +99,7 @@ const VideosScreen = ({
                     // onChangeQuality={e => this.setState({ quality: e.quality })}
                     // onError={e => this.setState({ error: e.error })}
                     style={{ alignSelf: 'stretch', height: 300, marginTop: -2, borderRadius: 20, marginBottom: 12 }}
-                /> : null}
+                /> : null} */}
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={data}
